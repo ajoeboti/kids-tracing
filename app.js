@@ -137,24 +137,84 @@ function renderGuide(ch) {
   ctx.scale(scale, scale);
   ctx.font = [style.fontStyle, style.fontWeight, style.fontSize, style.fontFamily].join(" ");
   ctx.textAlign = "left";
-  ctx.textBaseline = "middle";
+  ctx.textBaseline = "alphabetic";
   ctx.fillStyle = "#000";
-  ctx.fillText(ch, textBounds.left - bounds.left, (textBounds.top + textBounds.bottom) / 2 - bounds.top);
+  var metrics = ctx.measureText(ch);
+  var anchorX = textBounds.left - bounds.left;
+  var fontAscent = metrics.fontBoundingBoxAscent || parseFloat(style.fontSize);
+  var baselineY = textBounds.top - bounds.top + fontAscent;
+  ctx.fillText(ch, anchorX, baselineY);
 
   var pixels = ctx.getImageData(0, 0, mask.width, mask.height);
-  var left = Math.max(0, Math.floor((textBounds.left - bounds.left) * scale));
-  var right = Math.min(mask.width, Math.ceil((textBounds.right - bounds.left) * scale));
-  var top = Math.max(0, Math.floor((textBounds.top - bounds.top) * scale));
-  var bottom = Math.min(mask.height, Math.ceil((textBounds.bottom - bounds.top) * scale));
+  var glyphLeft = Math.max(0, Math.floor((anchorX - metrics.actualBoundingBoxLeft) * scale));
+  var glyphRight = Math.min(mask.width, Math.ceil((anchorX + metrics.actualBoundingBoxRight) * scale));
+  var glyphTop = Math.max(0, Math.floor((baselineY - metrics.actualBoundingBoxAscent) * scale));
+  var glyphBottom = Math.min(mask.height, Math.ceil((baselineY + metrics.actualBoundingBoxDescent) * scale));
   var markup = "";
   var point = svg.createSVGPoint();
   var inverse = dotsMatrix.inverse();
+
+  function toLocal(x, y) {
+    point.x = bounds.left + x;
+    point.y = bounds.top + y;
+    return point.matrixTransform(inverse);
+  }
+
+  function addDot(x, y, isStart) {
+    var local = toLocal(x, y);
+    markup += '<circle cx="' + local.x.toFixed(2) + '" cy="' + local.y.toFixed(2) +
+      '" r="' + (isStart ? "2.5" : "1.15") + '" fill="' +
+      (isStart ? "none" : "#12B3A6") + '"' +
+      (isStart ? ' stroke="#FF4F37" stroke-width="1.15"' : "") + '/>';
+    if (isStart) {
+      markup += '<circle cx="' + local.x.toFixed(2) + '" cy="' + local.y.toFixed(2) +
+        '" r="0.75" fill="#FF4F37"/>';
+    }
+  }
+
+  function addStep(startX, startY, endX, endY, number) {
+    var distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    var count = Math.max(2, Math.floor(distance / 14));
+    var i;
+    for (i = 0; i <= count; i += 1) {
+      var ratio = i / count;
+      addDot(startX + (endX - startX) * ratio, startY + (endY - startY) * ratio, i === 0);
+    }
+    var badge = toLocal(startX, startY);
+    var radius = 7 / Math.sqrt(dotsMatrix.a * dotsMatrix.a + dotsMatrix.b * dotsMatrix.b);
+    var fontSize = radius * 1.2;
+    markup += '<circle cx="' + badge.x.toFixed(2) + '" cy="' + badge.y.toFixed(2) +
+      '" r="' + radius.toFixed(2) + '" fill="#2E2118" stroke="#fff" stroke-width="' +
+      (1 / Math.sqrt(dotsMatrix.a * dotsMatrix.a + dotsMatrix.b * dotsMatrix.b)).toFixed(2) + '"/>';
+    markup += '<text x="' + badge.x.toFixed(2) + '" y="' + badge.y.toFixed(2) +
+      '" text-anchor="middle" dominant-baseline="central" fill="#fff" font-family="sans-serif" font-size="' +
+      fontSize.toFixed(2) + '" font-weight="700">' + number + '</text>';
+  }
+
+  if (ch === "z") {
+    var glyphWidth = (metrics.actualBoundingBoxLeft + metrics.actualBoundingBoxRight);
+    var glyphHeight = (metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent);
+    var insetX = glyphHeight * 0.1;
+    var insetY = glyphHeight * 0.12;
+    var x1 = anchorX - metrics.actualBoundingBoxLeft + insetX;
+    var x2 = anchorX + metrics.actualBoundingBoxRight - insetX;
+    var y1 = baselineY - metrics.actualBoundingBoxAscent + insetY;
+    var y2 = baselineY + metrics.actualBoundingBoxDescent - insetY;
+    if (glyphWidth > 0 && glyphHeight > 0) {
+      addStep(x1, y1, x2, y1, 1);
+      addStep(x2, y1, x1, y2, 2);
+      addStep(x1, y2, x2, y2, 3);
+    }
+    guideDots.innerHTML = markup;
+    return;
+  }
+
   var bandCount = 8;
   var band;
 
   for (band = 0; band < bandCount; band += 1) {
-    var bandTop = top + Math.floor((bottom - top) * band / bandCount);
-    var bandBottom = top + Math.floor((bottom - top) * (band + 1) / bandCount);
+    var bandTop = glyphTop + Math.floor((glyphBottom - glyphTop) * band / bandCount);
+    var bandBottom = glyphTop + Math.floor((glyphBottom - glyphTop) * (band + 1) / bandCount);
     var bestY = -1;
     var bestWidth = 0;
     var bestLeft = 0;
@@ -164,7 +224,7 @@ function renderGuide(ch) {
       var first = -1;
       var last = -1;
       var col;
-      for (col = left; col < right; col += 1) {
+      for (col = glyphLeft; col < glyphRight; col += 1) {
         if (pixels.data[(row * mask.width + col) * 4 + 3] > 64) {
           if (first < 0) first = col;
           last = col;
@@ -181,18 +241,7 @@ function renderGuide(ch) {
 
     var edgeOrder = band % 2 === 0 ? [bestLeft, bestRight] : [bestRight, bestLeft];
     edgeOrder.forEach(function (x) {
-      point.x = bounds.left + (x + 0.5) / scale;
-      point.y = bounds.top + (bestY + 0.5) / scale;
-      var local = point.matrixTransform(inverse);
-      var isStart = markup === "";
-      markup += '<circle cx="' + local.x.toFixed(2) + '" cy="' + local.y.toFixed(2) +
-        '" r="' + (isStart ? "2.5" : "1.15") + '" fill="' +
-        (isStart ? "none" : "#12B3A6") + '"' +
-        (isStart ? ' stroke="#FF4F37" stroke-width="1.15"' : "") + '/>';
-      if (isStart) {
-        markup += '<circle cx="' + local.x.toFixed(2) + '" cy="' + local.y.toFixed(2) +
-          '" r="0.75" fill="#FF4F37"/>';
-      }
+      addDot((x + 0.5) / scale, (bestY + 0.5) / scale, markup === "");
     });
   }
   guideDots.innerHTML = markup;
@@ -205,6 +254,9 @@ function renderLetter() {
   document.getElementById("phoneme").textContent = PHONEMES[ch] || ch;
   document.getElementById("trace-subtitle").textContent = "Letter " + ch + " of 62 • Stars save automatically";
   canvas.setAttribute("aria-label", "Tracing canvas for letter " + ch);
+  document.getElementById("follow-copy").textContent = ch === "z"
+    ? "Step 1: top line • Step 2: diagonal • Step 3: bottom line"
+    : "Follow the dots — start at the red dot!";
   renderGuide(ch);
   hideSuccess();
 }
@@ -701,3 +753,9 @@ if (window.ResizeObserver) {
 
 renderAll();
 applyRoute();
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(function () {
+    if (!document.getElementById("view-practice").hidden) renderGuide(currentChar());
+  });
+}
