@@ -210,9 +210,14 @@ The practice instruction is: "Trace over the grey letter or number."
 
 For V1, scoring should be simple and positive.
 
-When the child presses `Done`, calculate a basic tracing coverage score.
+When the child presses `Done`, compare the drawn strokes with the rendered
+character guide. Measure both the percentage of the child's ink near the guide
+(accuracy) and the percentage of the guide followed by the child's ink
+(coverage). Allow a small distance tolerance for normal variation in children's
+handwriting, and score using the lower of the two percentages so scribbling or
+tracing only a small part of a character cannot earn a high score.
 
-| Coverage | Stars |
+| Lower of accuracy and coverage | Stars |
 |---|---|
 | Below 40% | 1 star |
 | 40% to 69% | 2 stars |
@@ -223,6 +228,7 @@ When the child presses `Done`, calculate a basic tracing coverage score.
 - Do not penalise slow writing
 - Do not require perfect handwriting
 - Do not show negative feedback
+- Do not award stars for an empty canvas
 - Allow the child to retry the same character
 - Save the best star result for each character in localStorage
 
