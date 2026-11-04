@@ -312,24 +312,128 @@ function openPracticeAt(ch) {
   }
 }
 
-function strokeLength() {
-  var total = 0;
+function tracingScore() {
+  var rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height || !strokes.length) return null;
+
+  var width = 220;
+  var height = Math.max(1, Math.round(width * rect.height / rect.width));
+  var scaleX = width / rect.width;
+  var scaleY = height / rect.height;
+  var targetCanvas = document.createElement("canvas");
+  var inkCanvas = document.createElement("canvas");
+  targetCanvas.width = width;
+  targetCanvas.height = height;
+  inkCanvas.width = width;
+  inkCanvas.height = height;
+
+  var targetContext = targetCanvas.getContext("2d");
+  var inkContext = inkCanvas.getContext("2d");
+  var guide = document.getElementById("guide");
+  var stageRect = document.getElementById("stage").getBoundingClientRect();
+  var guideRect = guide.getBoundingClientRect();
+  var guideStyle = window.getComputedStyle(guide);
+  var fontSize = parseFloat(guideStyle.fontSize);
+  var font = [
+    guideStyle.fontStyle,
+    guideStyle.fontVariant,
+    guideStyle.fontWeight,
+    fontSize * scaleX + "px",
+    guideStyle.fontFamily
+  ].join(" ");
+
+  targetContext.fillStyle = "#000";
+  targetContext.font = font;
+  targetContext.textAlign = "center";
+  targetContext.textBaseline = "alphabetic";
+  var metrics = targetContext.measureText(currentChar());
+  var baseline = (guideRect.top - stageRect.top + guideRect.height / 2) * scaleY +
+    (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) * scaleY / scaleX / 2;
+  targetContext.fillText(
+    currentChar(),
+    (guideRect.left - stageRect.left + guideRect.width / 2) * scaleX,
+    baseline
+  );
+
+  inkContext.setTransform(scaleX, 0, 0, scaleY, 0, 0);
   strokes.forEach(function (stroke) {
-    var points = stroke.points;
-    var i;
-    for (i = 1; i < points.length; i += 1) {
-      var dx = points[i].x - points[i - 1].x;
-      var dy = points[i].y - points[i - 1].y;
-      total += Math.sqrt(dx * dx + dy * dy);
-    }
+    drawStroke(inkContext, stroke);
   });
-  return total;
+
+  var target = maskFromCanvas(targetContext, width, height);
+  var ink = maskFromCanvas(inkContext, width, height);
+  var targetCount = countMask(target);
+  var inkCount = countMask(ink);
+  if (!targetCount || !inkCount) return null;
+
+  var tolerance = Math.max(2, Math.round(6 * scaleX));
+  var nearbyTarget = dilateMask(target, width, height, tolerance);
+  var nearbyInk = dilateMask(ink, width, height, tolerance);
+  var matchingInk = 0;
+  var coveredTarget = 0;
+  var i;
+  for (i = 0; i < target.length; i += 1) {
+    if (ink[i] && nearbyTarget[i]) matchingInk += 1;
+    if (target[i] && nearbyInk[i]) coveredTarget += 1;
+  }
+
+  var accuracy = matchingInk / inkCount;
+  var coverage = coveredTarget / targetCount;
+  return {
+    accuracy: accuracy,
+    coverage: coverage,
+    stars: starsForMatch(Math.min(accuracy, coverage))
+  };
 }
 
-function starsForLength(length) {
-  if (length < 90) return 1;
-  if (length < 240) return 2;
-  return 3;
+function maskFromCanvas(context, width, height) {
+  var pixels = context.getImageData(0, 0, width, height).data;
+  var mask = new Uint8Array(width * height);
+  var i;
+  for (i = 0; i < mask.length; i += 1) {
+    if (pixels[i * 4 + 3] > 24) mask[i] = 1;
+  }
+  return mask;
+}
+
+function countMask(mask) {
+  var count = 0;
+  var i;
+  for (i = 0; i < mask.length; i += 1) {
+    if (mask[i]) count += 1;
+  }
+  return count;
+}
+
+function dilateMask(mask, width, height, radius) {
+  var expanded = new Uint8Array(mask.length);
+  var radiusSquared = radius * radius;
+  var y;
+  var x;
+  for (y = 0; y < height; y += 1) {
+    for (x = 0; x < width; x += 1) {
+      if (!mask[y * width + x]) continue;
+      var dy;
+      var dx;
+      for (dy = -radius; dy <= radius; dy += 1) {
+        for (dx = -radius; dx <= radius; dx += 1) {
+          if (dx * dx + dy * dy > radiusSquared) continue;
+          var nearX = x + dx;
+          var nearY = y + dy;
+          if (nearX >= 0 && nearX < width && nearY >= 0 && nearY < height) {
+            expanded[nearY * width + nearX] = 1;
+          }
+        }
+      }
+    }
+  }
+  return expanded;
+}
+
+function starsForMatch(match) {
+  if (match >= 0.7) return 3;
+  if (match >= 0.4) return 2;
+  return 1;
 }
 
 function praise(stars) {
@@ -338,20 +442,19 @@ function praise(stars) {
   return { kicker: "Nice tracing!", award: "+1 star" };
 }
 
-function detailFor(stars, ch, upcoming) {
-  if (stars >= 3) return "You traced " + ch + " perfectly. Next: " + upcoming;
-  if (stars === 2) return "You traced " + ch + " really well. Next: " + upcoming;
-  return "You traced " + ch + ". Next: " + upcoming;
+function detailFor(upcoming, score) {
+  return "Guide match: " + Math.round(score.accuracy * 100) + "% accuracy, " +
+    Math.round(score.coverage * 100) + "% coverage. Next: " + upcoming;
 }
 
 function hideSuccess() {
   document.getElementById("success-card").hidden = true;
 }
 
-function showSuccess(stars, ch) {
+function showSuccess(score, ch) {
   var upcoming = nextChar();
-  var title = praise(stars);
-  var detail = detailFor(stars, ch, upcoming);
+  var title = praise(score.stars);
+  var detail = detailFor(upcoming, score);
   document.getElementById("success-kicker").textContent = title.kicker;
   document.getElementById("success-award").textContent = title.award;
   document.getElementById("success-detail").textContent = detail;
@@ -368,15 +471,19 @@ function showSuccess(stars, ch) {
 
 function onDone() {
   var ch = currentChar();
-  var earned = starsForLength(strokeLength());
+  var score = tracingScore();
+  if (!score) {
+    document.getElementById("live").textContent = "Trace the guide first, then tap Done to earn stars.";
+    return;
+  }
   var best = state.stars[ch] || 0;
-  if (earned > best) state.stars[ch] = earned;
+  if (score.stars > best) state.stars[ch] = score.stars;
   state.completed = CHARACTERS.filter(function (letter) { return !!state.stars[letter]; });
   persist();
   renderProgress();
   renderPicker();
   renderChart();
-  showSuccess(earned, ch);
+  showSuccess(score, ch);
 }
 
 function chime() {
