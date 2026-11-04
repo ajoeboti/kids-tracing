@@ -4,35 +4,290 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="light">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3C/svg%3E">
+  <meta name="theme-color" content="#FFF8EB">
+  <meta name="description" content="Kids Tracing Practice — trace A-Z, a-z and 0-9 with a finger or mouse. Free, no login, works offline.">
   <title>Kids Tracing Practice</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23FF5A39'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='26' font-family='Arial,sans-serif' font-weight='700' fill='white'%3EAa%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="header">
-    <h1 class="title">Kids Tracing Practice</h1>
-    <p class="progress" id="progress">1 / 62</p>
-  </header>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <main class="card">
-    <div class="stage">
-      <p class="guide" id="guide">A</p>
-      <canvas class="trace-canvas" id="trace-canvas" width="300" height="300" aria-hidden="true"></canvas>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#home">
+        <span class="logo" aria-hidden="true">Aa</span>
+        <span class="brand-text">
+          <span class="brand-name">Kids Tracing</span>
+          <span class="brand-tag">Practice fun A-Z 0-9</span>
+        </span>
+      </a>
+
+      <nav class="pill-nav" aria-label="Primary">
+        <a class="nav-link is-active" href="#home" data-nav="home" aria-current="page">Home</a>
+        <a class="nav-link" href="#practice" data-nav="practice" id="practice-link">
+          Practice
+          <span class="nav-badge"><span id="nav-count">0</span><span aria-hidden="true">★</span></span>
+        </a>
+        <a class="nav-link" href="#parents">For Parents</a>
+      </nav>
+
+      <div class="top-actions">
+        <div class="avatars" aria-hidden="true">
+          <span class="avatar avatar-m">M</span>
+          <span class="avatar avatar-z">Z</span>
+          <span class="avatar avatar-more">+2</span>
+        </div>
+        <button type="button" class="save-button" id="save-button">Save progress</button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="view" id="view-home">
+        <div class="hero">
+          <div class="hero-copy">
+            <p class="free-badge"><i></i> FREE • NO LOGIN • AGES 3–7</p>
+            <h1>Kids Tracing<br>Practice</h1>
+            <p class="hero-lead">Practise A-Z, a-z and 0-9 by tracing with your finger or mouse.</p>
+            <div class="cta-row">
+              <a class="btn btn-coral" href="#practice">Start Practising <span aria-hidden="true">→</span></a>
+              <button type="button" class="btn btn-cream" id="how-button">
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M9 7.2v9.6l8.2-4.8L9 7.2z"/></svg>
+                See how it works
+              </button>
+            </div>
+            <p class="loved">
+              <span class="loved-stars" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="m12 2.6 2.5 5.8 6.3.6-4.8 4 1.5 6.1L12 16.4 6.5 19.1l1.5-6.1L3.2 9l6.3-.6L12 2.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="m12 2.6 2.5 5.8 6.3.6-4.8 4 1.5 6.1L12 16.4 6.5 19.1l1.5-6.1L3.2 9l6.3-.6L12 2.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="m12 2.6 2.5 5.8 6.3.6-4.8 4 1.5 6.1L12 16.4 6.5 19.1l1.5-6.1L3.2 9l6.3-.6L12 2.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="m12 2.6 2.5 5.8 6.3.6-4.8 4 1.5 6.1L12 16.4 6.5 19.1l1.5-6.1L3.2 9l6.3-.6L12 2.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="m12 3.4 2.3 5.3 5.8.5-4.4 3.7 1.4 5.6L12 15.8 6.9 18.5l1.4-5.6L3.9 9.2l5.8-.5L12 3.4z"/></svg>
+              </span>
+              Loved by 12,000 little learners
+            </p>
+          </div>
+
+          <div class="preview" aria-hidden="true">
+            <span class="float-chip float-aa">Aa</span>
+            <span class="float-chip float-bb">Bb</span>
+            <p class="preview-letters">Aa</p>
+            <svg class="preview-dots" viewBox="0 0 320 64" preserveAspectRatio="none">
+              <path d="M6 46 C 40 46, 58 14, 104 24 S 168 58, 214 34 286 16, 314 30" fill="none" stroke="#FF5A39" stroke-width="7" stroke-linecap="round" stroke-dasharray="0.1 16"/>
+            </svg>
+            <span class="you-can">You can do it!</span>
+            <div class="preview-status">
+              <span class="mini-pencil">
+                <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3.8 16.2 14.2 5.8l4 4L7.8 20.2H3.8v-4zm12-12 1.3-1.3a1.4 1.4 0 0 1 2 0l1.8 1.8a1.4 1.4 0 0 1 0 2L19.6 8l-3.8-3.8z"/></svg>
+              </span>
+              <span class="preview-status-copy">
+                <strong>Tracing B... Great job!</strong>
+                <span class="mini-bar"><span></span></span>
+              </span>
+              <span class="mini-score">
+                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M8 7h8M8 12h8M8 17h5"/></svg>
+                3
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <section class="features" id="how-it-works" aria-label="How it works">
+          <article class="feature">
+            <span class="icon-bubble sky" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V6.3a1.35 1.35 0 0 1 2.7 0V12"/><path d="M10.7 11.2V4.7a1.35 1.35 0 0 1 2.7 0V12"/><path d="M13.4 10.4V7a1.35 1.35 0 0 1 2.7 0v6.2"/><path d="M16.1 12.2V11a1.25 1.25 0 0 1 2.4.5V15c0 2.8-2.1 4.8-5.1 4.8h-.7c-2.4 0-4.1-1.3-4.8-3L6.4 13a1.25 1.25 0 0 1 2.2-1.1L8.2 13"/></svg>
+            </span>
+            <h2>Trace with finger or mouse</h2>
+            <p>Big soft lines made for little hands.</p>
+          </article>
+          <article class="feature">
+            <span class="icon-bubble yellow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 2.4 13.5 8l5.7 1.1L14.6 12l1.1 5.6L12 14.8 8.3 17.6 9.4 12 4.8 9.1 10.5 8 12 2.4z"/><path fill="currentColor" d="m18.4 3 .6 1.7 1.8.5-1.8.6-.6 1.7-.6-1.7-1.8-.6 1.8-.5.6-1.7z"/></svg>
+            </span>
+            <h2>Earn stars</h2>
+            <p>Finish a letter to collect up to 3 stars.</p>
+          </article>
+          <article class="feature">
+            <span class="icon-bubble mint" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M5 4.6A1.6 1.6 0 0 1 6.6 3h7.7L19 7.6V19.4A1.6 1.6 0 0 1 17.4 21H6.6A1.6 1.6 0 0 1 5 19.4V4.6z"/><path fill="#d9f6e4" d="M8 4.2h5.4V8H8zM7.4 12.6h9.2v6.6H7.4z"/><path fill="currentColor" d="M9 14.6h6v1.15H9zm0 2.15h4.2V18H9z"/></svg>
+            </span>
+            <h2>Auto-saved</h2>
+            <p>Progress stays in this browser.</p>
+          </article>
+        </section>
+
+        <section class="parents" id="parents-note">
+          <span class="heart-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 19.2S5.2 14.8 5.2 10.4C5.2 8.2 6.9 6.8 8.8 6.8c1.2 0 2.2.6 3.2 1.8 1-1.2 2-1.8 3.2-1.8 1.9 0 3.6 1.4 3.6 3.6 0 4.4-6.8 8.8-6.8 8.8z"/></svg>
+          </span>
+          <div class="parents-copy">
+            <h2>A note for parents</h2>
+            <p>100% free, no account, no ads. Progress saves safely in your browser's localStorage. Works on desktop, tablet and mobile — perfect for 5-minute daily practice.</p>
+          </div>
+          <div class="parents-pills">
+            <span class="pill pill-cream">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M4.5 9.2c3.6-3 11.4-3 15 0M7.2 12.6c2.2-1.8 7.4-1.8 9.6 0M12 16.8h.01M5 19 19 5"/></svg>
+              Works offline
+            </span>
+            <span class="pill pill-teal">GitHub Pages ready</span>
+          </div>
+        </section>
+
+        <section class="chart-section" aria-labelledby="chart-heading">
+          <div class="section-head">
+            <h2 id="chart-heading">Everything to practise</h2>
+            <button type="button" class="text-link" id="open-chart" aria-expanded="false" aria-controls="full-chart">Open full A-Z chart</button>
+          </div>
+          <div class="tile-row" id="preview-tiles">
+            <button type="button" class="tile pink" data-char="A">A</button>
+            <button type="button" class="tile sky" data-char="B">B</button>
+            <button type="button" class="tile mint" data-char="C">C</button>
+            <button type="button" class="tile pink" data-char="D">D</button>
+            <button type="button" class="tile sky" data-char="E">E</button>
+            <button type="button" class="tile mint" data-char="F">F</button>
+            <button type="button" class="tile pink" data-char="G">G</button>
+            <button type="button" class="tile sky" data-char="H">H</button>
+            <button type="button" class="tile mint" data-char="3">3</button>
+            <button type="button" class="tile pink" data-char="7">7</button>
+            <button type="button" class="tile tile-more" id="more-tile" aria-expanded="false" aria-controls="full-chart">+52<br>more</button>
+          </div>
+          <div id="full-chart" class="full-chart" hidden></div>
+        </section>
+      </section>
+
+      <section class="view" id="view-practice" hidden>
+        <div class="practice-head">
+          <div class="practice-title">
+            <button type="button" class="back-button" id="back-home" aria-label="Back to home">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M14.5 6 8.5 12l6 6"/></svg>
+            </button>
+            <div>
+              <h1>Time to trace!</h1>
+              <p class="trace-subtitle" id="trace-subtitle">Letter A of 62 • Stars save automatically</p>
+            </div>
+          </div>
+          <div class="stars-pill">
+            <span class="stars-label"><span aria-hidden="true">★</span> <span id="total-stars">0</span> stars collected</span>
+            <span class="stars-track" id="stars-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Stars collected out of 62">
+              <span id="stars-fill"></span>
+            </span>
+            <span id="stars-percent">0%</span>
+          </div>
+        </div>
+
+        <div class="practice-layout">
+          <div class="trace-card">
+            <div class="trace-toolbar">
+              <div class="trace-meta">
+                <p class="case-pill" id="case-pill">Uppercase • A a</p>
+                <button type="button" class="hear-button" id="hear-button">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M4 9.2h3.2L11 6v12l-3.8-3.2H4V9.2z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M15.2 9.2a3.6 3.6 0 0 1 0 5.6M17.6 7a6.2 6.2 0 0 1 0 10"/></svg>
+                  Hear it: “<span id="phoneme">ay</span>”
+                </button>
+              </div>
+              <div class="tool-group" role="toolbar" aria-label="Drawing tools">
+                <button type="button" class="tool tool-minus" id="tool-thinner" aria-label="Thinner line">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M6 12h12"/></svg>
+                </button>
+                <button type="button" class="tool" id="tool-brush" aria-pressed="false" aria-label="Thick brush">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M14.2 3.2 20.8 9l-1.7.8-7.6 7.6a3.1 3.1 0 0 1-4.4-4.4l7.6-7.6.8-1.2-.3-.1 1-1zm-8 13.2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/></svg>
+                </button>
+                <button type="button" class="tool is-on" id="tool-pencil" aria-pressed="true" aria-label="Pencil">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="m4 16.4 9.6-9.6 3.6 3.6L7.6 20H4v-3.6zm11.1-11 1.2-1.2a1.3 1.3 0 0 1 1.8 0l1.7 1.7a1.3 1.3 0 0 1 0 1.8l-1.2 1.2-3.5-3.5z"/></svg>
+                </button>
+                <button type="button" class="tool tool-undo" id="tool-undo" aria-label="Undo last stroke" disabled>
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M8.2 8H4.5V4.6M5.2 12.2a6.6 6.6 0 1 0 1.8-5.2L4.5 8"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="stage" id="stage">
+              <div class="paper" aria-hidden="true"><span></span><span class="dashed"></span><span></span></div>
+              <p class="guide" id="guide" aria-hidden="true">A</p>
+              <svg class="guide-dots" id="guide-dots" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+              <svg class="sample-stroke" id="sample-stroke" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+              <canvas class="trace-canvas" id="trace-canvas" width="640" height="400" aria-label="Tracing canvas" aria-describedby="canvas-help"></canvas>
+              <p class="follow-tip" id="canvas-help">
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8.2 10.2V6.4a1.5 1.5 0 0 1 3 0V11h.5V5.6a1.5 1.5 0 0 1 3 0V11h.4V7.2a1.5 1.5 0 1 1 3 0V14c0 3.2-2.4 5.6-5.8 5.6h-1.2C8 19.6 5.8 17.2 5.8 14.2v-3.4a1.4 1.4 0 0 1 2.4-.6z"/></svg>
+                Follow the dots — start at the red dot!
+              </p>
+            </div>
+
+            <div class="trace-actions">
+              <button type="button" class="btn btn-soft" id="prev-button">
+                <span aria-hidden="true">←</span> Previous
+              </button>
+              <button type="button" class="btn btn-white" id="clear-button">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="m16.2 4.2 3.2 3.2-8.8 8.8H7.2L4 13.2 12.6 4.6l3.6-.4zM7.4 18h7.2l1.2 1.6H8.2L7.4 18z"/></svg>
+                Clear
+              </button>
+              <button type="button" class="btn btn-coral" id="done-button">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.2 4.2L19 7.2"/></svg>
+                Done — get stars!
+              </button>
+              <button type="button" class="btn btn-teal" id="next-button">
+                Next <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </div>
+
+          <aside class="practice-side" aria-label="Letter picker">
+            <div class="picker-card">
+              <div class="picker-head">
+                <h2>Pick a letter</h2>
+                <p class="done-pill" id="done-label">0 of 62 done</p>
+              </div>
+              <div class="picker-meter" aria-hidden="true"><span id="meter-done"></span></div>
+              <div class="picker-tabs" role="tablist" aria-label="Character sets">
+                <button type="button" class="is-active" role="tab" id="tab-upper" data-group="upper" aria-selected="true" aria-controls="letter-grid">A-Z</button>
+                <button type="button" role="tab" id="tab-lower" data-group="lower" aria-selected="false" aria-controls="letter-grid">a-z</button>
+                <button type="button" role="tab" id="tab-digit" data-group="digit" aria-selected="false" aria-controls="letter-grid">0-9</button>
+              </div>
+              <div id="letter-grid" class="letter-grid" role="tabpanel" aria-labelledby="tab-upper"></div>
+              <div class="super-card">
+                <span class="trophy" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7 4h10v2h3v2.4c0 2.3-1.6 4.1-3.7 4.6-1 1.8-2.6 3-4.3 3.2V19h3.2v2H8.8v-2H12v-2.8c-1.7-.2-3.3-1.4-4.3-3.2C5.6 12.5 4 10.7 4 8.4V6h3V4zm10 4.1V8h1.2c.4 0 .8.3.8.8 0 1-.7 1.8-1.6 2L17 10.4V8.1zM7 8.1v2.3l-.4.3c-.9-.2-1.6-1-1.6-2 0-.5.4-.8.8-.8H7z"/></svg>
+                </span>
+                <p><strong>3 stars = super tracer!</strong><span>Tap Done to save stars here.</span></p>
+              </div>
+            </div>
+
+            <section class="success-card" id="success-card" hidden>
+              <div class="success-orb" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="28" height="28"><path fill="#FDCB45" d="m12 2.6 2.5 5.8 6.3.6-4.8 4 1.5 6.1L12 16.4 6.5 19.1l1.5-6.1L3.2 9l6.3-.6L12 2.6z"/></svg>
+              </div>
+              <div class="success-copy">
+                <p class="success-title" id="success-title"><span id="success-kicker">Amazing!</span><span id="success-award">+3 stars</span></p>
+                <p class="success-detail" id="success-detail">You traced B perfectly. Next: C</p>
+              </div>
+              <button type="button" class="btn btn-keep" id="keep-going">Keep going</button>
+            </section>
+          </aside>
+        </div>
+
+        <p class="tip-bar">
+          <span class="info-dot" aria-hidden="true">i</span>
+          Tip for tablets: use one finger, go slow. On desktop: hold the mouse button while you trace. Press Clear to try again.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p class="footer-brand">
+        <span class="logo logo-sm" aria-hidden="true">Aa</span>
+        <span>© 2026 Kids Tracing Practice — Made for little learners.</span>
+      </p>
+      <p class="footer-meta">
+        <span>No login • No ads • Works offline</span>
+        <span class="footer-host">Hosted on GitHub Pages</span>
+      </p>
+      <a class="btn btn-light" href="#parents">For Parents</a>
     </div>
+  </footer>
 
-    <div class="stars" role="img" aria-label="No stars yet">
-      <span class="star" aria-hidden="true">★</span>
-      <span class="star" aria-hidden="true">★</span>
-      <span class="star" aria-hidden="true">★</span>
-    </div>
-
-    <div class="controls">
-      <button type="button" class="control" id="prev-button" aria-label="Previous">←</button>
-      <button type="button" class="control" id="clear-button">Clear</button>
-      <button type="button" class="control" id="next-button" aria-label="Next">→</button>
-    </div>
-  </main>
-
+  <p id="live" class="visually-hidden" aria-live="polite"></p>
   <script src="app.js"></script>
 </body>
 </html>
