@@ -1225,6 +1225,424 @@ main {
   flex: none;
 }
 
+/* Write My Name */
+
+.name-view {
+  margin-top: 12px;
+}
+
+.name-entry {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.name-back-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--ink-soft);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.name-entry-card,
+.completed-card,
+.name-progress-card {
+  background: white;
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+
+.name-entry-card {
+  padding: clamp(20px, 5vw, 42px);
+}
+
+.name-entry-card h1,
+.completed-card h1 {
+  margin: 16px 0 6px;
+  font-size: clamp(32px, 7vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.name-subtitle,
+.completed-message {
+  margin: 0;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.name-input-wrap {
+  margin-top: 26px;
+}
+
+.name-input-wrap label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.name-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.name-input-row input {
+  width: 100%;
+  min-width: 0;
+  min-height: 56px;
+  padding: 0 16px;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: #fffdf9;
+  color: var(--ink);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.name-input-row input:focus {
+  border-color: var(--teal);
+  outline: 3px solid rgba(14, 174, 163, 0.18);
+  outline-offset: 1px;
+}
+
+.name-input-row input[aria-invalid="true"] {
+  border-color: var(--coral);
+}
+
+.name-clear {
+  width: 56px;
+  min-height: 56px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--cream);
+  color: var(--ink-soft);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.name-helper,
+.name-error {
+  margin: 8px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.name-helper {
+  color: var(--muted);
+}
+
+.name-error {
+  min-height: 20px;
+  color: #b43e2c;
+}
+
+.name-preview-block {
+  margin-top: 22px;
+  padding: 16px;
+  border-radius: 20px;
+  background: #fff8ee;
+}
+
+.name-preview-heading,
+.name-progress-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.name-preview-heading h2,
+.name-progress-heading h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.name-preview-heading span {
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.name-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.name-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 50px;
+  border-radius: 14px;
+  background: var(--mint);
+  color: var(--ink);
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.name-preview-tiles:empty::after {
+  content: "Your letters will appear here";
+  grid-column: 1 / -1;
+  padding: 10px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.name-start {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.name-start:disabled {
+  opacity: 0.48;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.name-privacy {
+  margin: 12px 0 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+}
+
+.name-tracing-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 18px 0 16px;
+}
+
+.name-position {
+  margin: 0 0 3px;
+  color: var(--teal-deep);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.name-tracing-head h1 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: clamp(25px, 4vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.name-overall-progress {
+  display: grid;
+  gap: 6px;
+  width: min(250px, 42%);
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.name-progress-track {
+  display: block;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #f3e6d0;
+}
+
+.name-progress-track span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--teal);
+  transition: width 180ms ease;
+}
+
+.name-progress-card {
+  padding: 16px;
+}
+
+.name-progress-heading {
+  flex-wrap: wrap;
+}
+
+.name-progress-heading h2 {
+  font-size: 20px;
+}
+
+.name-progress-card .picker-meter {
+  margin: 0 0 14px;
+}
+
+#name-panel-meter {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--teal);
+}
+
+.name-progress-tiles .name-tile {
+  width: 100%;
+  min-height: 48px;
+  border: 2px solid transparent;
+  background: #fff8ee;
+  box-shadow: inset 0 0 0 1px #f0dfc9;
+  cursor: pointer;
+}
+
+.name-progress-tiles .name-tile.is-current {
+  border-color: var(--ink);
+  box-shadow: none;
+}
+
+.name-progress-tiles .name-tile.is-complete,
+.completed-tiles .name-tile {
+  background: #d9f6e4;
+  box-shadow: none;
+}
+
+.name-tile-status {
+  position: absolute;
+  right: 3px;
+  bottom: 1px;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.name-encouragement {
+  margin: 14px 0 8px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.name-change {
+  min-height: 40px;
+}
+
+.name-tracing .practice-head,
+.name-tracing .trace-toolbar,
+.name-tracing .tip-bar,
+.name-tracing .picker-card,
+.name-tracing #success-card {
+  display: none !important;
+}
+
+.name-tracing .name-tracing-head,
+.name-tracing .name-progress-card {
+  display: block;
+}
+
+.name-tracing .name-tracing-head {
+  display: flex;
+}
+
+.name-tracing .practice-layout {
+  align-items: start;
+}
+
+.name-tracing .trace-card {
+  padding: 12px;
+}
+
+.name-tracing .stage {
+  aspect-ratio: 16 / 10;
+  min-height: 300px;
+}
+
+.name-tracing .guide {
+  font-size: clamp(180px, 28vw, 260px);
+}
+
+.name-tracing .trace-actions {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.name-tracing .trace-actions .btn {
+  min-height: 50px;
+  font-size: 14px;
+}
+
+.name-tracing #prev-button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.name-completed {
+  max-width: 780px;
+  margin: 24px auto 10px;
+}
+
+.completed-card {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(26px, 6vw, 52px);
+  text-align: center;
+}
+
+.completed-badge {
+  display: grid;
+  place-items: center;
+  width: 66px;
+  height: 66px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: var(--mint);
+  color: var(--teal-deep);
+  font-size: 38px;
+  font-weight: 700;
+}
+
+.completed-full-name {
+  margin: 18px 0;
+  color: var(--coral);
+  font-size: clamp(36px, 9vw, 68px);
+  font-weight: 700;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.completed-tiles {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.completed-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.celebration-stars {
+  position: absolute;
+  inset: 12px 16px auto;
+  display: flex;
+  justify-content: space-between;
+  color: var(--yellow);
+  font-size: 24px;
+  pointer-events: none;
+}
+
+.celebration-stars span:nth-child(2),
+.celebration-stars span:nth-child(4) {
+  animation: name-sparkle 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes name-sparkle {
+  from { opacity: 0.55; transform: scale(0.9) rotate(-8deg); }
+  to { opacity: 1; transform: scale(1.12) rotate(8deg); }
+}
+
 /* Footer */
 
 .site-footer {
@@ -1291,6 +1709,29 @@ main {
 
   .success-card {
     flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 979px) {
+  .name-tracing .practice-layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .name-tracing .practice-side {
+    order: 0;
+    width: 100%;
+  }
+
+  .name-tracing .trace-card {
+    order: 1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 719px) {
+  .name-tracing .trace-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1390,6 +1831,14 @@ main {
     align-items: start;
   }
 
+  .name-tracing .practice-layout {
+    grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.85fr);
+  }
+
+  .name-tracing .name-progress-card {
+    padding: 18px;
+  }
+
   .letter-grid {
     max-height: 112px;
   }
@@ -1417,6 +1866,83 @@ main {
     padding: 0 8px;
     font-size: 13.5px;
   }
+
+  .pill-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .name-tracing-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    margin: 12px 0 10px;
+  }
+
+  .name-overall-progress {
+    width: 100%;
+  }
+
+  .name-tracing .practice-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .name-tracing .practice-side {
+    order: 0;
+    width: 100%;
+  }
+
+  .name-tracing .trace-card {
+    order: 1;
+    width: 100%;
+  }
+
+  .name-tracing .name-progress-card {
+    padding: 12px;
+  }
+
+  .name-tracing .name-progress-heading {
+    margin-bottom: 8px;
+  }
+
+  .name-tracing .stage {
+    aspect-ratio: 4 / 3;
+    min-height: 225px;
+  }
+
+  .name-tracing .guide {
+    font-size: clamp(150px, 48vw, 210px);
+  }
+
+  .name-tracing .trace-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .name-tracing .trace-actions .btn {
+    min-height: 46px;
+    font-size: 14px;
+  }
+
+  .name-tracing .name-position {
+    font-size: 13px;
+  }
+
+  .completed-actions .btn {
+    width: 100%;
+  }
+
+  .celebration-stars {
+    inset-inline: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .name-tracing .stage {
+    min-height: 190px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1426,7 +1952,10 @@ main {
 
   .btn,
   .tile,
-  .tool {
+  .tool,
+  .name-progress-track span,
+  .celebration-stars span {
     transition: none;
+    animation: none;
   }
 }

@@ -1,6 +1,7 @@
 "use strict";
 
 var STORAGE_KEY = "kids-tracing-progress";
+var NAME_STORAGE_KEY = "kids-tracing-name-session-v1";
 var CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split("");
 var PASTELS = ["pink", "sky", "mint"];
 var PHONEMES = {
@@ -22,7 +23,11 @@ var pencilButton = document.getElementById("tool-pencil");
 var brushButton = document.getElementById("tool-brush");
 
 var state = loadProgress();
+var nameSession = loadNameSession();
 var strokes = [];
+var practiceInk = [];
+var nameInk = [];
+var drawingMode = "practice";
 var drawing = false;
 var activeStroke = null;
 var tool = "pencil";
@@ -54,6 +59,64 @@ function loadProgress() {
     return fresh;
   }
   return fresh;
+}
+
+function loadNameSession() {
+  try {
+    var raw = localStorage.getItem(NAME_STORAGE_KEY);
+    if (!raw) return null;
+    var data = JSON.parse(raw);
+    if (!data || typeof data !== "object" ||
+        typeof data.name !== "string" ||
+        !/^[A-Za-z]{1,20}$/.test(data.name) ||
+        !Number.isInteger(data.currentIndex) ||
+        data.currentIndex < 0 ||
+        data.currentIndex >= data.name.length ||
+        !Array.isArray(data.completed) ||
+        data.completed.length !== data.name.length ||
+        !data.completed.every(function (done) { return typeof done === "boolean"; })) {
+      return null;
+    }
+    return {
+      name: data.name,
+      currentIndex: data.currentIndex,
+      completed: data.completed.slice()
+    };
+  } catch (err) {
+    return null;
+  }
+}
+
+function persistNameSession() {
+  if (!nameSession) return;
+  try {
+    localStorage.setItem(NAME_STORAGE_KEY, JSON.stringify({
+      name: nameSession.name,
+      currentIndex: nameSession.currentIndex,
+      completed: nameSession.completed
+    }));
+  } catch (err) {
+    document.getElementById("live").textContent =
+      "Your name session could not be saved in this browser.";
+  }
+}
+
+function clearNameSession() {
+  nameSession = null;
+  try {
+    localStorage.removeItem(NAME_STORAGE_KEY);
+  } catch (err) {
+    document.getElementById("live").textContent =
+      "The saved name session could not be removed from this browser.";
+  }
+}
+
+function nameCompletionCount() {
+  return nameSession ? nameSession.completed.filter(function (done) { return done; }).length : 0;
+}
+
+function nameIsComplete() {
+  return !!nameSession && nameSession.completed.every(function (done) { return done; });
 }
 
 function today() {
@@ -138,6 +201,143 @@ function renderProgress() {
   var meter = document.getElementById("meter-done");
   meter.style.width = (done / CHARACTERS.length) * 100 + "%";
   meter.classList.toggle("has-cap", done > 0 && done < CHARACTERS.length);
+}
+
+function updateNameEntryPreview() {
+  var input = document.getElementById("name-input");
+  var value = input.value.trim();
+  var valid = /^[A-Za-z]{1,20}$/.test(value);
+  var error = document.getElementById("name-error");
+  var preview = document.getElementById("name-preview");
+  var count = document.getElementById("name-preview-count");
+  var message = "";
+
+  if (!value) {
+    message = "Enter 1 to 20 English letters to begin.";
+  } else if (!valid) {
+    message = "Use 1–20 English letters only. Spaces, numbers and symbols are not supported.";
+  }
+  error.textContent = message;
+  input.setAttribute("aria-invalid", valid ? "false" : "true");
+  document.getElementById("name-start").disabled = !valid;
+  count.textContent = value.length + " " + (valid
+    ? (value.length === 1 ? "letter" : "letters")
+    : (value.length === 1 ? "character" : "characters"));
+  preview.replaceChildren();
+  Array.from(value).forEach(function (letter) {
+    var tile = document.createElement("span");
+    tile.className = "name-tile";
+    tile.textContent = letter;
+    preview.appendChild(tile);
+  });
+}
+
+function setNameEntry(value) {
+  document.getElementById("name-input").value = value || "";
+  updateNameEntryPreview();
+}
+
+function nameTileStatus(index) {
+  if (index === nameSession.currentIndex) return "current";
+  if (nameSession.completed[index]) return "completed";
+  return "upcoming";
+}
+
+function createNameTile(index, completedPage) {
+  var letter = nameSession.name.charAt(index);
+  var status = completedPage ? "completed" : nameTileStatus(index);
+  var item = document.createElement(completedPage ? "span" : "li");
+
+  if (completedPage) {
+    item.className = "name-tile is-complete";
+    item.textContent = letter;
+    item.setAttribute("aria-label", "Letter " + (index + 1) + ", " + letter + ", completed");
+    var completeMark = document.createElement("span");
+    completeMark.className = "name-tile-status";
+    completeMark.setAttribute("aria-hidden", "true");
+    completeMark.textContent = "✓";
+    item.appendChild(completeMark);
+    return item;
+  }
+
+  item.className = "name-position-item";
+  var isComplete = nameSession.completed[index];
+  var button = document.createElement("button");
+  button.type = "button";
+  button.className = "name-tile" + (status === "current" ? " is-current" : "") +
+    (isComplete ? " is-complete" : "");
+  button.textContent = letter;
+  var accessibleStatus = status === "current" && isComplete
+    ? "current and completed"
+    : (isComplete ? "completed" : status);
+  button.setAttribute("aria-label", "Letter " + (index + 1) + " of " +
+    nameSession.name.length + ", " + letter + ", " + accessibleStatus);
+  if (status === "current") button.setAttribute("aria-current", "step");
+  if (isComplete) {
+    var statusMark = document.createElement("span");
+    statusMark.className = "name-tile-status";
+    statusMark.setAttribute("aria-hidden", "true");
+    statusMark.textContent = "✓";
+    button.appendChild(statusMark);
+  }
+  item.appendChild(button);
+  return item;
+}
+
+function renderNameProgress() {
+  if (!nameSession) return;
+  var total = nameSession.name.length;
+  var complete = nameCompletionCount();
+  var percentage = (complete / total) * 100;
+  var position = nameSession.currentIndex + 1;
+  var previousButton = document.getElementById("prev-button");
+
+  document.getElementById("name-tracing-title").textContent =
+    "Write your name, " + nameSession.name + "!";
+  document.getElementById("name-position").textContent =
+    "Letter " + position + " of " + total;
+  document.getElementById("name-overall-count").textContent =
+    complete + " of " + total + " " + (total === 1 ? "letter" : "letters") + " completed";
+  document.getElementById("name-progress-fill").style.width = percentage + "%";
+  document.getElementById("name-progress-track").setAttribute("aria-valuenow", String(percentage));
+  document.getElementById("name-done-count").textContent =
+    complete + " of " + total + " " + (total === 1 ? "letter" : "letters") + " completed";
+  document.getElementById("name-panel-meter").style.width = percentage + "%";
+  document.getElementById("name-encouragement").textContent =
+    nameSession.completed[nameSession.currentIndex]
+      ? "Lovely try! This letter is complete."
+      : "Every letter is a little step. Keep going!";
+
+  document.getElementById("guide").textContent = nameSession.name.charAt(nameSession.currentIndex);
+  document.getElementById("follow-copy").textContent = "Trace over the grey letter.";
+  canvas.setAttribute("aria-label", "Tracing canvas for letter " +
+    nameSession.name.charAt(nameSession.currentIndex));
+
+  previousButton.disabled = nameSession.currentIndex === 0;
+  document.getElementById("previous-copy").textContent = "Previous";
+  document.getElementById("clear-copy").textContent = "Clear";
+  document.getElementById("done-copy").textContent = "Done";
+  document.getElementById("next-copy").textContent =
+    nameSession.currentIndex === total - 1 ? "Finish" : "Next";
+  document.getElementById("next-arrow").textContent =
+    nameSession.currentIndex === total - 1 ? "✓" : "→";
+
+  var tiles = document.getElementById("name-progress-tiles");
+  tiles.replaceChildren();
+  for (var index = 0; index < total; index += 1) {
+    tiles.appendChild(createNameTile(index, false));
+  }
+}
+
+function renderNameCompleted() {
+  if (!nameSession) return;
+  document.getElementById("completed-name").textContent = nameSession.name;
+  document.getElementById("completed-full-name").textContent = nameSession.name;
+  var tiles = document.getElementById("completed-tiles");
+  tiles.replaceChildren();
+  for (var index = 0; index < nameSession.name.length; index += 1) {
+    tiles.appendChild(createNameTile(index, true));
+  }
 }
 
 function renderPicker(keepSelectedGroup) {
@@ -281,6 +481,20 @@ function selectTool(nextTool, width) {
 
 function clearInk() {
   strokes = [];
+  if (drawingMode === "name") nameInk = strokes;
+  else practiceInk = strokes;
+  activeStroke = null;
+  drawing = false;
+  paint();
+  syncTools();
+}
+
+function switchDrawingMode(nextMode) {
+  if (drawingMode === nextMode) return;
+  if (drawingMode === "name") nameInk = strokes;
+  else practiceInk = strokes;
+  drawingMode = nextMode;
+  strokes = drawingMode === "name" ? nameInk : practiceInk;
   activeStroke = null;
   drawing = false;
   paint();
@@ -310,6 +524,115 @@ function openPracticeAt(ch) {
   } else {
     location.hash = "practice";
   }
+}
+
+function startNameSession() {
+  var name = document.getElementById("name-input").value.trim();
+  if (!/^[A-Za-z]{1,20}$/.test(name)) {
+    updateNameEntryPreview();
+    return;
+  }
+  if (nameSession && nameSession.name !== name &&
+      (nameSession.currentIndex > 0 || nameCompletionCount() > 0) &&
+      !window.confirm("Start a new name and leave this name session? Your completed letters will be cleared.")) {
+    return;
+  }
+  nameSession = {
+    name: name,
+    currentIndex: 0,
+    completed: Array.from(name).map(function () { return false; })
+  };
+  persistNameSession();
+  if (location.hash === "#name") applyRoute();
+  else location.hash = "name";
+}
+
+function navigateNameTo(index) {
+  if (!nameSession || index < 0 || index >= nameSession.name.length ||
+      index === nameSession.currentIndex) return;
+  nameSession.currentIndex = index;
+  persistNameSession();
+  clearInk();
+  renderNameProgress();
+  resizeCanvas();
+}
+
+function onNameDone() {
+  if (!nameSession) return;
+  if (!strokes.some(function (stroke) {
+    if (stroke.points.length < 2) return false;
+    var distance = 0;
+    for (var pointIndex = 1; pointIndex < stroke.points.length; pointIndex += 1) {
+      var previous = stroke.points[pointIndex - 1];
+      var point = stroke.points[pointIndex];
+      distance += Math.hypot(point.x - previous.x, point.y - previous.y);
+    }
+    return distance > 2;
+  })) {
+    document.getElementById("live").textContent =
+      "Trace the grey letter first, then tap Done.";
+    return;
+  }
+  var letter = nameSession.name.charAt(nameSession.currentIndex);
+  if (nameSession.completed[nameSession.currentIndex]) {
+    document.getElementById("live").textContent =
+      "You already completed this letter. Keep going!";
+    return;
+  }
+  nameSession.completed[nameSession.currentIndex] = true;
+  persistNameSession();
+  renderNameProgress();
+  document.getElementById("live").textContent =
+    "Well done! You completed letter " + letter + ".";
+}
+
+function onNameNext() {
+  if (!nameSession) return;
+  var lastIndex = nameSession.name.length - 1;
+  if (nameSession.currentIndex < lastIndex) {
+    navigateNameTo(nameSession.currentIndex + 1);
+    return;
+  }
+  if (nameIsComplete()) {
+    if (location.hash === "#name") applyRoute();
+    return;
+  }
+  var incomplete = nameSession.completed.indexOf(false);
+  document.getElementById("live").textContent =
+    "A few letters are still waiting. Let’s visit the first one you have not completed.";
+  navigateNameTo(incomplete);
+}
+
+function changeName() {
+  if (!nameSession) return;
+  if (!window.confirm("Change your name? Your progress in this session will be cleared.")) {
+    return;
+  }
+  var currentName = nameSession.name;
+  clearNameSession();
+  clearInk();
+  setNameEntry(currentName);
+  showView("name-entry");
+  document.getElementById("name-input").focus();
+}
+
+function tryAnotherName() {
+  clearNameSession();
+  nameInk = [];
+  clearInk();
+  setNameEntry("");
+  showView("name-entry");
+  document.getElementById("name-input").focus();
+}
+
+function writeNameAgain() {
+  if (!nameSession) return;
+  nameSession.currentIndex = 0;
+  nameSession.completed = Array.from(nameSession.name).map(function () { return false; });
+  persistNameSession();
+  nameInk = [];
+  if (drawingMode === "name") clearInk();
+  if (location.hash === "#name") applyRoute();
 }
 
 function tracingScore() {
@@ -534,26 +857,64 @@ function renderAll() {
 }
 
 function showView(name) {
+  var previousView = document.body.dataset.view;
   var practice = name === "practice";
-  document.getElementById("view-home").hidden = practice;
-  document.getElementById("view-practice").hidden = !practice;
-  document.body.dataset.view = practice ? "practice" : "home";
-  document.title = practice ? "Practice • Kids Tracing" : "Kids Tracing Practice";
+  var nameTracing = name === "name-tracing";
+  var nameEntry = name === "name-entry";
+  var nameCompleted = name === "name-completed";
+  var inPractice = practice || nameTracing;
+  var navName = nameTracing || nameEntry || nameCompleted ? "name" :
+    (practice ? "practice" : "home");
+
+  if ((drawingMode === "name") !== nameTracing) {
+    switchDrawingMode(nameTracing ? "name" : "practice");
+  }
+  document.getElementById("view-home").hidden = inPractice || nameEntry || nameCompleted;
+  document.getElementById("view-practice").hidden = !inPractice;
+  document.getElementById("view-name").hidden = !nameEntry && !nameCompleted;
+  document.getElementById("name-entry-view").hidden = !nameEntry;
+  document.getElementById("name-completed-view").hidden = !nameCompleted;
+  document.getElementById("name-tracing-head").hidden = !nameTracing;
+  document.getElementById("practice-head").hidden = nameTracing;
+  document.querySelector(".picker-card").hidden = nameTracing;
+  document.getElementById("name-progress-card").hidden = !nameTracing;
+  document.querySelector(".practice-side").setAttribute("aria-label",
+    nameTracing ? "Name progress" : "Character picker");
+  document.body.dataset.view = name;
+  document.body.classList.toggle("name-tracing", nameTracing);
+  document.title = nameTracing ? "Write My Name • Kids Tracing" :
+    (nameEntry || nameCompleted ? "Write My Name • Kids Tracing" :
+      (practice ? "Practice • Kids Tracing" : "Kids Tracing Practice"));
+  if (practice && typeof previousView === "string" && previousView.indexOf("name-") === 0) {
+    renderLetter();
+  }
   document.querySelectorAll("[data-nav]").forEach(function (link) {
-    var on = link.getAttribute("data-nav") === (practice ? "practice" : "home");
+    var on = link.getAttribute("data-nav") === navName;
     link.classList.toggle("is-active", on);
     if (on) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   });
-  if (practice) {
-    window.requestAnimationFrame(resizeCanvas);
-  }
+  if (inPractice) window.requestAnimationFrame(resizeCanvas);
 }
 
 function applyRoute() {
   var hash = (location.hash || "#home").replace("#", "");
   if (hash === "practice") {
     showView("practice");
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (hash === "name") {
+    if (nameSession && nameIsComplete()) {
+      showView("name-completed");
+      renderNameCompleted();
+    } else if (nameSession) {
+      showView("name-tracing");
+      renderNameProgress();
+    } else {
+      showView("name-entry");
+      updateNameEntryPreview();
+    }
     window.scrollTo(0, 0);
     return;
   }
@@ -629,13 +990,24 @@ undoButton.addEventListener("click", function () {
 });
 
 document.getElementById("prev-button").addEventListener("click", function () {
+  if (document.body.dataset.view === "name-tracing") {
+    navigateNameTo(nameSession.currentIndex - 1);
+    return;
+  }
   goTo(state.currentIndex - 1);
 });
 document.getElementById("next-button").addEventListener("click", function () {
+  if (document.body.dataset.view === "name-tracing") {
+    onNameNext();
+    return;
+  }
   goTo(state.currentIndex + 1);
 });
 document.getElementById("clear-button").addEventListener("click", clearInk);
-document.getElementById("done-button").addEventListener("click", onDone);
+document.getElementById("done-button").addEventListener("click", function () {
+  if (document.body.dataset.view === "name-tracing") onNameDone();
+  else onDone();
+});
 document.getElementById("keep-going").addEventListener("click", function () {
   goTo(state.currentIndex + 1);
 });
@@ -644,6 +1016,24 @@ document.getElementById("back-home").addEventListener("click", function () {
   location.hash = "home";
 });
 document.getElementById("save-button").addEventListener("click", onSave);
+document.getElementById("name-input").addEventListener("input", updateNameEntryPreview);
+document.getElementById("name-clear").addEventListener("click", function () {
+  setNameEntry("");
+  document.getElementById("name-input").focus();
+});
+document.getElementById("name-start").addEventListener("click", startNameSession);
+document.getElementById("change-name").addEventListener("click", changeName);
+document.getElementById("try-another-name").addEventListener("click", tryAnotherName);
+document.getElementById("write-again").addEventListener("click", writeNameAgain);
+document.getElementById("name-progress-tiles").addEventListener("click", function (event) {
+  var button = event.target.closest("button");
+  if (!button) return;
+  var tile = button.parentElement;
+  var index = Array.prototype.indexOf.call(tile.parentElement.children, tile);
+  navigateNameTo(index);
+  var activeTile = document.querySelectorAll("#name-progress-tiles li")[index];
+  if (activeTile) activeTile.querySelector("button").focus();
+});
 document.getElementById("how-button").addEventListener("click", function () {
   if ((location.hash || "#home") !== "#home" && location.hash !== "") {
     location.hash = "home";

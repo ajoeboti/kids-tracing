@@ -3,7 +3,8 @@
 ## 1. Project Overview
 
 **Kids Tracing Practice** is a free, browser-based website that helps young
-children practise writing English letters and numbers.
+children practise writing English letters and numbers, or the letters in
+their own name.
 
 Children can trace uppercase letters, lowercase letters, and numbers using
 a mouse, trackpad, finger, or stylus. The website will be simple, friendly,
@@ -30,21 +31,24 @@ It will be hosted on GitHub Pages and opened directly in a web browser.
 
 ## 4. Website Structure
 
-The website will initially contain the following pages:
+The website currently uses one static HTML page with hash-based views:
 
 ```text
-/                 → Home page
-/practice.html    → Tracing practice page
-/about.html       → About and parent information
-/404.html         → Custom not-found page
+/                  → Home view
+/#practice         → Letter and number tracing
+/#name             → Name entry, tracing, or completion
+/#parents          → Parent information section on Home
 ```
+
+Name state stays in browser storage rather than in the hash, so a child's name
+is never placed in the URL. The same routes work under the GitHub Pages
+`/kids-tracing/` repository path.
 
 ### Future Pages
 
-These pages are not part of V1, but may be added later:
+These pages may be added later:
 
 ```text
-/name.html        → Name tracing
 /worksheets.html  → Printable tracing worksheets
 /numbers.html     → Number-focused practice
 /letters.html     → Letter-focused practice
@@ -270,6 +274,27 @@ kids-tracing-progress
 
 If localStorage is unavailable, the website must still work normally.
 Progress simply will not be saved.
+
+### Name Tracing Session
+
+Name tracing is independent of the existing `kids-tracing-progress` letter,
+number, and star record. It uses the versioned key
+`kids-tracing-name-session-v1` and stores only the entered name, current
+character position, and a completion flag for each position. It never saves
+canvas pixels or stroke data. Storage failures and invalid saved records do
+not prevent the feature from loading.
+
+V1 accepts 1–20 English letters (`A-Z` and `a-z`) after trimming leading and
+trailing whitespace. Case is preserved. Spaces inside a name, digits,
+punctuation, and other scripts are not supported. Each character position is
+a separate task, including duplicate letters. A position is complete only
+after a child makes a drawing attempt and presses Done; this is not a
+handwriting accuracy score.
+
+Name tracing shares the existing practice page's canvas, pointer events,
+resize handling, and drawing renderer. Its temporary handwriting stays only
+in memory and is cleared when changing positions; saved completion flags
+remain available after refresh.
 
 ## 11. Visual Design
 
@@ -524,7 +549,6 @@ V1 is complete when:
 
 These features are not part of V1, but may be added later:
 
-- Name tracing page
 - Printable worksheet generator
 - Chinese character tracing
 - Stroke-order animation

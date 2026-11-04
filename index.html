@@ -29,6 +29,7 @@
           Practice
           <span class="nav-badge"><span id="nav-count">0</span><span aria-hidden="true">★</span></span>
         </a>
+        <a class="nav-link" href="#name" data-nav="name">Write My Name</a>
         <a class="nav-link" href="#parents">For Parents</a>
       </nav>
 
@@ -155,8 +156,66 @@
         </section>
       </section>
 
+      <section class="view name-view" id="view-name" hidden>
+        <section class="name-entry" id="name-entry-view" aria-labelledby="name-entry-heading">
+          <a class="name-back-link" href="#practice">← Back to letter practice</a>
+          <div class="name-entry-card">
+            <p class="free-badge"><i></i> YOUR NAME, ONE LETTER AT A TIME</p>
+            <h1 id="name-entry-heading">Let’s write your name!</h1>
+            <p class="name-subtitle">Enter a name, then trace it one letter at a time.</p>
+
+            <div class="name-input-wrap">
+              <label for="name-input">Your name</label>
+              <div class="name-input-row">
+                <input id="name-input" type="text" placeholder="e.g. Jamie" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="name-helper name-error">
+                <button type="button" class="name-clear" id="name-clear" aria-label="Clear name">×</button>
+              </div>
+              <p class="name-helper" id="name-helper">Use English letters. Keep the capital letters you want.</p>
+              <p class="name-error" id="name-error" aria-live="polite"></p>
+            </div>
+
+            <div class="name-preview-block">
+              <div class="name-preview-heading">
+                <h2>Your letters</h2>
+                <span id="name-preview-count">0 letters</span>
+              </div>
+              <div class="name-tiles name-preview-tiles" id="name-preview" aria-label="Name preview"></div>
+            </div>
+
+            <button type="button" class="btn btn-coral name-start" id="name-start" disabled>Start tracing <span aria-hidden="true">→</span></button>
+            <p class="name-privacy">No account needed. Your name stays in this browser.</p>
+          </div>
+        </section>
+
+        <section class="name-completed" id="name-completed-view" aria-labelledby="name-completed-heading" hidden>
+          <div class="completed-card">
+            <div class="celebration-stars" aria-hidden="true"><span>✦</span><span>✦</span><span>✧</span><span>✦</span><span>✧</span></div>
+            <div class="completed-badge" aria-hidden="true">✓</div>
+            <h1 id="name-completed-heading">Well done, <span id="completed-name"></span>!</h1>
+            <p class="completed-message">You traced every letter in your name!</p>
+            <p class="completed-full-name" id="completed-full-name"></p>
+            <div class="name-tiles completed-tiles" id="completed-tiles" aria-label="Completed letters"></div>
+            <div class="completed-actions">
+              <button type="button" class="btn btn-coral" id="write-again">Write my name again</button>
+              <button type="button" class="btn btn-white" id="try-another-name">Try another name</button>
+              <a class="btn btn-soft" href="#practice">Back to letter practice</a>
+            </div>
+          </div>
+        </section>
+      </section>
+
       <section class="view" id="view-practice" hidden>
-        <div class="practice-head">
+        <div class="name-tracing-head" id="name-tracing-head" hidden>
+          <div>
+            <p class="name-position" id="name-position">Letter 1 of 1</p>
+            <h1 id="name-tracing-title">Write your name!</h1>
+          </div>
+          <div class="name-overall-progress">
+            <span id="name-overall-count">0 of 0 letters completed</span>
+            <span class="name-progress-track" id="name-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Name tracing progress"><span id="name-progress-fill"></span></span>
+          </div>
+        </div>
+        <div class="practice-head" id="practice-head">
           <div class="practice-title">
             <button type="button" class="back-button" id="back-home" aria-label="Back to home">
               <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M14.5 6 8.5 12l6 6"/></svg>
@@ -213,18 +272,18 @@
 
             <div class="trace-actions">
               <button type="button" class="btn btn-soft" id="prev-button">
-                <span aria-hidden="true">←</span> Previous
+                <span aria-hidden="true">←</span> <span id="previous-copy">Previous</span>
               </button>
               <button type="button" class="btn btn-white" id="clear-button">
                 <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="m16.2 4.2 3.2 3.2-8.8 8.8H7.2L4 13.2 12.6 4.6l3.6-.4zM7.4 18h7.2l1.2 1.6H8.2L7.4 18z"/></svg>
-                Clear
+                <span id="clear-copy">Clear</span>
               </button>
               <button type="button" class="btn btn-coral" id="done-button">
                 <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.2 4.2L19 7.2"/></svg>
-                Done — get stars!
+                <span id="done-copy">Done — get stars!</span>
               </button>
               <button type="button" class="btn btn-teal" id="next-button">
-                Next <span aria-hidden="true">→</span>
+                <span id="next-copy">Next</span> <span id="next-arrow" aria-hidden="true">→</span>
               </button>
             </div>
           </div>
@@ -249,7 +308,16 @@
                 <p><strong>3 stars = super tracer!</strong><span>Tap Done to save stars here.</span></p>
               </div>
             </div>
-
+            <section class="name-progress-card" id="name-progress-card" aria-label="Name progress" hidden>
+              <div class="name-progress-heading">
+                <h2>Your name</h2>
+                <p class="done-pill" id="name-done-count">0 of 0 letters completed</p>
+              </div>
+              <div class="picker-meter" aria-hidden="true"><span id="name-panel-meter"></span></div>
+              <ol class="name-tiles name-progress-tiles" id="name-progress-tiles" aria-label="Letters in your name"></ol>
+              <p class="name-encouragement" id="name-encouragement">Every letter is a little step. Keep going!</p>
+              <button type="button" class="text-link name-change" id="change-name">Change name</button>
+            </section>
             <section class="success-card" id="success-card" hidden>
               <div class="success-orb" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="28" height="28"><path fill="#FDCB45" d="m12 2.6 2.5 5.8 6.3.6-4.8 4 1.5 6.1L12 16.4 6.5 19.1l1.5-6.1L3.2 9l6.3-.6L12 2.6z"/></svg>
