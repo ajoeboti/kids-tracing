@@ -172,6 +172,12 @@ function renderGuide(ch) {
     }
   }
 
+  function addEndDot(x, y) {
+    var local = toLocal(x, y);
+    markup += '<circle cx="' + local.x.toFixed(2) + '" cy="' + local.y.toFixed(2) +
+      '" r="2.5" fill="#FFB020" stroke="#fff" stroke-width="0.8"/>';
+  }
+
   function addStep(startX, startY, endX, endY, number) {
     var distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
     var count = Math.max(2, Math.floor(distance / 14));
@@ -180,6 +186,7 @@ function renderGuide(ch) {
       var ratio = i / count;
       addDot(startX + (endX - startX) * ratio, startY + (endY - startY) * ratio, i === 0);
     }
+    addEndDot(endX, endY);
     var badge = toLocal(startX, startY);
     var radius = 7 / Math.sqrt(dotsMatrix.a * dotsMatrix.a + dotsMatrix.b * dotsMatrix.b);
     var fontSize = radius * 1.2;
@@ -211,6 +218,8 @@ function renderGuide(ch) {
 
   var bandCount = 8;
   var band;
+  var endX = 0;
+  var endY = 0;
 
   for (band = 0; band < bandCount; band += 1) {
     var bandTop = glyphTop + Math.floor((glyphBottom - glyphTop) * band / bandCount);
@@ -242,8 +251,11 @@ function renderGuide(ch) {
     var edgeOrder = band % 2 === 0 ? [bestLeft, bestRight] : [bestRight, bestLeft];
     edgeOrder.forEach(function (x) {
       addDot((x + 0.5) / scale, (bestY + 0.5) / scale, markup === "");
+      endX = (x + 0.5) / scale;
+      endY = (bestY + 0.5) / scale;
     });
   }
+  if (markup) addEndDot(endX, endY);
   guideDots.innerHTML = markup;
 }
 
@@ -255,8 +267,8 @@ function renderLetter() {
   document.getElementById("trace-subtitle").textContent = "Letter " + ch + " of 62 • Stars save automatically";
   canvas.setAttribute("aria-label", "Tracing canvas for letter " + ch);
   document.getElementById("follow-copy").textContent = ch === "z"
-    ? "Step 1: top line • Step 2: diagonal • Step 3: bottom line"
-    : "Follow the dots — start at the red dot!";
+    ? "Step 1: top line • Step 2: diagonal • Step 3: bottom line • Finish at gold"
+    : "Follow the dots — red start, gold finish!";
   renderGuide(ch);
   hideSuccess();
 }
