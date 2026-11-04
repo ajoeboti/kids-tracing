@@ -115,20 +115,85 @@ function caseLabel(ch) {
   return "Uppercase • " + ch + " " + ch.toLowerCase();
 }
 
-function guideX(ch) {
-  if ("Iil1j".indexOf(ch) !== -1) return 47;
-  if ("MWmw".indexOf(ch) !== -1) return 28;
-  return 34;
-}
-
 function renderGuide(ch) {
-  var x = guideX(ch);
-  var markup = '<circle cx="' + x + '" cy="30" r="2.5" fill="none" stroke="#FF4F37" stroke-width="1.15"/>' +
-    '<circle cx="' + x + '" cy="30" r="0.75" fill="#FF4F37"/>';
-  var i;
-  for (i = 0; i < 8; i += 1) {
-    var y = 36 + i * 4.5;
-    markup += '<circle cx="' + x + '" cy="' + y.toFixed(1) + '" r="1.15" fill="#12B3A6"/>';
+  var guide = document.getElementById("guide");
+  var svg = guideDots;
+  var bounds = svg.getBoundingClientRect();
+  var range = document.createRange();
+  range.selectNodeContents(guide);
+  var textBounds = range.getBoundingClientRect();
+  var scale = 2;
+  var mask = document.createElement("canvas");
+  mask.width = Math.max(1, Math.ceil(bounds.width * scale));
+  mask.height = Math.max(1, Math.ceil(bounds.height * scale));
+  var ctx = mask.getContext("2d");
+  var dotsMatrix = svg.getScreenCTM();
+  if (!ctx || !dotsMatrix || !bounds.width || !bounds.height || !textBounds.width) {
+    guideDots.innerHTML = "";
+    return;
+  }
+
+  var style = window.getComputedStyle(guide);
+  ctx.scale(scale, scale);
+  ctx.font = [style.fontStyle, style.fontWeight, style.fontSize, style.fontFamily].join(" ");
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#000";
+  ctx.fillText(ch, textBounds.left - bounds.left, (textBounds.top + textBounds.bottom) / 2 - bounds.top);
+
+  var pixels = ctx.getImageData(0, 0, mask.width, mask.height);
+  var left = Math.max(0, Math.floor((textBounds.left - bounds.left) * scale));
+  var right = Math.min(mask.width, Math.ceil((textBounds.right - bounds.left) * scale));
+  var top = Math.max(0, Math.floor((textBounds.top - bounds.top) * scale));
+  var bottom = Math.min(mask.height, Math.ceil((textBounds.bottom - bounds.top) * scale));
+  var markup = "";
+  var point = svg.createSVGPoint();
+  var inverse = dotsMatrix.inverse();
+  var bandCount = 8;
+  var band;
+
+  for (band = 0; band < bandCount; band += 1) {
+    var bandTop = top + Math.floor((bottom - top) * band / bandCount);
+    var bandBottom = top + Math.floor((bottom - top) * (band + 1) / bandCount);
+    var bestY = -1;
+    var bestWidth = 0;
+    var bestLeft = 0;
+    var bestRight = 0;
+    var row;
+    for (row = bandTop; row < bandBottom; row += 1) {
+      var first = -1;
+      var last = -1;
+      var col;
+      for (col = left; col < right; col += 1) {
+        if (pixels.data[(row * mask.width + col) * 4 + 3] > 64) {
+          if (first < 0) first = col;
+          last = col;
+        }
+      }
+      if (first >= 0 && last - first > bestWidth) {
+        bestY = row;
+        bestWidth = last - first;
+        bestLeft = first;
+        bestRight = last;
+      }
+    }
+    if (bestY < 0) continue;
+
+    var edgeOrder = band % 2 === 0 ? [bestLeft, bestRight] : [bestRight, bestLeft];
+    edgeOrder.forEach(function (x) {
+      point.x = bounds.left + (x + 0.5) / scale;
+      point.y = bounds.top + (bestY + 0.5) / scale;
+      var local = point.matrixTransform(inverse);
+      var isStart = markup === "";
+      markup += '<circle cx="' + local.x.toFixed(2) + '" cy="' + local.y.toFixed(2) +
+        '" r="' + (isStart ? "2.5" : "1.15") + '" fill="' +
+        (isStart ? "none" : "#12B3A6") + '"' +
+        (isStart ? ' stroke="#FF4F37" stroke-width="1.15"' : "") + '/>';
+      if (isStart) {
+        markup += '<circle cx="' + local.x.toFixed(2) + '" cy="' + local.y.toFixed(2) +
+          '" r="0.75" fill="#FF4F37"/>';
+      }
+    });
   }
   guideDots.innerHTML = markup;
 }
@@ -460,7 +525,10 @@ function showView(name) {
     if (on) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   });
-  if (practice) window.requestAnimationFrame(resizeCanvas);
+  if (practice) {
+    renderGuide(currentChar());
+    window.requestAnimationFrame(resizeCanvas);
+  }
 }
 
 function applyRoute() {
