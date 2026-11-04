@@ -191,6 +191,21 @@ large character.
 - Resize the canvas correctly when the browser window changes size
 - Use `devicePixelRatio` for sharp handwriting on high-DPI screens
 
+### V1 Tracing Method
+
+V1 uses **grey-character tracing only**. Children trace directly over one
+large light-grey reference character on the writing guide lines.
+
+The following are **out of scope for V1**:
+
+- Dotted tracing guides
+- Stroke numbering
+- Start and end markers
+- Direction arrows
+- Stroke-order validation
+
+The practice instruction is: "Trace over the grey letter or number."
+
 ## 9. Scoring Rules
 
 For V1, scoring should be simple and positive.
