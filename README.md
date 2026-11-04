@@ -43,3 +43,16 @@ and hash routes also work beneath `/kids-tracing/`.
 The approved visual reference image files were not present in the checkout
 when this feature was implemented, so the feature uses the layouts described
 in the project request and the website's existing visual system.
+
+## Manual smoke checks
+
+- Open `#name`; confirm empty and unsupported input cannot start, while
+  `Jamie` previews and traces as `J`, `a`, `m`, `i`, `e`.
+- Try `Anna`; complete one `n` and confirm the other `n` remains incomplete.
+- Confirm Done rejects an empty canvas or tap, Clear keeps the guide letter,
+  and Previous/Next do not wrap. Finish should return to the first incomplete
+  position until every position is complete.
+- Complete a name, refresh `#name`, and confirm progress restores with a blank
+  canvas. Try **Write my name again** and **Try another name**.
+- Repeat at a narrow viewport (320px) and with a 20-letter name; confirm the
+  tiles wrap and the page has no horizontal overflow.
