@@ -3,6 +3,60 @@
 var STORAGE_KEY = "kids-tracing-progress";
 var CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split("");
 var PASTELS = ["pink", "sky", "mint"];
+var LETTER_STROKES = {
+  A: [[[10, 90], [50, 10], [90, 90]], [[28, 60], [72, 60]]],
+  B: [[[15, 90], [15, 10]], [[15, 10], [62, 10], [82, 20], [82, 34], [65, 47], [15, 47]], [[15, 47], [66, 47], [86, 60], [86, 77], [67, 90], [15, 90]]],
+  C: [[[86, 20], [70, 10], [45, 10], [25, 22], [15, 42], [15, 62], [27, 80], [47, 90], [70, 88], [86, 78]]],
+  D: [[[15, 90], [15, 10]], [[15, 10], [52, 10], [75, 22], [87, 42], [87, 60], [75, 79], [52, 90], [15, 90]]],
+  E: [[[82, 10], [15, 10], [15, 90], [84, 90]], [[15, 49], [68, 49]]],
+  F: [[[15, 90], [15, 10], [84, 10]], [[15, 49], [68, 49]]],
+  G: [[[84, 22], [68, 10], [45, 10], [25, 22], [15, 42], [15, 62], [27, 80], [48, 90], [72, 86], [86, 74], [86, 55], [58, 55]]],
+  H: [[[15, 10], [15, 90]], [[85, 10], [85, 90]], [[15, 50], [85, 50]]],
+  I: [[[15, 10], [85, 10]], [[50, 10], [50, 90]], [[15, 90], [85, 90]]],
+  J: [[[20, 10], [84, 10], [84, 67], [76, 84], [59, 90], [38, 90], [22, 80], [16, 67]]],
+  K: [[[15, 10], [15, 90]], [[83, 10], [18, 53], [86, 90]]],
+  L: [[[15, 10], [15, 90], [85, 90]]],
+  M: [[[12, 90], [12, 10], [50, 52], [88, 10], [88, 90]]],
+  N: [[[15, 90], [15, 10], [85, 90], [85, 10]]],
+  O: [[[50, 10], [72, 12], [87, 30], [90, 50], [86, 70], [70, 87], [50, 90], [30, 87], [14, 70], [10, 50], [14, 30], [30, 12], [50, 10]]],
+  P: [[[15, 90], [15, 10]], [[15, 10], [63, 10], [83, 22], [83, 38], [65, 50], [15, 50]]],
+  Q: [[[50, 10], [72, 12], [87, 30], [90, 50], [86, 70], [70, 87], [50, 90], [30, 87], [14, 70], [10, 50], [14, 30], [30, 12], [50, 10]], [[62, 70], [88, 92]]],
+  R: [[[15, 90], [15, 10]], [[15, 10], [63, 10], [83, 22], [83, 37], [66, 50], [15, 50]], [[52, 50], [86, 90]]],
+  S: [[[84, 18], [68, 10], [43, 10], [24, 21], [17, 36], [28, 47], [50, 51], [73, 56], [84, 68], [77, 82], [58, 90], [34, 89], [16, 80]]],
+  T: [[[12, 10], [88, 10]], [[50, 10], [50, 90]]],
+  U: [[[15, 10], [15, 65], [23, 82], [40, 90], [60, 90], [78, 82], [85, 65], [85, 10]]],
+  V: [[[12, 10], [50, 90], [88, 10]]],
+  W: [[[10, 10], [25, 90], [50, 48], [75, 90], [90, 10]]],
+  X: [[[15, 10], [85, 90]], [[85, 10], [15, 90]]],
+  Y: [[[15, 10], [50, 48], [85, 10]], [[50, 48], [50, 90]]],
+  Z: [[[15, 10], [85, 10], [15, 90], [85, 90]]],
+  a: [[[72, 36], [60, 27], [42, 27], [26, 37], [18, 53], [20, 70], [32, 83], [49, 87], [65, 80], [72, 68]], [[72, 28], [72, 87]]],
+  b: [[[25, 10], [25, 90]], [[25, 58], [36, 36], [53, 29], [69, 34], [80, 48], [80, 66], [70, 81], [54, 87], [38, 81], [25, 67]]],
+  c: [[[80, 38], [65, 28], [46, 28], [29, 38], [20, 54], [24, 71], [39, 84], [59, 87], [78, 78]]],
+  d: [[[75, 10], [75, 87]], [[75, 58], [64, 36], [47, 29], [31, 35], [21, 49], [21, 67], [31, 81], [48, 87], [64, 80], [75, 67]]],
+  e: [[[20, 56], [78, 56], [76, 43], [65, 32], [49, 28], [33, 35], [22, 49], [21, 66], [32, 81], [49, 87], [67, 83], [79, 74]]],
+  f: [[[68, 10], [55, 10], [45, 20], [45, 90]], [[27, 40], [68, 40]]],
+  g: [[[73, 36], [61, 28], [44, 29], [29, 38], [21, 53], [23, 68], [34, 80], [50, 84], [66, 77], [73, 65]], [[73, 30], [73, 83], [67, 97], [53, 100], [37, 97], [28, 90]]],
+  h: [[[24, 10], [24, 90]], [[24, 53], [36, 36], [52, 29], [67, 33], [76, 46], [76, 90]]],
+  i: [[[50, 40], [50, 88]], [[50, 10], [56, 12], [58, 16], [55, 20], [49, 20], [46, 16], [50, 10]]],
+  j: [[[54, 40], [54, 83], [49, 96], [37, 100], [26, 94]], [[54, 10], [60, 12], [62, 16], [59, 20], [53, 20], [50, 16], [54, 10]]],
+  k: [[[25, 10], [25, 90]], [[76, 31], [27, 59], [80, 89]]],
+  l: [[[50, 10], [50, 90]]],
+  m: [[[15, 90], [15, 30]], [[15, 50], [26, 36], [40, 30], [52, 36], [56, 49], [56, 90]], [[56, 50], [68, 36], [81, 31], [91, 38], [94, 52], [94, 90]]],
+  n: [[[22, 90], [22, 30]], [[22, 52], [35, 36], [52, 30], [68, 34], [78, 47], [78, 90]]],
+  o: [[[50, 28], [68, 31], [80, 44], [82, 61], [73, 77], [57, 86], [40, 84], [25, 74], [19, 58], [24, 42], [37, 31], [50, 28]]],
+  p: [[[25, 30], [25, 100]], [[25, 54], [36, 36], [52, 30], [68, 35], [78, 49], [78, 66], [68, 81], [52, 87], [36, 81], [25, 67]]],
+  q: [[[75, 30], [75, 100]], [[75, 55], [64, 37], [48, 30], [32, 35], [22, 49], [22, 66], [32, 81], [48, 87], [64, 81], [75, 67]]],
+  r: [[[25, 90], [25, 30]], [[25, 53], [39, 36], [56, 31], [75, 36]]],
+  s: [[[77, 36], [64, 29], [46, 29], [31, 37], [30, 47], [43, 54], [62, 58], [76, 66], [73, 77], [58, 85], [39, 85], [24, 78]]],
+  t: [[[50, 15], [50, 73], [55, 85], [68, 88], [78, 82]], [[30, 40], [72, 40]]],
+  u: [[[23, 30], [23, 66], [30, 81], [44, 87], [59, 81], [74, 65]], [[74, 30], [74, 88]]],
+  v: [[[18, 30], [50, 88], [82, 30]]],
+  w: [[[12, 30], [27, 88], [50, 55], [73, 88], [88, 30]]],
+  x: [[[22, 30], [78, 88]], [[78, 30], [22, 88]]],
+  y: [[[18, 30], [49, 76], [80, 30]], [[49, 76], [39, 96], [25, 100]]],
+  z: [[[10, 12], [90, 12]], [[90, 12], [10, 88]], [[10, 88], [90, 88]]]
+};
 
 var PHONEMES = {
   A: "ay", B: "buh", C: "kuh", D: "duh", E: "eh", F: "fff", G: "guh",
@@ -178,16 +232,43 @@ function renderGuide(ch) {
       '" r="2.5" fill="#FFB020" stroke="#fff" stroke-width="0.8"/>';
   }
 
-  function addStep(startX, startY, endX, endY, number) {
-    var distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+  function addStep(points, number) {
+    var segments = [];
+    var distance = 0;
+    var segmentIndex;
+    for (segmentIndex = 1; segmentIndex < points.length; segmentIndex += 1) {
+      var segmentLength = Math.sqrt(
+        Math.pow(points[segmentIndex][0] - points[segmentIndex - 1][0], 2) +
+        Math.pow(points[segmentIndex][1] - points[segmentIndex - 1][1], 2)
+      );
+      segments.push({ length: segmentLength, start: distance });
+      distance += segmentLength;
+    }
     var count = Math.max(2, Math.floor(distance / 14));
     var i;
     for (i = 0; i <= count; i += 1) {
-      var ratio = i / count;
-      addDot(startX + (endX - startX) * ratio, startY + (endY - startY) * ratio, i === 0);
+      var target = distance * i / count;
+      var segment = segments[segments.length - 1];
+      var j;
+      for (j = 0; j < segments.length; j += 1) {
+        if (target <= segments[j].start + segments[j].length) {
+          segment = segments[j];
+          break;
+        }
+      }
+      var ratio = segment.length ? (target - segment.start) / segment.length : 0;
+      var start = points[segments.indexOf(segment)];
+      var end = points[segments.indexOf(segment) + 1];
+      addDot(
+        start[0] + (end[0] - start[0]) * ratio,
+        start[1] + (end[1] - start[1]) * ratio,
+        i === 0
+      );
     }
-    addEndDot(endX, endY);
-    var badge = toLocal(startX, startY);
+    var first = points[0];
+    var last = points[points.length - 1];
+    addEndDot(last[0], last[1]);
+    var badge = toLocal(first[0], first[1]);
     var radius = 7 / Math.sqrt(dotsMatrix.a * dotsMatrix.a + dotsMatrix.b * dotsMatrix.b);
     var fontSize = radius * 1.2;
     markup += '<circle cx="' + badge.x.toFixed(2) + '" cy="' + badge.y.toFixed(2) +
@@ -198,19 +279,19 @@ function renderGuide(ch) {
       fontSize.toFixed(2) + '" font-weight="700">' + number + '</text>';
   }
 
-  if (ch === "z") {
+  if (Object.prototype.hasOwnProperty.call(LETTER_STROKES, ch)) {
     var glyphWidth = (metrics.actualBoundingBoxLeft + metrics.actualBoundingBoxRight);
     var glyphHeight = (metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent);
-    var insetX = glyphHeight * 0.1;
-    var insetY = glyphHeight * 0.12;
-    var x1 = anchorX - metrics.actualBoundingBoxLeft + insetX;
-    var x2 = anchorX + metrics.actualBoundingBoxRight - insetX;
-    var y1 = baselineY - metrics.actualBoundingBoxAscent + insetY;
-    var y2 = baselineY + metrics.actualBoundingBoxDescent - insetY;
     if (glyphWidth > 0 && glyphHeight > 0) {
-      addStep(x1, y1, x2, y1, 1);
-      addStep(x2, y1, x1, y2, 2);
-      addStep(x1, y2, x2, y2, 3);
+      LETTER_STROKES[ch].forEach(function (stroke, index) {
+        var points = stroke.map(function (coords) {
+          return [
+            anchorX - metrics.actualBoundingBoxLeft + glyphWidth * coords[0] / 100,
+            baselineY - metrics.actualBoundingBoxAscent + glyphHeight * coords[1] / 100
+          ];
+        });
+        addStep(points, index + 1);
+      });
     }
     guideDots.innerHTML = markup;
     return;
@@ -266,8 +347,8 @@ function renderLetter() {
   document.getElementById("phoneme").textContent = PHONEMES[ch] || ch;
   document.getElementById("trace-subtitle").textContent = "Letter " + ch + " of 62 • Stars save automatically";
   canvas.setAttribute("aria-label", "Tracing canvas for letter " + ch);
-  document.getElementById("follow-copy").textContent = ch === "z"
-    ? "Step 1: top line • Step 2: diagonal • Step 3: bottom line • Finish at gold"
+  document.getElementById("follow-copy").textContent = LETTER_STROKES[ch]
+    ? "Follow each numbered stroke — start at red, finish at gold!"
     : "Follow the dots — red start, gold finish!";
   renderGuide(ch);
   hideSuccess();
