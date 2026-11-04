@@ -55,7 +55,17 @@ var LETTER_STROKES = {
   w: [[[12, 30], [27, 88], [50, 55], [73, 88], [88, 30]]],
   x: [[[22, 30], [78, 88]], [[78, 30], [22, 88]]],
   y: [[[18, 30], [49, 76], [80, 30]], [[49, 76], [39, 96], [25, 100]]],
-  z: [[[10, 12], [90, 12]], [[90, 12], [10, 88]], [[10, 88], [90, 88]]]
+  z: [[[10, 12], [90, 12]], [[90, 12], [10, 88]], [[10, 88], [90, 88]]],
+  0: [[[50, 10], [70, 14], [85, 30], [90, 50], [85, 70], [70, 86], [50, 90], [30, 86], [15, 70], [10, 50], [15, 30], [30, 14], [50, 10]]],
+  1: [[[32, 26], [50, 10], [50, 90]]],
+  2: [[[15, 25], [27, 12], [50, 10], [72, 16], [85, 30], [83, 44], [70, 56], [15, 90], [85, 90]]],
+  3: [[[20, 15], [50, 10], [75, 15], [85, 30], [78, 43], [60, 50], [75, 55], [86, 69], [80, 83], [60, 90], [30, 88], [15, 80]]],
+  4: [[[65, 90], [65, 10], [15, 60], [85, 60]]],
+  5: [[[80, 10], [20, 10], [18, 45], [55, 42], [75, 50], [85, 66], [80, 81], [62, 90], [38, 90], [18, 82]]],
+  6: [[[75, 15], [57, 10], [38, 18], [22, 36], [15, 59], [18, 76], [32, 87], [54, 90], [73, 82], [85, 66], [80, 52], [64, 45], [42, 47], [20, 60]]],
+  7: [[[15, 12], [85, 12], [40, 90]]],
+  8: [[[50, 50], [70, 46], [82, 32], [76, 18], [60, 10], [40, 10], [24, 18], [18, 32], [28, 44], [50, 50], [70, 55], [83, 68], [75, 83], [58, 90], [40, 90], [22, 82], [17, 68], [30, 55], [50, 50]]],
+  9: [[[75, 50], [62, 57], [42, 58], [25, 49], [18, 35], [22, 20], [39, 11], [60, 12], [76, 23], [83, 40], [80, 62], [68, 80], [50, 90]]]
 };
 
 var PHONEMES = {
@@ -342,11 +352,12 @@ function renderGuide(ch) {
 
 function renderLetter() {
   var ch = currentChar();
+  var isDigit = groupFor(ch) === "digit";
   document.getElementById("guide").textContent = ch;
   document.getElementById("case-pill").textContent = caseLabel(ch);
   document.getElementById("phoneme").textContent = PHONEMES[ch] || ch;
-  document.getElementById("trace-subtitle").textContent = "Letter " + ch + " of 62 • Stars save automatically";
-  canvas.setAttribute("aria-label", "Tracing canvas for letter " + ch);
+  document.getElementById("trace-subtitle").textContent = (isDigit ? "Number " : "Letter ") + ch + " of 62 • Stars save automatically";
+  canvas.setAttribute("aria-label", "Tracing canvas for " + (isDigit ? "number " : "letter ") + ch);
   document.getElementById("follow-copy").textContent = LETTER_STROKES[ch]
     ? "Follow each numbered stroke — start at red, finish at gold!"
     : "Follow the dots — red start, gold finish!";
@@ -359,7 +370,7 @@ function renderProgress() {
   var stars = totalStars();
   var percent = Math.min(100, Math.round((stars / CHARACTERS.length) * 100));
   document.getElementById("nav-count").textContent = String(done);
-  document.getElementById("practice-link").setAttribute("aria-label", "Practice, " + done + " of 62 letters done");
+  document.getElementById("practice-link").setAttribute("aria-label", "Practice, " + done + " of 62 characters done");
   document.getElementById("total-stars").textContent = String(stars);
   document.getElementById("stars-percent").textContent = percent + "%";
   document.getElementById("stars-fill").style.width = percent + "%";
@@ -370,16 +381,14 @@ function renderProgress() {
   meter.classList.toggle("has-cap", done > 0 && done < CHARACTERS.length);
 }
 
-function renderPicker() {
-  var wanted = groupFor(currentChar());
-  if (wanted !== pickerGroup) {
-    pickerGroup = wanted;
-    document.querySelectorAll("[data-group]").forEach(function (tab) {
-      var on = tab.getAttribute("data-group") === pickerGroup;
-      tab.classList.toggle("is-active", on);
-      tab.setAttribute("aria-selected", on ? "true" : "false");
-    });
-  }
+function renderPicker(keepSelectedGroup) {
+  var wanted = keepSelectedGroup ? pickerGroup : groupFor(currentChar());
+  pickerGroup = wanted;
+  document.querySelectorAll("[data-group]").forEach(function (tab) {
+    var on = tab.getAttribute("data-group") === pickerGroup;
+    tab.classList.toggle("is-active", on);
+    tab.setAttribute("aria-selected", on ? "true" : "false");
+  });
   var activeTab = document.querySelector('[data-group="' + pickerGroup + '"]');
   if (activeTab) {
     document.getElementById("letter-grid").setAttribute("aria-labelledby", activeTab.id);
@@ -393,7 +402,7 @@ function renderPicker() {
     else if (stars === 3) cls += " is-star3";
     else if (stars === 2) cls += " is-star2";
     else if (stars === 1) cls += " is-star1";
-    html += '<button type="button" class="' + cls + '" data-char="' + ch + '" aria-label="Letter ' + ch + (stars ? ", " + stars + " stars" : "") + '">' +
+    html += '<button type="button" class="' + cls + '" data-char="' + ch + '" aria-label="' + (groupFor(ch) === "digit" ? "Number " : "Letter ") + ch + (stars ? ", " + stars + " stars" : "") + '">' +
       ch +
       (stars ? '<span class="key-stars" aria-hidden="true">★' + stars + "</span>" : "") +
       "</button>";
@@ -808,27 +817,7 @@ document.getElementById("letter-grid").addEventListener("click", function (event
 document.querySelectorAll("[data-group]").forEach(function (tab) {
   tab.addEventListener("click", function () {
     pickerGroup = tab.getAttribute("data-group");
-    document.querySelectorAll("[data-group]").forEach(function (button) {
-      var on = button === tab;
-      button.classList.toggle("is-active", on);
-      button.setAttribute("aria-selected", on ? "true" : "false");
-    });
-    document.getElementById("letter-grid").setAttribute("aria-labelledby", tab.id);
-    var grid = document.getElementById("letter-grid");
-    var html = "";
-    charsInGroup(pickerGroup).forEach(function (ch) {
-      var stars = state.stars[ch] || 0;
-      var cls = "letter-key";
-      if (ch === currentChar()) cls += " is-current";
-      else if (stars === 3) cls += " is-star3";
-      else if (stars === 2) cls += " is-star2";
-      else if (stars === 1) cls += " is-star1";
-      html += '<button type="button" class="' + cls + '" data-char="' + ch + '" aria-label="Letter ' + ch + (stars ? ", " + stars + " stars" : "") + '">' +
-        ch +
-        (stars ? '<span class="key-stars" aria-hidden="true">★' + stars + "</span>" : "") +
-        "</button>";
-    });
-    grid.innerHTML = html;
+    renderPicker(true);
   });
 });
 
