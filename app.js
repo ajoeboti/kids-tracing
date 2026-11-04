@@ -17,14 +17,8 @@ var PHONEMES = {
   5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"
 };
 
-var SAMPLES = {
-  B: "M56 31 V71 M56 33 L73 45 L56 53 M56 53 L75 65 L56 71",
-  default: "M43 36 C 50 44, 46 54, 55 62"
-};
-
 var canvas = document.getElementById("trace-canvas");
 var guideDots = document.getElementById("guide-dots");
-var sampleStroke = document.getElementById("sample-stroke");
 var undoButton = document.getElementById("tool-undo");
 var pencilButton = document.getElementById("tool-pencil");
 var brushButton = document.getElementById("tool-brush");
@@ -137,9 +131,6 @@ function renderGuide(ch) {
     markup += '<circle cx="' + x + '" cy="' + y.toFixed(1) + '" r="1.15" fill="#12B3A6"/>';
   }
   guideDots.innerHTML = markup;
-  var path = SAMPLES[ch] || SAMPLES.default;
-  sampleStroke.innerHTML = '<path d="' + path + '" fill="none" stroke="#FF5A39" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>';
-  sampleStroke.classList.toggle("is-hidden", strokes.length > 0);
 }
 
 function renderLetter() {
@@ -259,7 +250,6 @@ function paint() {
   strokes.forEach(function (stroke) {
     drawStroke(ctx, stroke);
   });
-  sampleStroke.classList.toggle("is-hidden", strokes.length > 0);
 }
 
 function drawStroke(ctx, stroke) {
