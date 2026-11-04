@@ -1,69 +1,304 @@
-# Kids Tracing Practice — Project Plan
+# Kids Tracing Practice — Website Plan
 
-## 1. Project Goal
+## 1. Project Overview
 
-Build a simple, mobile-first web app that helps young children practise writing
-English letters and numbers through tracing.
+**Kids Tracing Practice** is a free, browser-based website that helps young
+children practise writing English letters and numbers.
 
-The first version should be fun, easy to use, and playable on a phone or tablet.
-The child should be able to trace A-Z, a-z and 0-9 with a finger, mouse, or stylus.
+Children can trace uppercase letters, lowercase letters, and numbers using
+a mouse, trackpad, finger, or stylus. The website will be simple, friendly,
+and safe for young children.
 
-The app must be simple enough for a parent to open and use immediately,
-without registration, installation, or setup.
+This is a **static website**, not a mobile app.
 
-## 2. Target Users
+It will be hosted on GitHub Pages and opened directly in a web browser.
+
+## 2. Goals
+
+- Help children practise A-Z, a-z, and 0-9
+- Provide a simple, enjoyable tracing experience
+- Work on desktop, tablet, and mobile browsers
+- Require no login, installation, or payment
+- Remain easy for a parent to open and use
+- Be deployable as a static website on GitHub Pages
+
+## 3. Target Users
 
 - Children aged approximately 3 to 7
-- Parents or guardians who operate the app with the child
-- Beginners who are learning letter and number shapes
+- Parents, guardians, and teachers
+- Beginners learning letter and number shapes
 
-## 3. Core Experience
+## 4. Website Structure
 
-The child sees one large, light-grey character in the centre of the screen.
+The website will initially contain the following pages:
 
-They trace over the character using their finger, mouse, or stylus.
+```text
+/                 → Home page
+/practice.html    → Tracing practice page
+/about.html       → About and parent information
+/404.html         → Custom not-found page
+```
 
-After completing a character, the app gives simple positive feedback:
-stars, a sound, and a short animation.
+### Future Pages
 
-The child can then move to the next character.
+These pages are not part of V1, but may be added later:
 
-## 4. MVP Scope
+```text
+/name.html        → Name tracing
+/worksheets.html  → Printable tracing worksheets
+/numbers.html     → Number-focused practice
+/letters.html     → Letter-focused practice
+```
 
-### Included in V1
+## 5. Home Page
 
-- Uppercase letters: A-Z
-- Lowercase letters: a-z
-- Numbers: 0-9
-- One character displayed at a time
-- Large light-grey tracing character
-- Canvas overlay for handwriting
-- Support for touch, mouse, and stylus input
-- Previous / Next navigation
-- Clear button
-- Progress indicator
-- Simple star scoring
-- Completion sound and animation
-- Progress saved in localStorage
-- Mobile-first responsive layout
-- Works offline as a static website
+The home page introduces the website and encourages the child or parent to
+start practising.
 
-### Not Included in V1
+### Sections
 
-- Chinese characters
-- Stroke-order validation
-- Handwriting recognition
-- User accounts
-- Cloud sync
-- Parent dashboard
-- Leaderboards
-- Multiplayer features
-- Ads
-- Analytics
-- Backend server
-- Database
+1. **Header**
+   - Website name: “Kids Tracing Practice”
+   - Simple navigation:
+     - Home
+     - Practice
+     - About
 
-## 5. Technical Requirements
+2. **Hero Section**
+   - Main title: “Kids Tracing Practice”
+   - Subtitle: “Practise A-Z, a-z and 0-9 by tracing with your finger or mouse.”
+   - Large call-to-action button: “Start Practising”
+   - Button links to `/practice.html`
+   - A friendly illustration or simple visual showing a child tracing a letter
+
+3. **Feature Cards**
+   - Three simple cards:
+     - “Trace Letters”
+     - “Practise Numbers”
+     - “Earn Stars”
+   - Each card should have a short description and a small icon or illustration
+
+4. **Parent Information**
+   - Short section explaining that the website is free, browser-based, and does not require an account
+   - Mention that progress is saved only in the child’s browser using localStorage
+
+5. **Footer**
+   - Website name
+   - Short copyright line
+   - Link to About page
+
+## 6. Practice Page
+
+The practice page is the main interactive page.
+
+### Layout
+
+```text
+┌────────────────────────────────────────┐
+│  Kids Tracing Practice        Home     │
+│                                        │
+│  Progress: 3 / 62                      │
+│  ███████░░░░░░░░░░░░░░░░░░░░░░░░░░░░  │
+│                                        │
+│  ┌──────────────────────────────────┐  │
+│  │                                  │  │
+│  │                A                 │  │
+│  │                                  │  │
+│  └──────────────────────────────────┘  │
+│                                        │
+│              ★★☆                       │
+│            Great job!                  │
+│                                        │
+│   [←]      [Clear]      [Done]   [→]  │
+└────────────────────────────────────────┘
+```
+
+### Sections
+
+1. **Header**
+   - Website name
+   - Link back to Home
+   - Optional progress indicator
+
+2. **Progress Area**
+   - Text: “3 / 62”
+   - Thin progress bar
+   - Shows how many characters have been completed
+
+3. **Tracing Card**
+   - Large white rounded card
+   - One large light-grey character in the centre
+   - HTML Canvas overlay for handwriting
+   - Canvas must cover the character area
+
+4. **Result Area**
+   - Three stars
+   - Friendly feedback message
+   - Examples:
+     - “Great job!”
+     - “Well done!”
+     - “Try again!”
+
+5. **Controls**
+   - `←` Previous
+   - `Clear`
+   - `Done`
+   - `→` Next
+
+## 7. Character Set
+
+Use the following characters in this exact order:
+
+```text
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+a b c d e f g h i j k l m n o p q r s t u v w x y z
+0 1 2 3 4 5 6 7 8 9
+```
+
+Total: 62 characters.
+
+### Navigation Rules
+
+- Start at `A`
+- `Next` moves to the following character
+- `Previous` moves to the previous character
+- Navigation wraps around:
+  - From `Z` to `a`
+  - From `z` to `0`
+  - From `9` to `A`
+  - From `A` to `9`
+
+## 8. Tracing Behaviour
+
+The tracing area must use an HTML `<canvas>` element positioned above the
+large character.
+
+### Input Support
+
+- Mouse
+- Trackpad
+- Touch
+- Stylus
+
+### Drawing Rules
+
+- Start drawing on `pointerdown`
+- Continue drawing on `pointermove`
+- Stop drawing on `pointerup` or `pointercancel`
+- Use smooth, rounded lines
+- Prevent page scrolling while drawing on touch devices
+- Clear the canvas automatically when changing character
+- Resize the canvas correctly when the browser window changes size
+- Use `devicePixelRatio` for sharp handwriting on high-DPI screens
+
+## 9. Scoring Rules
+
+For V1, scoring should be simple and positive.
+
+When the child presses `Done`, calculate a basic tracing coverage score.
+
+| Coverage | Stars |
+|---|---|
+| Below 40% | 1 star |
+| 40% to 69% | 2 stars |
+| 70% or above | 3 stars |
+
+### Rules
+
+- Do not penalise slow writing
+- Do not require perfect handwriting
+- Do not show negative feedback
+- Allow the child to retry the same character
+- Save the best star result for each character in localStorage
+
+## 10. Progress and Storage
+
+Use `localStorage` to save progress locally in the browser.
+
+### Stored Data
+
+- Current character index
+- Best stars earned for each character
+- List of completed characters
+- Last played date
+
+### Example Data
+
+```json
+{
+  "currentIndex": 5,
+  "stars": {
+    "A": 3,
+    "B": 2,
+    "C": 1
+  },
+  "completed": [
+    "A",
+    "B",
+    "C"
+  ],
+  "lastPlayed": "2026-11-04"
+}
+```
+
+### Storage Key
+
+```text
+kids-tracing-progress
+```
+
+If localStorage is unavailable, the website must still work normally.
+Progress simply will not be saved.
+
+## 11. Visual Design
+
+### General Style
+
+- Light mode only
+- Clean, friendly, child-friendly design
+- Large fonts and large tap targets
+- Rounded corners
+- Soft shadows
+- Plenty of whitespace
+- No dark mode
+- No hover colour changes
+- No ads
+- No external links
+- No complicated navigation
+
+### Colours
+
+| Element | Colour |
+|---|---|
+| Page background | `#f5f5f7` |
+| Card background | `#ffffff` |
+| Card border | `1px solid #dddddd` |
+| Primary accent | `#3b82f6` |
+| Success colour | `#22c55e` |
+| Tracing character | `rgba(0, 0, 0, 0.12)` |
+| Handwriting colour | `#1e3a8a` |
+
+### Typography
+
+- Use a clear, rounded, highly readable font
+- Large headings
+- Large buttons
+- Large tracing character
+- Avoid small text
+
+## 12. Accessibility and Child Safety
+
+- Use large buttons and clear labels
+- Avoid time pressure
+- Avoid failure sounds
+- Avoid ads
+- Avoid external links
+- Avoid collecting personal data
+- Avoid requiring an account
+- Ensure the website works without internet after first load
+- Ensure the website is usable on small phone screens
+
+## 13. Technical Requirements
 
 ### Tech Stack
 
@@ -82,279 +317,148 @@ The child can then move to the next character.
 - No external CSS frameworks
 - No backend
 - No database
+- No authentication
+- No analytics
 - No third-party fonts required
 - Must work when opened directly in a browser
+- Must work on GitHub Pages
 - Must work on mobile Safari and mobile Chrome
-- Must support both portrait and landscape mobile screens
 
 ### File Structure
 
 ```text
 /
 ├── index.html
-├── style.css
-├── app.js
+├── practice.html
+├── about.html
+├── 404.html
+├── css/
+│   └── style.css
+├── js/
+│   ├── home.js
+│   ├── practice.js
+│   └── shared.js
+├── assets/
+│   └── images/
 ├── PLAN.md
 └── README.md
 ```
 
-## 6. Character Set
+## 14. GitHub Pages Deployment
 
-The app should contain the following characters in this order:
+The website will be deployed using GitHub Pages.
 
-```text
-A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
-a b c d e f g h i j k l m n o p q r s t u v w x y z
-0 1 2 3 4 5 6 7 8 9
-```
+### Requirements
 
-Total: 62 characters.
+- Repository must be public for GitHub Free users
+- The main entry file must be `index.html`
+- Deploy from the `main` branch
+- Use the repository root (`/`) as the publishing folder
 
-Navigation rules:
+### Deployment Steps
 
-- The app starts at `A`
-- `Next` moves to the following character
-- `Previous` moves to the previous character
-- Navigation wraps around:
-  - From `Z`, `Next` goes to `a`
-  - From `z`, `Next` goes to `0`
-  - From `9`, `Next` goes to `A`
-  - From `A`, `Previous` goes to `9`
+1. Push all website files to the `main` branch.
+2. Open the GitHub repository.
+3. Go to **Settings → Pages**.
+4. Under **Build and deployment**, set:
+   - Source: **Deploy from a branch**
+   - Branch: `main`
+   - Folder: `/ (root)`
+5. Click **Save**.
+6. Wait for GitHub Pages to build and publish the website.
+7. Open the published URL.
 
-## 7. UI Design
-
-### Layout
-
-The app should use a single-page layout:
+### Expected URL
 
 ```text
-┌────────────────────────────┐
-│  Kids Tracing Practice     │
-│                            │
-│  Progress: 3 / 62          │
-│                            │
-│  ┌──────────────────────┐  │
-│  │                      │  │
-│  │         A            │  │
-│  │                      │  │
-│  └──────────────────────┘  │
-│                            │
-│  ★★☆                       │
-│                            │
-│  [←]     [Clear]     [→]   │
-└────────────────────────────┘
+[https://your-github-username.github.io/kids-tracing/](https://your-github-username.github.io/kids-tracing/)
 ```
 
-### Visual Style
+## 15. Development Tasks
 
-- Light mode only
-- Page background: light grey, for example `#f5f5f5`
-- Main card background: white `#ffffff`
-- Card border: `1px solid #dddddd`
-- Rounded corners for cards and buttons
-- Large, clear typography
-- Large touch-friendly buttons
-- Tracing character colour: light grey, for example `rgba(0, 0, 0, 0.12)`
-- Handwriting colour: dark blue or dark grey
-- No hover colour changes
-- No dark mode
-
-### Buttons
-
-The app needs three main buttons:
-
-| Button | Action |
-|---|---|
-| `←` | Go to previous character |
-| `Clear` | Clear the current handwriting |
-| `→` | Go to next character |
-
-Buttons must be large enough for young children to tap easily.
-
-## 8. Canvas Behaviour
-
-The tracing area must use an HTML `<canvas>` element positioned above the
-large character.
-
-### Drawing Rules
-
-- Drawing starts on `pointerdown`
-- Drawing continues on `pointermove`
-- Drawing stops on `pointerup` or `pointercancel`
-- The canvas must support touch, mouse, and stylus input
-- The line should be smooth and rounded
-- The line width should be suitable for children
-- The canvas must resize correctly when the screen orientation changes
-- Changing character must automatically clear the canvas
-
-### Important Technical Notes
-
-- Use `devicePixelRatio` to keep handwriting sharp on high-DPI screens
-- Prevent page scrolling while drawing on the canvas
-- Store handwriting only in the browser; do not upload it anywhere
-
-## 9. Scoring Rules
-
-For V1, scoring should be simple and positive.
-
-When the child presses a `Done` button, or after finishing a character,
-the app awards stars based on simple tracing coverage.
-
-| Result | Stars |
-|---|---|
-| Character completed | 1 star |
-| Good tracing coverage | 2 stars |
-| Very good tracing coverage | 3 stars |
-
-### Suggested Thresholds
-
-These values can be adjusted after testing:
-
-| Coverage | Stars |
-|---|---|
-| Below 40% | 1 star |
-| 40% to 69% | 2 stars |
-| 70% or above | 3 stars |
-
-### Scoring Notes
-
-- Do not penalise slow writing
-- Do not require perfect handwriting
-- Do not show negative feedback
-- If the child receives 1 star, still encourage them to try again
-- Save the best star result for each character in localStorage
-
-## 10. Progress and Storage
-
-Use `localStorage` to store:
-
-- Current character index
-- Best stars earned for each character
-- Total completed characters
-- Last played date
-
-Example storage key:
-
-```text
-kids-tracing-progress
-```
-
-Example data structure:
-
-```json
-{
-  "currentIndex": 5,
-  "stars": {
-    "A": 3,
-    "B": 2,
-    "C": 1
-  },
-  "completed": [
-    "A",
-    "B",
-    "C"
-  ],
-  "lastPlayed": "2026-11-03"
-}
-```
-
-If localStorage is unavailable, the app must still work normally.
-Progress simply will not be saved.
-
-## 11. Feedback and Rewards
-
-### Completion Feedback
-
-When a character is completed:
-
-- Show 1, 2, or 3 stars
-- Play a short positive sound
-- Show a simple animation, such as stars appearing or a happy emoji
-- Automatically enable the `Next` button
-- Allow the child to retry the same character
-
-### Sound
-
-Use the Web Audio API or a very small local audio file.
-
-Sounds must be:
-
-- Short
-- Gentle
-- Positive
-- Not scary or too loud
-
-## 12. Accessibility and Child-Friendly Design
-
-- Use large fonts and large tap targets
-- Avoid small text
-- Avoid complicated menus
-- Avoid time pressure
-- Avoid failure sounds
-- Avoid ads
-- Avoid external links
-- Avoid collecting personal data
-- Ensure the app works without internet after first load
-- Ensure buttons are easy for small hands to press
-
-## 13. Development Tasks
-
-Implement the project in the following order.
+Implement the website in the following order.
 Complete and test one task before moving to the next.
 
-### Task 1: Basic Layout
+### Task 1: Project Setup
 
-Create `index.html`, `style.css`, and `app.js`.
-
-Requirements:
-
-- Mobile-first layout
-- White main card
-- Light grey page background
-- Large character display area
-- Previous, Clear, and Next buttons
-- Progress text
-- No scoring or storage yet
-
-### Task 2: Character Navigation
-
-Add the full character list.
+Create the basic website structure.
 
 Requirements:
 
+- `index.html`
+- `practice.html`
+- `about.html`
+- `404.html`
+- `css/style.css`
+- `js/shared.js`
+- Basic header and footer
+- Basic responsive layout
+- Light mode styling
+
+### Task 2: Home Page
+
+Build the home page.
+
+Requirements:
+
+- Hero section
+- “Start Practising” button linking to `/practice.html`
+- Three feature cards
+- Parent information section
+- Footer
+
+### Task 3: Practice Page Layout
+
+Build the practice page layout.
+
+Requirements:
+
+- Progress area
+- Tracing card
+- Large light-grey character
+- Star result area
+- Previous, Clear, Done, and Next buttons
+- Responsive layout
+
+### Task 4: Character Navigation
+
+Add character navigation.
+
+Requirements:
+
+- Full A-Z, a-z, and 0-9 character list
 - Start at `A`
 - Previous and Next buttons work
 - Navigation wraps around
-- Progress text updates correctly
+- Progress text updates
 - Canvas clears when changing character
 
-### Task 3: Canvas Tracing
+### Task 5: Canvas Tracing
 
 Add handwriting support.
 
 Requirements:
 
 - Canvas overlays the character
-- Supports touch, mouse, and stylus
+- Supports mouse, trackpad, touch, and stylus
 - Smooth rounded line
 - Clear button clears the canvas
 - Canvas resizes correctly
-- Page does not scroll while drawing
+- Page does not scroll while drawing on touch devices
 
-### Task 4: Star Scoring
+### Task 6: Star Scoring
 
 Add simple scoring.
 
 Requirements:
 
-- Add a `Done` button
-- Calculate basic tracing coverage
-- Award 1-3 stars
-- Show stars after completion
-- Save best result in localStorage
-- Allow retry
+- `Done` button calculates basic tracing coverage
+- Awards 1-3 stars
+- Shows stars after completion
+- Saves best result in localStorage
+- Allows retry
 
-### Task 5: Feedback
+### Task 7: Feedback
 
 Add positive feedback.
 
@@ -362,54 +466,57 @@ Requirements:
 
 - Completion sound
 - Star animation
-- Simple success message
+- Friendly success message
 - No negative feedback
 
-### Task 6: Polish
+### Task 8: Polish and Test
 
-Improve usability.
+Improve usability and test the website.
 
 Requirements:
 
+- Test on desktop Chrome, Safari, and Edge
 - Test on mobile Safari and Chrome
-- Fix layout issues on small screens
-- Ensure canvas works after screen rotation
+- Test portrait and landscape orientations
 - Ensure progress restores after refresh
-- Add README with local testing instructions
+- Ensure no console errors
+- Ensure all pages work on GitHub Pages
 
-## 14. Acceptance Criteria
+## 16. Acceptance Criteria
 
 V1 is complete when:
 
-- A child can trace A-Z, a-z and 0-9
-- Touch, mouse, and stylus input work
-- Previous, Next, and Clear buttons work
+- The website has a Home page, Practice page, About page, and 404 page
+- A child can trace A-Z, a-z, and 0-9
+- Mouse, trackpad, touch, and stylus input work
+- Previous, Next, Clear, and Done buttons work
 - Canvas clears when moving to another character
 - Progress is displayed correctly
 - Stars are awarded after completion
 - Best stars are saved after page refresh
-- The app works on a mobile phone without a backend
-- The app has no console errors
-- The layout is usable on a small phone screen
+- The website works on GitHub Pages
+- The website works without a backend
+- The website has no console errors
+- The layout is usable on desktop, tablet, and mobile
 
-## 15. Future Ideas
+## 17. Future Ideas
 
 These features are not part of V1, but may be added later:
 
+- Name tracing page
+- Printable worksheet generator
+- Chinese character tracing
+- Stroke-order animation
 - Letter adventure map
 - Daily challenge
 - Stickers or pet collection
 - Badges
-- Name tracing mode
-- Chinese character tracing
-- Stroke-order animation
-- Printable worksheet generator
 - Parent progress report
 - Multiple child profiles
 - Cantonese or English audio instructions
 - Themed backgrounds and characters
 
-## 16. GitHub Copilot Instructions
+## 18. GitHub Copilot Instructions
 
 When using GitHub Copilot:
 
@@ -419,6 +526,7 @@ When using GitHub Copilot:
 - Use clear function and variable names
 - Avoid unnecessary dependencies
 - Avoid over-engineering
-- Keep all UI text in English for V1
-- Ensure the app works without internet
+- Keep all website text in English for V1
+- Ensure the website works without internet
 - Test after every task
+- Do not create a mobile app, React app, or backend unless explicitly requested
