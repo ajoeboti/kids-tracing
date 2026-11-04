@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#FFF8EB">
+  <meta name="robots" content="noindex">
+  <title>Word Practice — design preview · Kids Tracing Practice</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23FF5A39'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='26' font-family='Arial,sans-serif' font-weight='700' fill='white'%3EAa%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="word-practice-preview.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="index.html#home">
+        <span class="logo" aria-hidden="true">Aa</span>
+        <span class="brand-text">
+          <span class="brand-name">Kids Tracing</span>
+          <span class="brand-tag">Practice fun A-Z 0-9</span>
+        </span>
+      </a>
+
+      <nav class="pill-nav" aria-label="Primary">
+        <a class="nav-link" href="index.html#home">Home</a>
+        <a class="nav-link" href="index.html#practice">Practice</a>
+        <a class="nav-link" href="index.html#name">Write My Name</a>
+        <a class="nav-link" href="index.html#parents">For Parents</a>
+      </nav>
+    </header>
+
+    <nav class="wp-switcher" aria-label="Design preview switcher">
+      <strong>Design preview</strong>
+      <span class="wp-switcher-tabs">
+        <a href="#select" data-state="select">Word selection</a>
+        <a href="#tracing" data-state="tracing">Tracing</a>
+        <a href="#completed" data-state="completed">Completed</a>
+      </span>
+      <span>Layout only — nothing is saved.</span>
+    </nav>
+
+    <main id="main" class="wp-preview-view">
+      <!-- Screen 1: Word selection -->
+      <section class="view name-view wp-select" id="wp-select" aria-labelledby="wp-select-heading" hidden>
+        <a class="name-back-link" href="index.html#practice">← Back to letter practice</a>
+        <div class="wp-select-card">
+          <p class="free-badge"><i></i> WORDS, ONE LETTER AT A TIME</p>
+          <h1 id="wp-select-heading">Let’s trace a word!</h1>
+          <p class="name-subtitle">Pick a word, then trace it one letter at a time.</p>
+
+          <section class="wp-group" aria-labelledby="wp-animals">
+            <h2 id="wp-animals">Animals</h2>
+            <ul class="wp-cards">
+              <li><a class="wp-card" href="#tracing" data-word="CAT"><span class="wp-card-emoji" aria-hidden="true">🐱</span><span class="wp-card-word">CAT</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace CAT</span></a></li>
+              <li><a class="wp-card" href="#tracing" data-word="DOG"><span class="wp-card-emoji" aria-hidden="true">🐶</span><span class="wp-card-word">DOG</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace DOG</span></a></li>
+              <li><a class="wp-card" href="#tracing" data-word="PIG"><span class="wp-card-emoji" aria-hidden="true">🐷</span><span class="wp-card-word">PIG</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace PIG</span></a></li>
+            </ul>
+          </section>
+
+          <section class="wp-group" aria-labelledby="wp-things">
+            <h2 id="wp-things">Everyday things</h2>
+            <ul class="wp-cards">
+              <li><a class="wp-card" href="#tracing" data-word="BUS"><span class="wp-card-emoji" aria-hidden="true">🚌</span><span class="wp-card-word">BUS</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace BUS</span></a></li>
+              <li><a class="wp-card" href="#tracing" data-word="CAR"><span class="wp-card-emoji" aria-hidden="true">🚗</span><span class="wp-card-word">CAR</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace CAR</span></a></li>
+              <li><a class="wp-card" href="#tracing" data-word="HAT"><span class="wp-card-emoji" aria-hidden="true">🎩</span><span class="wp-card-word">HAT</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace HAT</span></a></li>
+            </ul>
+          </section>
+        </div>
+      </section>
+
+      <!-- Screen 2: Word tracing (same markup/classes as Write My Name tracing) -->
+      <section class="view name-tracing" id="wp-tracing" aria-labelledby="wp-tracing-title" hidden>
+        <div class="name-tracing-head">
+          <div>
+            <p class="name-position">Letter 2 of 3</p>
+            <h1 id="wp-tracing-title">Let’s write <span data-word-text>CAT</span>!</h1>
+          </div>
+          <div class="name-overall-progress">
+            <span>1 of 3 letters completed</span>
+            <span class="name-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33" aria-label="Word tracing progress"><span style="width:33.33%"></span></span>
+          </div>
+        </div>
+
+        <div class="practice-layout">
+          <div class="trace-card">
+            <div class="stage">
+              <div class="paper" aria-hidden="true"><span></span><span class="dashed"></span><span></span></div>
+              <p class="guide" aria-hidden="true" data-guide>A</p>
+              <p class="follow-tip">
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8.2 10.2V6.4a1.5 1.5 0 0 1 3 0V11h.5V5.6a1.5 1.5 0 0 1 3 0V11h.4V7.2a1.5 1.5 0 1 1 3 0V14c0 3.2-2.4 5.6-5.8 5.6h-1.2C8 19.6 5.8 17.2 5.8 14.2v-3.4a1.4 1.4 0 0 1 2.4-.6z"/></svg>
+                <span>Trace over the grey letter.</span>
+              </p>
+            </div>
+
+            <div class="trace-actions">
+              <button type="button" class="btn btn-soft" data-demo><span aria-hidden="true">←</span> Previous</button>
+              <button type="button" class="btn btn-white" data-demo>
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="m16.2 4.2 3.2 3.2-8.8 8.8H7.2L4 13.2 12.6 4.6l3.6-.4zM7.4 18h7.2l1.2 1.6H8.2L7.4 18z"/></svg>
+                Clear
+              </button>
+              <a class="btn btn-coral" href="#completed">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.2 4.2L19 7.2"/></svg>
+                Done
+              </a>
+              <button type="button" class="btn btn-teal" data-demo>Next <span aria-hidden="true">→</span></button>
+            </div>
+            <p class="wp-note" role="status" id="wp-demo-note">Layout preview — drawing, Previous, Clear and Next aren’t connected yet. “Done” opens the completed demo.</p>
+          </div>
+
+          <aside class="practice-side" aria-label="Word progress">
+            <section class="name-progress-card" aria-label="Word panel">
+              <div class="wp-word-head">
+                <span class="wp-word-emoji" aria-hidden="true" data-word-emoji>🐱</span>
+                <h2 class="wp-word-name" data-word-text>CAT</h2>
+              </div>
+              <div class="name-progress-heading">
+                <p class="done-pill">1 of 3 letters completed</p>
+              </div>
+              <div class="picker-meter" aria-hidden="true"><span style="display:block;width:33.33%;height:100%;background:var(--teal)"></span></div>
+              <ol class="name-tiles name-progress-tiles" aria-label="Letters in the word" data-tiles-tracing></ol>
+              <a class="text-link name-change" href="#select">Choose another word</a>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Screen 3: Word completed (same markup/classes as Write My Name completion) -->
+      <section class="view name-view name-completed" id="wp-completed" aria-labelledby="wp-completed-heading" hidden>
+        <div class="completed-card">
+          <div class="celebration-stars" aria-hidden="true"><span>✦</span><span>✦</span><span>✧</span><span>✦</span><span>✧</span></div>
+          <span class="wp-completed-emoji" aria-hidden="true" data-word-emoji>🐱</span>
+          <h1 id="wp-completed-heading">Well done!</h1>
+          <p class="completed-message">You traced <span data-word-text>CAT</span>!</p>
+          <p class="completed-full-name" data-word-text>CAT</p>
+          <ol class="name-tiles completed-tiles" aria-label="Completed letters" data-tiles-completed></ol>
+          <div class="completed-actions">
+            <a class="btn btn-coral" href="#tracing">Trace this word again</a>
+            <a class="btn btn-white" href="#select">Choose another word</a>
+            <a class="btn btn-soft" href="index.html#practice">Back to letter practice</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p class="footer-brand">
+        <span class="logo logo-sm" aria-hidden="true">Aa</span>
+        <span>© 2026 Kids Tracing Practice — Made for little learners.</span>
+      </p>
+      <p class="footer-meta">
+        <span>No login • No ads • Works offline</span>
+        <span class="footer-host">Hosted on GitHub Pages</span>
+      </p>
+      <a class="btn btn-light" href="index.html#parents">For Parents</a>
+    </div>
+  </footer>
+
+  <script>
+    // Preview-only: swaps static states. No storage, no network, no drawing.
+    (function () {
+      var EMOJI = { CAT: "🐱", DOG: "🐶", PIG: "🐷", BUS: "🚌", CAR: "🚗", HAT: "🎩" };
+      var word = "CAT";
+      var states = ["select", "tracing", "completed"];
+
+      function fill(sel, fn) {
+        document.querySelector(sel).innerHTML = word.split("").map(fn).join("");
+      }
+
+      function render() {
+        var state = states.indexOf(location.hash.slice(1)) > -1 ? location.hash.slice(1) : "select";
+        states.forEach(function (s) {
+          document.getElementById("wp-" + s).hidden = s !== state;
+        });
+        document.body.classList.toggle("name-tracing", state === "tracing");
+        document.querySelectorAll("[data-state]").forEach(function (a) {
+          if (a.dataset.state === state) a.setAttribute("aria-current", "true");
+          else a.removeAttribute("aria-current");
+        });
+        document.querySelectorAll("[data-word-text]").forEach(function (el) { el.textContent = word; });
+        document.querySelectorAll("[data-word-emoji]").forEach(function (el) { el.textContent = EMOJI[word]; });
+        document.querySelector("[data-guide]").textContent = word.charAt(1);
+        fill("[data-tiles-tracing]", function (ch, i) {
+          if (i === 0) return '<li class="name-tile is-complete" aria-label="' + ch + ', completed">' + ch + '<span class="name-tile-status" aria-hidden="true">✓</span></li>';
+          if (i === 1) return '<li class="name-tile is-current" aria-current="step" aria-label="' + ch + ', current letter">' + ch + "</li>";
+          return '<li class="name-tile" aria-label="' + ch + ', upcoming">' + ch + "</li>";
+        });
+        fill("[data-tiles-completed]", function (ch) {
+          return '<li class="name-tile" aria-label="' + ch + ', completed">' + ch + '<span class="name-tile-status" aria-hidden="true">✓</span></li>';
+        });
+        document.title = "Word Practice — design preview · Kids Tracing Practice";
+      }
+
+      document.addEventListener("click", function (e) {
+        var card = e.target.closest("[data-word]");
+        if (card) word = card.dataset.word;
+        if (e.target.closest("[data-demo]")) {
+          var note = document.getElementById("wp-demo-note");
+          note.textContent = "Layout preview only — this button isn’t connected yet.";
+        }
+      });
+      window.addEventListener("hashchange", function () { render(); window.scrollTo(0, 0); });
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+/* Word Practice — layout-only design preview. Builds on style.css; not used by the live site. */
+
+.wp-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 14px 0 0;
+  padding: 10px 14px;
+  border: 2px dashed var(--teal);
+  border-radius: 18px;
+  background: #fff;
+  font-size: 14px;
+}
+
+.wp-switcher strong {
+  color: var(--teal-deep);
+}
+
+.wp-switcher-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.wp-switcher a {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--cream-deep);
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.wp-switcher a[aria-current="true"] {
+  background: var(--teal);
+  color: #fff;
+}
+
+.wp-select {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.wp-select-card {
+  padding: clamp(20px, 5vw, 42px);
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.wp-select-card h1 {
+  margin: 16px 0 6px;
+  font-size: clamp(32px, 7vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.wp-group {
+  margin: 26px 0 0;
+}
+
+.wp-group h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.wp-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wp-card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 18px 10px 14px;
+  border-radius: 22px;
+  background: #fff8ee;
+  box-shadow: inset 0 0 0 1px #f0dfc9;
+  color: var(--ink);
+  text-align: center;
+  text-decoration: none;
+}
+
+.wp-card:hover {
+  box-shadow: inset 0 0 0 2px var(--teal);
+}
+
+.wp-card-emoji {
+  font-size: clamp(44px, 9vw, 60px);
+  line-height: 1.1;
+}
+
+.wp-card-word {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.wp-card-meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.wp-card-action {
+  margin-top: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--coral);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.wp-note {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #fff7d6;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.wp-word-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.wp-word-emoji {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.wp-word-name {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 0.04em;
+}
+
+.wp-preview-view .name-tile {
+  cursor: default;
+}
+
+.wp-completed-emoji {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 56px;
+  line-height: 1;
+}
+
+.wp-preview-view .completed-full-name {
+  letter-spacing: 0.06em;
+}
+
+.wp-preview-view .completed-tiles {
+  max-width: 300px;
+}
+
+@media (max-width: 719px) {
+  .wp-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 340px) {
+  .wp-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .wp-word-head {
+    margin-bottom: 8px;
+  }
+
+  .wp-word-emoji {
+    font-size: 32px;
+  }
+
+  .wp-word-name {
+    font-size: 22px;
+  }
+}
