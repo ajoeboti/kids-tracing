@@ -947,7 +947,6 @@ main {
 }
 
 .guide-dots,
-.sample-stroke,
 .trace-canvas {
   position: absolute;
   inset: 0;
@@ -956,12 +955,6 @@ main {
 }
 
 .guide-dots { z-index: 2; pointer-events: none; }
-.sample-stroke {
-  z-index: 3;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-.sample-stroke.is-hidden { opacity: 0; }
 
 .trace-canvas {
   z-index: 4;
@@ -1434,7 +1427,6 @@ main {
     scroll-behavior: auto;
   }
 
-  .sample-stroke,
   .btn,
   .tile,
   .tool {
