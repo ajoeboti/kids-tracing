@@ -17,15 +17,20 @@ dependencies and can be published from the repository root with GitHub Pages.
 ## Word Practice
 
 Choose **Word Practice** in the navigation or open `#words` to pick a short
-word. The first set includes CAT, DOG, PIG, BUS, CAR, and HAT. Trace each
-letter and press **Done** to mark it complete; **Next** moves through the word
-and returns to any unfinished letter before showing the completion screen.
-Progress resumes from the browser's local storage and is independent of letter
-practice and Write My Name.
+word. The first set includes CAT, DOG, PIG, BUS, CAR, and HAT, grouped into
+animals and everyday things. Word cards and their progress indicators are
+rendered from the word data. Trace each grey letter and press **Done** to mark
+it complete; **Next** moves through the word and returns to any unfinished
+letter before showing the Write My Name completion layout. The shared canvas
+uses grey-character tracing only, without dots, stroke numbers, or markers.
+Progress resumes from browser storage and is independent of letter practice
+and Write My Name.
 
 Word-session data is stored under `kids-tracing-word-session-v1`. It contains
-only the selected word, current letter position, and completion flags.
-Handwriting strokes and canvas images are never saved.
+only the selected word, current letter position, and completion flags. One word
+session is stored at a time; choosing another word after progress requires
+confirmation and replaces the previous session. Handwriting strokes and
+canvas images are never saved.
 
 ## Write My Name
 
@@ -55,9 +60,9 @@ with any static HTTP server for local browser testing, or open `index.html`
 directly. GitHub Pages can publish the repository root; relative asset paths
 and hash routes also work beneath `/kids-tracing/`.
 
-The approved visual reference image files were not present in the checkout
-when this feature was implemented, so the feature uses the layouts described
-in the project request and the website's existing visual system.
+The HTML exports in `docs/designs/word-practice/` are design references, not
+production pages. The live feature uses the existing website navigation,
+styles, local fonts, and shared tracing canvas.
 
 ## Manual smoke checks
 

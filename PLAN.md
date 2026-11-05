@@ -3,8 +3,8 @@
 ## 1. Project Overview
 
 **Kids Tracing Practice** is a free, browser-based website that helps young
-children practise writing English letters and numbers, or the letters in
-their own name.
+children practise writing English letters and numbers, their own name, or
+short words one letter at a time.
 
 Children can trace uppercase letters, lowercase letters, and numbers using
 a mouse, trackpad, finger, or stylus. The website will be simple, friendly,
@@ -17,6 +17,7 @@ It will be hosted on GitHub Pages and opened directly in a web browser.
 ## 2. Goals
 
 - Help children practise A-Z, a-z, and 0-9
+- Let children trace the letters in short words
 - Provide a simple, enjoyable tracing experience
 - Work on desktop, tablet, and mobile browsers
 - Require no login, installation, or payment
@@ -37,6 +38,8 @@ The website currently uses one static HTML page with hash-based views:
 /                  → Home view
 /#practice         → Letter and number tracing
 /#name             → Name entry, tracing, or completion
+/#words            → Word selection, tracing, or completion
+/#word-selection   → Choose a word without changing the saved session
 /#parents          → Parent information section on Home
 ```
 
@@ -295,6 +298,23 @@ Name tracing shares the existing practice page's canvas, pointer events,
 resize handling, and drawing renderer. Its temporary handwriting stays only
 in memory and is cleared when changing positions; saved completion flags
 remain available after refresh.
+
+### Word Tracing Session
+
+Word Practice uses `#words` for the selection, tracing, or completion view.
+`#word-selection` opens the selection view directly. The initial word data is
+CAT, DOG, PIG, BUS, CAR, and HAT, grouped into animals and everyday things.
+Children trace each word one letter at a time using the same grey-character
+guide and shared handwriting canvas as Write My Name; tracing dots, stroke
+numbers, and start/end markers are not used.
+
+Word-session data is independent of letter/number and name progress. The
+versioned key `kids-tracing-word-session-v1` stores only the selected word,
+current character position, and completion flags for each position. It never
+saves canvas pixels or stroke data. Only one word session is stored at a time;
+starting a different word after making progress asks for confirmation before
+replacing that session. Word completion uses the existing Write My Name
+completion layout.
 
 ## 11. Visual Design
 
