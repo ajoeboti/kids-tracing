@@ -110,6 +110,38 @@
   line-height: 1.1;
 }
 
+.wp-card-stage {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-height: 126px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #ffe4e6;
+}
+
+#word-things .wp-card-stage {
+  background: #fef3c7;
+}
+
+.wp-card-status {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  max-width: calc(100% - 16px);
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.wp-card-status.is-complete {
+  color: var(--teal-deep);
+}
+
 .wp-card-word {
   font-size: 24px;
   font-weight: 700;
@@ -119,6 +151,29 @@
 .wp-card-meta {
   color: var(--muted);
   font-size: 14px;
+}
+
+.wp-card-phonics {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.wp-card-progress {
+  display: flex;
+  min-height: 12px;
+  align-items: center;
+  gap: 5px;
+}
+
+.wp-progress-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ddd6ce;
+}
+
+.wp-progress-dot.is-complete {
+  background: var(--teal);
 }
 
 .wp-card-action {

@@ -5,12 +5,12 @@ var NAME_STORAGE_KEY = "kids-tracing-name-session-v1";
 var WORD_STORAGE_KEY = "kids-tracing-word-session-v1";
 var CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split("");
 var WORDS = {
-  CAT: { emoji: "🐱" },
-  DOG: { emoji: "🐶" },
-  PIG: { emoji: "🐷" },
-  BUS: { emoji: "🚌" },
-  CAR: { emoji: "🚗" },
-  HAT: { emoji: "🎩" }
+  CAT: { emoji: "🐱", category: "animals", phonics: "/k/ /æ/ /t/" },
+  DOG: { emoji: "🐶", category: "animals", phonics: "/d/ /ɒ/ /ɡ/" },
+  PIG: { emoji: "🐷", category: "animals", phonics: "/p/ /ɪ/ /ɡ/" },
+  BUS: { emoji: "🚌", category: "things", phonics: "/b/ /ʌ/ /s/" },
+  CAR: { emoji: "🚗", category: "things", phonics: "/k/ /ɑːr/" },
+  HAT: { emoji: "🎩", category: "things", phonics: "/h/ /æ/ /t/" }
 };
 var ACCURACY_KEY = "kids-tracing-min-accuracy-v1";
 var PASTELS = ["pink", "sky", "mint"];
@@ -461,6 +461,75 @@ function wordTileStatus(index) {
   if (index === wordSession.currentIndex) return "current";
   if (wordSession.completed[index]) return "completed";
   return "upcoming";
+}
+
+function renderWordSelection() {
+  var groups = {
+    animals: document.getElementById("word-animals"),
+    things: document.getElementById("word-things")
+  };
+  Object.keys(groups).forEach(function (category) {
+    groups[category].replaceChildren();
+  });
+
+  Object.keys(WORDS).forEach(function (word) {
+    var data = WORDS[word];
+    var activeSession = wordSession && wordSession.word === word ? wordSession : null;
+    var completed = activeSession
+      ? activeSession.completed.filter(function (done) { return done; }).length
+      : 0;
+    var status = !activeSession ? "New word" :
+      (completed === word.length ? "Completed" :
+        "In progress · " + completed + " of " + word.length);
+    var item = document.createElement("li");
+    var button = document.createElement("button");
+    var stage = document.createElement("span");
+    var emoji = document.createElement("span");
+    var badge = document.createElement("span");
+    var name = document.createElement("span");
+    var details = document.createElement("span");
+    var phonics = document.createElement("span");
+    var progress = document.createElement("span");
+
+    button.type = "button";
+    button.className = "wp-card";
+    button.setAttribute("data-word", word);
+    stage.className = "wp-card-stage";
+    emoji.className = "wp-card-emoji";
+    emoji.setAttribute("aria-hidden", "true");
+    emoji.textContent = data.emoji;
+    badge.className = "wp-card-status" +
+      (activeSession && completed === word.length ? " is-complete" : "");
+    badge.textContent = status;
+    stage.appendChild(emoji);
+    stage.appendChild(badge);
+    name.className = "wp-card-word";
+    name.textContent = word;
+    details.className = "wp-card-meta";
+    details.textContent = word.length + " letters · " + Array.from(word).join(" · ");
+    phonics.className = "wp-card-phonics";
+    phonics.textContent = "Phonics: " + data.phonics;
+    progress.className = "wp-card-progress";
+    progress.setAttribute("aria-hidden", "true");
+    for (var index = 0; index < word.length; index += 1) {
+      var dot = document.createElement("span");
+      dot.className = "wp-progress-dot" +
+        (activeSession && activeSession.completed[index] ? " is-complete" : "");
+      progress.appendChild(dot);
+    }
+
+    var action = document.createElement("span");
+    action.className = "wp-card-action";
+    action.textContent = "Trace " + word + " →";
+    button.appendChild(stage);
+    button.appendChild(name);
+    button.appendChild(details);
+    button.appendChild(phonics);
+    button.appendChild(progress);
+    button.appendChild(action);
+    item.appendChild(button);
+    groups[data.category].appendChild(item);
+  });
 }
 
 function renderWordProgress() {
@@ -1249,12 +1318,14 @@ function applyRoute() {
       renderWordProgress();
     } else {
       showView("word-selection");
+      renderWordSelection();
     }
     window.scrollTo(0, 0);
     return;
   }
   if (hash === "word-selection") {
     showView("word-selection");
+    renderWordSelection();
     window.scrollTo(0, 0);
     return;
   }
@@ -1385,6 +1456,7 @@ document.getElementById("change-name").addEventListener("click", function () {
 document.getElementById("try-another-name").addEventListener("click", tryAnotherName);
 document.getElementById("write-again").addEventListener("click", writeNameAgain);
 document.getElementById("word-again").addEventListener("click", traceWordAgain);
+document.getElementById("choose-another-word").addEventListener("click", chooseAnotherWord);
 document.getElementById("name-progress-tiles").addEventListener("click", function (event) {
   var button = event.target.closest("button");
   if (!button) return;
