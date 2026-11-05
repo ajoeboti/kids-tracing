@@ -2,7 +2,16 @@
 
 var STORAGE_KEY = "kids-tracing-progress";
 var NAME_STORAGE_KEY = "kids-tracing-name-session-v1";
+var WORD_STORAGE_KEY = "kids-tracing-word-session-v1";
 var CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split("");
+var WORDS = {
+  CAT: { emoji: "🐱" },
+  DOG: { emoji: "🐶" },
+  PIG: { emoji: "🐷" },
+  BUS: { emoji: "🚌" },
+  CAR: { emoji: "🚗" },
+  HAT: { emoji: "🎩" }
+};
 var PASTELS = ["pink", "sky", "mint"];
 var PHONEMES = {
   A: "ay", B: "buh", C: "kuh", D: "duh", E: "eh", F: "fff", G: "guh",
@@ -24,9 +33,11 @@ var brushButton = document.getElementById("tool-brush");
 
 var state = loadProgress();
 var nameSession = loadNameSession();
+var wordSession = loadWordSession();
 var strokes = [];
 var practiceInk = [];
 var nameInk = [];
+var wordInk = [];
 var drawingMode = "practice";
 var drawing = false;
 var activeStroke = null;
@@ -87,6 +98,45 @@ function loadNameSession() {
   }
 }
 
+function loadWordSession() {
+  try {
+    var raw = localStorage.getItem(WORD_STORAGE_KEY);
+    if (!raw) return null;
+    var data = JSON.parse(raw);
+    if (!data || typeof data !== "object" ||
+        !Object.prototype.hasOwnProperty.call(WORDS, data.word) ||
+        !Number.isInteger(data.currentIndex) ||
+        data.currentIndex < 0 ||
+        data.currentIndex >= data.word.length ||
+        !Array.isArray(data.completed) ||
+        data.completed.length !== data.word.length ||
+        !data.completed.every(function (done) { return typeof done === "boolean"; })) {
+      return null;
+    }
+    return {
+      word: data.word,
+      currentIndex: data.currentIndex,
+      completed: data.completed.slice()
+    };
+  } catch (err) {
+    return null;
+  }
+}
+
+function persistWordSession() {
+  if (!wordSession) return;
+  try {
+    localStorage.setItem(WORD_STORAGE_KEY, JSON.stringify({
+      word: wordSession.word,
+      currentIndex: wordSession.currentIndex,
+      completed: wordSession.completed
+    }));
+  } catch (err) {
+    document.getElementById("live").textContent =
+      "Your word practice progress could not be saved in this browser.";
+  }
+}
+
 function persistNameSession() {
   if (!nameSession) return;
   try {
@@ -119,6 +169,14 @@ function nameIsComplete() {
   return !!nameSession && nameSession.completed.every(function (done) { return done; });
 }
 
+function wordCompletionCount() {
+  return wordSession ? wordSession.completed.filter(function (done) { return done; }).length : 0;
+}
+
+function wordIsComplete() {
+  return !!wordSession && wordSession.completed.every(function (done) { return done; });
+}
+
 function today() {
   var d = new Date();
   var month = String(d.getMonth() + 1);
@@ -146,6 +204,13 @@ function persist() {
 
 function currentChar() {
   return CHARACTERS[state.currentIndex];
+}
+
+function tracingChar() {
+  if (drawingMode === "word" && wordSession) {
+    return wordSession.word.charAt(wordSession.currentIndex);
+  }
+  return currentChar();
 }
 
 function nextChar() {
@@ -303,6 +368,11 @@ function renderNameProgress() {
   document.getElementById("name-done-count").textContent =
     complete + " of " + total + " " + (total === 1 ? "letter" : "letters") + " completed";
   document.getElementById("name-panel-meter").style.width = percentage + "%";
+  document.getElementById("progress-title").textContent = "Your name";
+  document.getElementById("name-progress-tiles").setAttribute("aria-label", "Letters in your name");
+  document.getElementById("name-progress-track").setAttribute("aria-label", "Name tracing progress");
+  document.getElementById("name-progress-card").setAttribute("aria-label", "Name progress");
+  document.getElementById("change-name").textContent = "Change name";
   document.getElementById("name-encouragement").textContent =
     nameSession.completed[nameSession.currentIndex]
       ? "Lovely try! This letter is complete."
@@ -338,6 +408,101 @@ function renderNameCompleted() {
   for (var index = 0; index < nameSession.name.length; index += 1) {
     tiles.appendChild(createNameTile(index, true));
   }
+}
+
+function wordTileStatus(index) {
+  if (index === wordSession.currentIndex) return "current";
+  if (wordSession.completed[index]) return "completed";
+  return "upcoming";
+}
+
+function renderWordProgress() {
+  if (!wordSession) return;
+  var total = wordSession.word.length;
+  var complete = wordCompletionCount();
+  var percentage = (complete / total) * 100;
+  var position = wordSession.currentIndex + 1;
+  var letter = wordSession.word.charAt(wordSession.currentIndex);
+
+  document.getElementById("name-tracing-title").textContent =
+    "Let’s write " + wordSession.word + "!";
+  document.getElementById("name-position").textContent =
+    "Letter " + position + " of " + total;
+  document.getElementById("name-overall-count").textContent =
+    complete + " of " + total + " letters completed";
+  document.getElementById("name-progress-fill").style.width = percentage + "%";
+  document.getElementById("name-progress-track").setAttribute("aria-valuenow", String(percentage));
+  document.getElementById("name-progress-track").setAttribute("aria-label", "Word tracing progress");
+  document.getElementById("name-done-count").textContent =
+    complete + " of " + total + " letters completed";
+  document.getElementById("name-panel-meter").style.width = percentage + "%";
+  document.getElementById("name-encouragement").textContent =
+    wordSession.completed[wordSession.currentIndex]
+      ? "Lovely try! This letter is complete."
+      : "Trace each letter to finish your word!";
+  document.getElementById("progress-title").textContent = "Your word";
+  document.getElementById("name-progress-tiles").setAttribute("aria-label", "Letters in " + wordSession.word);
+  document.getElementById("name-progress-card").setAttribute("aria-label", "Word progress");
+  document.getElementById("change-name").textContent = "Choose another word";
+  document.getElementById("guide").textContent = letter;
+  document.getElementById("follow-copy").textContent = "Trace over the grey letter.";
+  canvas.setAttribute("aria-label", "Tracing canvas for letter " + letter + " in " + wordSession.word);
+
+  var previousButton = document.getElementById("prev-button");
+  previousButton.disabled = wordSession.currentIndex === 0;
+  document.getElementById("previous-copy").textContent = "Previous";
+  document.getElementById("clear-copy").textContent = "Clear";
+  document.getElementById("done-copy").textContent = "Done";
+  document.getElementById("next-copy").textContent =
+    wordSession.currentIndex === total - 1 ? "Finish" : "Next";
+  document.getElementById("next-arrow").textContent =
+    wordSession.currentIndex === total - 1 ? "✓" : "→";
+
+  var tiles = document.getElementById("name-progress-tiles");
+  tiles.replaceChildren();
+  for (var index = 0; index < total; index += 1) {
+    var status = wordTileStatus(index);
+    var item = document.createElement("li");
+    item.className = "name-position-item";
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "name-tile" + (status === "current" ? " is-current" : "") +
+      (wordSession.completed[index] ? " is-complete" : "");
+    button.textContent = wordSession.word.charAt(index);
+    button.setAttribute("aria-label", "Letter " + (index + 1) + " of " +
+      total + ", " + wordSession.word.charAt(index) + ", " + status);
+    if (status === "current") button.setAttribute("aria-current", "step");
+    if (wordSession.completed[index]) {
+      var mark = document.createElement("span");
+      mark.className = "name-tile-status";
+      mark.setAttribute("aria-hidden", "true");
+      mark.textContent = "✓";
+      button.appendChild(mark);
+    }
+    item.appendChild(button);
+    tiles.appendChild(item);
+  }
+}
+
+function renderWordCompleted() {
+  if (!wordSession) return;
+  document.getElementById("word-completed-name").textContent = wordSession.word;
+  document.getElementById("word-completed-full-name").textContent = wordSession.word;
+  document.getElementById("word-completed-emoji").textContent = WORDS[wordSession.word].emoji;
+  var tiles = document.getElementById("word-completed-tiles");
+  tiles.replaceChildren();
+  Array.from(wordSession.word).forEach(function (letter, index) {
+    var tile = document.createElement("span");
+    tile.className = "name-tile is-complete";
+    tile.textContent = letter;
+    tile.setAttribute("aria-label", "Letter " + (index + 1) + ", " + letter + ", completed");
+    var mark = document.createElement("span");
+    mark.className = "name-tile-status";
+    mark.setAttribute("aria-hidden", "true");
+    mark.textContent = "✓";
+    tile.appendChild(mark);
+    tiles.appendChild(tile);
+  });
 }
 
 function renderPicker(keepSelectedGroup) {
@@ -482,6 +647,7 @@ function selectTool(nextTool, width) {
 function clearInk() {
   strokes = [];
   if (drawingMode === "name") nameInk = strokes;
+  else if (drawingMode === "word") wordInk = strokes;
   else practiceInk = strokes;
   activeStroke = null;
   drawing = false;
@@ -492,9 +658,11 @@ function clearInk() {
 function switchDrawingMode(nextMode) {
   if (drawingMode === nextMode) return;
   if (drawingMode === "name") nameInk = strokes;
+  else if (drawingMode === "word") wordInk = strokes;
   else practiceInk = strokes;
   drawingMode = nextMode;
-  strokes = drawingMode === "name" ? nameInk : practiceInk;
+  strokes = drawingMode === "name" ? nameInk :
+    (drawingMode === "word" ? wordInk : practiceInk);
   activeStroke = null;
   drawing = false;
   paint();
@@ -547,6 +715,50 @@ function startNameSession() {
   else location.hash = "name";
 }
 
+function startWordSession(word) {
+  if (!Object.prototype.hasOwnProperty.call(WORDS, word)) return;
+  if (wordSession && wordSession.word !== word &&
+      (wordSession.currentIndex > 0 || wordCompletionCount() > 0) &&
+      !window.confirm("Start a new word and leave this word session? Your completed letters will be cleared.")) {
+    return;
+  }
+  if (!wordSession || wordSession.word !== word) {
+    wordSession = {
+      word: word,
+      currentIndex: 0,
+      completed: Array.from(word).map(function () { return false; })
+    };
+  }
+  persistWordSession();
+  wordInk = [];
+  clearInk();
+  if (location.hash === "#words") applyRoute();
+  else location.hash = "words";
+}
+
+function navigateWordTo(index) {
+  if (!wordSession || index < 0 || index >= wordSession.word.length ||
+      index === wordSession.currentIndex) return;
+  wordSession.currentIndex = index;
+  persistWordSession();
+  clearInk();
+  renderWordProgress();
+  resizeCanvas();
+}
+
+function hasDrawingAttempt() {
+  return strokes.some(function (stroke) {
+    if (stroke.points.length < 2) return false;
+    var distance = 0;
+    for (var pointIndex = 1; pointIndex < stroke.points.length; pointIndex += 1) {
+      var previous = stroke.points[pointIndex - 1];
+      var point = stroke.points[pointIndex];
+      distance += Math.hypot(point.x - previous.x, point.y - previous.y);
+    }
+    return distance > 2;
+  });
+}
+
 function navigateNameTo(index) {
   if (!nameSession || index < 0 || index >= nameSession.name.length ||
       index === nameSession.currentIndex) return;
@@ -559,16 +771,7 @@ function navigateNameTo(index) {
 
 function onNameDone() {
   if (!nameSession) return;
-  if (!strokes.some(function (stroke) {
-    if (stroke.points.length < 2) return false;
-    var distance = 0;
-    for (var pointIndex = 1; pointIndex < stroke.points.length; pointIndex += 1) {
-      var previous = stroke.points[pointIndex - 1];
-      var point = stroke.points[pointIndex];
-      distance += Math.hypot(point.x - previous.x, point.y - previous.y);
-    }
-    return distance > 2;
-  })) {
+  if (!hasDrawingAttempt()) {
     document.getElementById("live").textContent =
       "Trace the grey letter first, then tap Done.";
     return;
@@ -586,6 +789,26 @@ function onNameDone() {
     "Well done! You completed letter " + letter + ".";
 }
 
+function onWordDone() {
+  if (!wordSession) return;
+  if (!hasDrawingAttempt()) {
+    document.getElementById("live").textContent =
+      "Trace the grey letter first, then tap Done.";
+    return;
+  }
+  if (wordSession.completed[wordSession.currentIndex]) {
+    document.getElementById("live").textContent =
+      "You already completed this letter. Keep going!";
+    return;
+  }
+  var letter = wordSession.word.charAt(wordSession.currentIndex);
+  wordSession.completed[wordSession.currentIndex] = true;
+  persistWordSession();
+  renderWordProgress();
+  document.getElementById("live").textContent =
+    "Well done! You completed letter " + letter + " in " + wordSession.word + ".";
+}
+
 function onNameNext() {
   if (!nameSession) return;
   var lastIndex = nameSession.name.length - 1;
@@ -601,6 +824,39 @@ function onNameNext() {
   document.getElementById("live").textContent =
     "A few letters are still waiting. Let’s visit the first one you have not completed.";
   navigateNameTo(incomplete);
+}
+
+function onWordNext() {
+  if (!wordSession) return;
+  var lastIndex = wordSession.word.length - 1;
+  if (wordSession.currentIndex < lastIndex) {
+    navigateWordTo(wordSession.currentIndex + 1);
+    return;
+  }
+  if (wordIsComplete()) {
+    if (location.hash === "#words") applyRoute();
+    else location.hash = "words";
+    return;
+  }
+  var incomplete = wordSession.completed.indexOf(false);
+  document.getElementById("live").textContent =
+    "A few letters are still waiting. Let’s visit the first one you have not completed.";
+  navigateWordTo(incomplete);
+}
+
+function chooseAnotherWord() {
+  location.hash = "word-selection";
+}
+
+function traceWordAgain() {
+  if (!wordSession) return;
+  wordSession.currentIndex = 0;
+  wordSession.completed = Array.from(wordSession.word).map(function () { return false; });
+  wordInk = [];
+  persistWordSession();
+  clearInk();
+  if (location.hash === "#words") applyRoute();
+  else location.hash = "words";
 }
 
 function changeName() {
@@ -669,11 +925,12 @@ function tracingScore() {
   targetContext.font = font;
   targetContext.textAlign = "center";
   targetContext.textBaseline = "alphabetic";
-  var metrics = targetContext.measureText(currentChar());
+  var character = tracingChar();
+  var metrics = targetContext.measureText(character);
   var baseline = (guideRect.top - stageRect.top + guideRect.height / 2) * scaleY +
     (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) * scaleY / scaleX / 2;
   targetContext.fillText(
-    currentChar(),
+    character,
     (guideRect.left - stageRect.left + guideRect.width / 2) * scaleX,
     baseline
   );
@@ -860,32 +1117,43 @@ function showView(name) {
   var previousView = document.body.dataset.view;
   var practice = name === "practice";
   var nameTracing = name === "name-tracing";
+  var wordTracing = name === "word-tracing";
   var nameEntry = name === "name-entry";
   var nameCompleted = name === "name-completed";
-  var inPractice = practice || nameTracing;
-  var navName = nameTracing || nameEntry || nameCompleted ? "name" :
-    (practice ? "practice" : "home");
+  var wordSelection = name === "word-selection";
+  var wordCompleted = name === "word-completed";
+  var inPractice = practice || nameTracing || wordTracing;
+  var navName = wordTracing || wordSelection || wordCompleted ? "words" :
+    (nameTracing || nameEntry || nameCompleted ? "name" : (practice ? "practice" : "home"));
+  var guidedTracing = nameTracing || wordTracing;
 
-  if ((drawingMode === "name") !== nameTracing) {
-    switchDrawingMode(nameTracing ? "name" : "practice");
+  var nextDrawingMode = nameTracing ? "name" : (wordTracing ? "word" : "practice");
+  if (drawingMode !== nextDrawingMode) {
+    switchDrawingMode(nextDrawingMode);
   }
-  document.getElementById("view-home").hidden = inPractice || nameEntry || nameCompleted;
+  document.getElementById("view-home").hidden =
+    inPractice || nameEntry || nameCompleted || wordSelection || wordCompleted;
   document.getElementById("view-practice").hidden = !inPractice;
   document.getElementById("view-name").hidden = !nameEntry && !nameCompleted;
   document.getElementById("name-entry-view").hidden = !nameEntry;
   document.getElementById("name-completed-view").hidden = !nameCompleted;
-  document.getElementById("name-tracing-head").hidden = !nameTracing;
-  document.getElementById("practice-head").hidden = nameTracing;
-  document.querySelector(".picker-card").hidden = nameTracing;
-  document.getElementById("name-progress-card").hidden = !nameTracing;
+  document.getElementById("view-word-selection").hidden = !wordSelection;
+  document.getElementById("view-word-completed").hidden = !wordCompleted;
+  document.getElementById("name-tracing-head").hidden = !guidedTracing;
+  document.getElementById("practice-head").hidden = guidedTracing;
+  document.querySelector(".picker-card").hidden = guidedTracing;
+  document.getElementById("name-progress-card").hidden = !guidedTracing;
   document.querySelector(".practice-side").setAttribute("aria-label",
-    nameTracing ? "Name progress" : "Character picker");
+    nameTracing ? "Name progress" : (wordTracing ? "Word progress" : "Character picker"));
   document.body.dataset.view = name;
-  document.body.classList.toggle("name-tracing", nameTracing);
-  document.title = nameTracing ? "Write My Name • Kids Tracing" :
+  document.body.classList.toggle("name-tracing", guidedTracing);
+  document.body.classList.toggle("word-tracing", wordTracing);
+  document.title = wordSelection || wordTracing || wordCompleted ? "Word Practice • Kids Tracing" :
+    (nameTracing ? "Write My Name • Kids Tracing" :
     (nameEntry || nameCompleted ? "Write My Name • Kids Tracing" :
-      (practice ? "Practice • Kids Tracing" : "Kids Tracing Practice"));
-  if (practice && typeof previousView === "string" && previousView.indexOf("name-") === 0) {
+      (practice ? "Practice • Kids Tracing" : "Kids Tracing Practice")));
+  if (practice && typeof previousView === "string" &&
+      (previousView.indexOf("name-") === 0 || previousView.indexOf("word-") === 0)) {
     renderLetter();
   }
   document.querySelectorAll("[data-nav]").forEach(function (link) {
@@ -915,6 +1183,24 @@ function applyRoute() {
       showView("name-entry");
       updateNameEntryPreview();
     }
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (hash === "words") {
+    if (wordSession && wordIsComplete()) {
+      showView("word-completed");
+      renderWordCompleted();
+    } else if (wordSession) {
+      showView("word-tracing");
+      renderWordProgress();
+    } else {
+      showView("word-selection");
+    }
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (hash === "word-selection") {
+    showView("word-selection");
     window.scrollTo(0, 0);
     return;
   }
@@ -994,6 +1280,10 @@ document.getElementById("prev-button").addEventListener("click", function () {
     navigateNameTo(nameSession.currentIndex - 1);
     return;
   }
+  if (document.body.dataset.view === "word-tracing") {
+    navigateWordTo(wordSession.currentIndex - 1);
+    return;
+  }
   goTo(state.currentIndex - 1);
 });
 document.getElementById("next-button").addEventListener("click", function () {
@@ -1001,11 +1291,16 @@ document.getElementById("next-button").addEventListener("click", function () {
     onNameNext();
     return;
   }
+  if (document.body.dataset.view === "word-tracing") {
+    onWordNext();
+    return;
+  }
   goTo(state.currentIndex + 1);
 });
 document.getElementById("clear-button").addEventListener("click", clearInk);
 document.getElementById("done-button").addEventListener("click", function () {
   if (document.body.dataset.view === "name-tracing") onNameDone();
+  else if (document.body.dataset.view === "word-tracing") onWordDone();
   else onDone();
 });
 document.getElementById("keep-going").addEventListener("click", function () {
@@ -1022,17 +1317,26 @@ document.getElementById("name-clear").addEventListener("click", function () {
   document.getElementById("name-input").focus();
 });
 document.getElementById("name-start").addEventListener("click", startNameSession);
-document.getElementById("change-name").addEventListener("click", changeName);
+document.getElementById("change-name").addEventListener("click", function () {
+  if (document.body.dataset.view === "word-tracing") chooseAnotherWord();
+  else changeName();
+});
 document.getElementById("try-another-name").addEventListener("click", tryAnotherName);
 document.getElementById("write-again").addEventListener("click", writeNameAgain);
+document.getElementById("word-again").addEventListener("click", traceWordAgain);
 document.getElementById("name-progress-tiles").addEventListener("click", function (event) {
   var button = event.target.closest("button");
   if (!button) return;
   var tile = button.parentElement;
   var index = Array.prototype.indexOf.call(tile.parentElement.children, tile);
-  navigateNameTo(index);
+  if (document.body.dataset.view === "word-tracing") navigateWordTo(index);
+  else navigateNameTo(index);
   var activeTile = document.querySelectorAll("#name-progress-tiles li")[index];
   if (activeTile) activeTile.querySelector("button").focus();
+});
+document.getElementById("view-word-selection").addEventListener("click", function (event) {
+  var card = event.target.closest("[data-word]");
+  if (card && event.currentTarget.contains(card)) startWordSession(card.getAttribute("data-word"));
 });
 document.getElementById("how-button").addEventListener("click", function () {
   if ((location.hash || "#home") !== "#home" && location.hash !== "") {

@@ -10,7 +10,22 @@ dependencies and can be published from the repository root with GitHub Pages.
   touch, or stylus input.
 - Write a name one character at a time using the same handwriting canvas as
   letter and number practice.
+- Trace short words one letter at a time, with saved progress for the selected
+  word session.
 - Keep saved practice progress in the browser.
+
+## Word Practice
+
+Choose **Word Practice** in the navigation or open `#words` to pick a short
+word. The first set includes CAT, DOG, PIG, BUS, CAR, and HAT. Trace each
+letter and press **Done** to mark it complete; **Next** moves through the word
+and returns to any unfinished letter before showing the completion screen.
+Progress resumes from the browser's local storage and is independent of letter
+practice and Write My Name.
+
+Word-session data is stored under `kids-tracing-word-session-v1`. It contains
+only the selected word, current letter position, and completion flags.
+Handwriting strokes and canvas images are never saved.
 
 ## Write My Name
 

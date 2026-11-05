@@ -1,4 +1,4 @@
-/* Word Practice — layout-only design preview. Builds on style.css; not used by the live site. */
+/* Word Practice layout shared by the live flow and the design preview. */
 
 .wp-switcher {
   display: flex;
@@ -52,6 +52,10 @@
   box-shadow: var(--shadow);
 }
 
+.wp-select-card > .btn {
+  margin-top: 24px;
+}
+
 .wp-select-card h1 {
   margin: 16px 0 6px;
   font-size: clamp(32px, 7vw, 48px);
@@ -79,6 +83,7 @@
 
 .wp-card {
   display: flex;
+  width: 100%;
   height: 100%;
   flex-direction: column;
   align-items: center;
@@ -88,11 +93,15 @@
   background: #fff8ee;
   box-shadow: inset 0 0 0 1px #f0dfc9;
   color: var(--ink);
+  border: 0;
+  font: inherit;
+  cursor: pointer;
   text-align: center;
   text-decoration: none;
 }
 
-.wp-card:hover {
+.wp-card:hover,
+.wp-card:focus-visible {
   box-shadow: inset 0 0 0 2px var(--teal);
 }
 
@@ -160,6 +169,10 @@
   margin-bottom: 6px;
   font-size: 56px;
   line-height: 1;
+}
+
+.word-tracing .stars-pill {
+  display: none;
 }
 
 .wp-preview-view .completed-full-name {

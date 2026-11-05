@@ -1730,6 +1730,11 @@ main {
 }
 
 @media (max-width: 719px) {
+  .pill-nav {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .name-tracing .trace-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
