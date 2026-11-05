@@ -179,6 +179,15 @@ function setMinAccuracy(value) {
   document.querySelectorAll(".accuracy-value").forEach(function (el) { el.textContent = minAccuracy + "%"; });
 }
 
+function showAccuracyFeedback(percent) {
+  var dialog = document.getElementById("accuracy-dialog");
+  document.getElementById("accuracy-dialog-message").textContent =
+    "Your tracing matched " + percent + "%. This letter needs at least " +
+    minAccuracy + "% to continue. Trace over the grey letter and try again!";
+  dialog.showModal();
+  document.getElementById("accuracy-dialog-close").focus();
+}
+
 // Returns true if the current letter passes (or is already done); otherwise warns.
 function checkLetterAccuracy(session) {
   var live = document.getElementById("live");
@@ -192,7 +201,7 @@ function checkLetterAccuracy(session) {
   if (percent < minAccuracy) {
     live.textContent = "Accuracy " + percent + "% is below " + minAccuracy +
       "%. Clear and trace the letter more carefully, then tap Next.";
-    window.alert("Accuracy " + percent + "% — you need at least " + minAccuracy + "%. Try again!");
+    showAccuracyFeedback(percent);
     return false;
   }
   session.completed[session.currentIndex] = true;
@@ -1343,6 +1352,9 @@ document.getElementById("next-button").addEventListener("click", function () {
   goTo(state.currentIndex + 1);
 });
 document.getElementById("clear-button").addEventListener("click", clearInk);
+document.getElementById("accuracy-dialog-close").addEventListener("click", function () {
+  document.getElementById("accuracy-dialog").close();
+});
 document.getElementById("done-button").addEventListener("click", function () {
   if (document.body.dataset.view === "name-tracing") onNameDone();
   else if (document.body.dataset.view === "word-tracing") onWordDone();
