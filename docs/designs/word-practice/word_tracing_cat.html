@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kids Tracing — Word Practice: CAT</title>
+<!-- Google Fonts: Quicksand (Display/Headlines) & Nunito Sans (Body) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&amp;family=Quicksand:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary": "#ffffff",
+            "secondary-container": "#86f2e4",
+            "on-error": "#ffffff",
+            "secondary-fixed": "#89f5e7",
+            "surface-dim": "#e6d7d0",
+            "surface-bright": "#fff8f6",
+            "on-tertiary-container": "#fffbff",
+            "on-secondary-container": "#006f66",
+            "error": "#ba1a1a",
+            "on-tertiary-fixed": "#261a00",
+            "tertiary-fixed": "#ffdf9f",
+            "surface-variant": "#efdfd9",
+            "on-tertiary-fixed-variant": "#5c4300",
+            "secondary-fixed-dim": "#6bd8cb",
+            "primary-fixed": "#ffdad2",
+            "surface": "#fff8f6",
+            "on-primary": "#ffffff",
+            "outline-variant": "#e2bfb6",
+            "surface-container-lowest": "#ffffff",
+            "primary-fixed-dim": "#ffb4a3",
+            "tertiary-fixed-dim": "#f9bd22",
+            "on-primary-fixed": "#3d0700",
+            "surface-container-low": "#fff1eb",
+            "on-tertiary": "#ffffff",
+            "surface-container": "#fbebe4",
+            "surface-container-highest": "#efdfd9",
+            "inverse-surface": "#372f2a",
+            "surface-tint": "#b22c0a",
+            "surface-container-high": "#f5e5de",
+            "inverse-on-surface": "#feeee7",
+            "background": "#fff8f6",
+            "on-secondary-fixed": "#00201d",
+            "on-primary-container": "#fffbff",
+            "error-container": "#ffdad6",
+            "primary": "#ae2907",
+            "inverse-primary": "#ffb4a3",
+            "on-surface-variant": "#5a413b",
+            "primary-container": "#d14220",
+            "on-primary-fixed-variant": "#8b1b00",
+            "secondary": "#006a61",
+            "outline": "#8e7069",
+            "on-surface": "#221a16",
+            "on-secondary-fixed-variant": "#005049",
+            "tertiary-container": "#956e00",
+            "on-error-container": "#93000a",
+            "on-background": "#221a16",
+            "tertiary": "#765700"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.5rem",
+            "margin": "2.5rem",
+            "space-xs": "0.25rem",
+            "margin-mobile": "1rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "display-hero": ["Quicksand"],
+            "headline-lg": ["Quicksand"],
+            "body-lg": ["Nunito Sans"],
+            "headline-lg-mobile": ["Quicksand"],
+            "headline-md": ["Quicksand"],
+            "label-lg": ["Quicksand"],
+            "label-sm": ["Quicksand"],
+            "body-md": ["Nunito Sans"],
+            "display-hero-mobile": ["Quicksand"],
+            "body-sm": ["Nunito Sans"],
+            "headline-sm": ["Quicksand"],
+            "label-md": ["Quicksand"]
+          },
+          "fontSize": {
+            "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "500" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "label-lg": ["16px", { "lineHeight": "22px", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.04em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined[data-weight="fill"],
+    .material-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* Soft ambient card shadows matching style tokens */
+    .warm-island-shadow {
+      box-shadow: 0 4px 20px -2px rgba(38, 30, 26, 0.05);
+    }
+    .tactile-pill-shadow {
+      box-shadow: 0 4px 12px rgba(38, 30, 26, 0.12);
+    }
+
+    /* Interactive canvas pulse animation */
+    @keyframes pulse-subtle {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+    .pulse-start-marker {
+      animation: pulse-subtle 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen flex flex-col font-body-md">
+<!-- ==================== 1. SHARED TOP APP BAR ==================== -->
+<header class="w-full bg-background dark:bg-background">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+<!-- Brand & Product Title -->
+<a class="flex items-center gap-3 group focus:outline-none" href="#">
+<div class="w-11 h-11 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-display-hero text-headline-sm shadow-sm group-hover:scale-105 transition-transform duration-150">
+          Aa
+        </div>
+<div class="flex flex-col text-left">
+<span class="text-headline-sm font-headline-sm text-on-surface dark:text-on-surface tracking-tight">
+            Kids Tracing
+          </span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">
+            Practice fun A-Z 0-9
+          </span>
+</div>
+</a>
+<!-- Desktop Navigation Cluster -->
+<nav class="hidden md:flex items-center bg-surface-container-low rounded-full p-1.5 border border-outline-variant/30 warm-island-shadow">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface px-4 py-1.5 font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-150 rounded-full active:scale-95" href="#">
+          Home
+        </a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface px-4 py-1.5 font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-150 rounded-full flex items-center gap-1.5 active:scale-95" href="#">
+<span>Practice</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed text-[11px] font-bold px-2 py-0.5 rounded-full border border-tertiary-container/30 flex items-center gap-0.5">
+            12 <span class="material-symbols-outlined text-[13px] leading-none" data-icon="bolt">bolt</span>
+</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface px-4 py-1.5 font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-150 rounded-full active:scale-95" href="#">
+          Write My Name
+        </a>
+<!-- ACTIVE STATE: Word Practice -->
+<a class="bg-inverse-surface text-inverse-on-surface rounded-full px-5 py-1.5 font-label-md text-label-md font-bold shadow-sm transition-transform active:scale-95" href="#">
+          Word Practice
+        </a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface px-4 py-1.5 font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-150 rounded-full active:scale-95" href="#">
+          For Parents
+        </a>
+</nav>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center gap-3">
+<!-- Learner Profile Avatars -->
+<div class="hidden sm:flex items-center -space-x-2 bg-surface-container px-2.5 py-1 rounded-full border border-outline-variant/30">
+<span class="w-7 h-7 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-[12px] border-2 border-background font-display-hero">M</span>
+<span class="w-7 h-7 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold text-[12px] border-2 border-background font-display-hero">Z</span>
+<span class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface font-bold text-[11px] border-2 border-background flex items-center justify-center font-label-sm">+2</span>
+</div>
+<!-- Global Save Progress CTA -->
+<button class="bg-secondary text-on-secondary hover:bg-secondary/90 px-4 py-2 rounded-full font-label-md text-label-md font-bold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="cloud_done">cloud_done</span>
+<span>Save progress</span>
+</button>
+</div>
+</div>
+</header>
+<!-- ==================== MAIN WORKSPACE ==================== -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-6 py-4 flex flex-col gap-6">
+<!-- Top Contextual Sub-bar: Breadcrumb, Word Switcher & Letter Flow -->
+<section class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface-container-lowest p-3.5 sm:px-6 rounded-2xl border border-outline-variant/30 warm-island-shadow">
+<!-- Back Link & Word Title -->
+<div class="flex items-center gap-4">
+<a class="inline-flex items-center gap-1.5 text-on-surface-variant hover:text-on-surface font-label-md text-label-md bg-surface-container-low hover:bg-surface-container px-3.5 py-2 rounded-full transition-colors active:scale-95 border border-outline-variant/20" href="#">
+<span class="material-symbols-outlined text-base" data-icon="arrow_back">arrow_back</span>
+<span>Back to Word Practice</span>
+</a>
+<div class="h-6 w-px bg-outline-variant/40 hidden sm:block"></div>
+<!-- Word Badge -->
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-headline-sm text-base shadow-sm">
+            🐱
+          </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-sm font-bold text-on-surface tracking-tight">Word: CAT</span>
+<span class="bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">3 letters</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Step Navigator Pill Array: C - A - T -->
+<div class="flex items-center gap-2 self-start md:self-auto bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/20">
+<span class="text-body-sm font-label-md text-on-surface-variant hidden lg:inline mr-1">Progress:</span>
+<!-- Step 1: Active 'C' -->
+<div class="flex items-center gap-1.5 bg-primary-container text-on-primary px-3 py-1 rounded-full font-label-md text-label-md font-bold shadow-sm">
+<span class="w-5 h-5 rounded-full bg-on-primary text-primary-container flex items-center justify-center text-[12px] font-bold">1</span>
+<span>C</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span>
+</div>
+<span class="text-outline-variant font-bold text-xs">→</span>
+<!-- Step 2: 'A' Next -->
+<div class="flex items-center gap-1.5 bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full font-label-md text-label-md opacity-75">
+<span class="w-5 h-5 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center text-[12px]">2</span>
+<span>A</span>
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="lock">lock</span>
+</div>
+<span class="text-outline-variant font-bold text-xs">→</span>
+<!-- Step 3: 'T' Next -->
+<div class="flex items-center gap-1.5 bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full font-label-md text-label-md opacity-75">
+<span class="w-5 h-5 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center text-[12px]">3</span>
+<span>T</span>
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="lock">lock</span>
+</div>
+</div>
+</section>
+<!-- Grid: Interactive Tracing Stage + Companion Panel -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- ==================== LEFT / MAIN TRACING STAGE (8 COLS) ==================== -->
+<section class="lg:col-span-8 bg-surface-container-lowest rounded-3xl p-4 sm:p-6 border border-outline-variant/40 warm-island-shadow flex flex-col gap-4">
+<!-- Sky Blue Immersive Canvas Box -->
+<div class="relative w-full rounded-2xl bg-[#BAE6FD] border-4 border-white shadow-inner overflow-hidden min-h-[460px] md:min-h-[500px] flex flex-col justify-between p-5 md:p-7 select-none">
+<!-- Inner Top Bar: Phonics tag, Stars, Canvas Tools -->
+<div class="relative z-10 flex flex-wrap items-center justify-between gap-3">
+<!-- Left Corner Tile: Active Letter + Audio sound prompt -->
+<div class="flex items-center gap-2">
+<div class="bg-surface-container-lowest px-4 py-2 rounded-2xl shadow-sm border border-white flex items-center gap-3">
+<span class="font-display-hero text-headline-lg text-primary font-bold leading-none">C</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface leading-tight font-bold">/k/ sound</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant text-[12px]">as in Cat</span>
+</div>
+</div>
+<!-- Speaker Button -->
+<button class="w-11 h-11 bg-surface-container-lowest hover:bg-surface-container text-primary rounded-2xl flex items-center justify-center shadow-sm border border-white transition-all active:scale-95" title="Play sound">
+<span class="material-symbols-outlined text-headline-sm" data-icon="volume_up">volume_up</span>
+</button>
+</div>
+<!-- Right Corner: Stars & Tool Palette -->
+<div class="flex items-center gap-2">
+<!-- Star Reward Pill -->
+<div class="bg-surface-container-lowest px-3 py-1.5 rounded-2xl shadow-sm border border-white flex items-center gap-1">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-lg" data-icon="star" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-lg" data-icon="star" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-outline-variant text-lg" data-icon="star">star</span>
+<span class="font-label-md text-label-md font-bold ml-1 text-on-surface">2/3</span>
+</div>
+<!-- Tracing Tool Palette -->
+<div class="hidden sm:flex items-center bg-surface-container-lowest/90 backdrop-blur-sm p-1 rounded-2xl shadow-sm border border-white gap-1">
+<button class="w-9 h-9 rounded-xl bg-primary text-on-primary flex items-center justify-center shadow-xs" title="Chalk / Pencil">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+<button class="w-9 h-9 rounded-xl text-on-surface-variant hover:bg-surface-container flex items-center justify-center transition-colors" title="Rainbow Color">
+<span class="material-symbols-outlined text-sm" data-icon="palette">palette</span>
+</button>
+<button class="w-9 h-9 rounded-xl text-on-surface-variant hover:bg-surface-container flex items-center justify-center transition-colors" title="Eraser">
+<span class="material-symbols-outlined text-sm" data-icon="ink_eraser">ink_eraser</span>
+</button>
+<button class="w-9 h-9 rounded-xl text-secondary hover:bg-surface-container flex items-center justify-center transition-colors" title="Guide lines toggle">
+<span class="material-symbols-outlined text-sm" data-icon="grid_on">grid_on</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Central Canvas Canvas: Big Dotted 'C' Tracing Artwork -->
+<div class="relative flex-grow flex items-center justify-center py-6">
+<!-- Atmospheric Tracing Grid / Guidelines (Subtle Notebook Rules) -->
+<div class="absolute inset-x-4 top-1/2 -translate-y-1/2 flex flex-col justify-between h-72 pointer-events-none opacity-40">
+<div class="border-b-2 border-dashed border-[#7DD3FC] w-full"></div>
+<div class="border-b-2 border-dotted border-[#38BDF8] w-full"></div>
+<div class="border-b-2 border-dashed border-[#7DD3FC] w-full"></div>
+</div>
+<!-- SVG Interactive Letter Stage -->
+<div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 300 300">
+<!-- Background Shadow Track -->
+<path d="M 230 75 C 190 35, 70 45, 70 150 C 70 255, 190 265, 230 225" fill="none" stroke="#93C5FD" stroke-linecap="round" stroke-width="50"></path>
+<!-- White Base Guide Track -->
+<path d="M 230 75 C 190 35, 70 45, 70 150 C 70 255, 190 265, 230 225" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-width="42"></path>
+<!-- Completed User Stroke (35% Traced in vibrant Coral) -->
+<path d="M 230 75 C 190 35, 130 42, 90 95" fill="none" stroke="#F35A36" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path>
+<!-- Guide Dash Dots Path for remaining stroke -->
+<path d="M 90 95 C 70 120, 70 180, 95 210 C 130 250, 195 260, 230 225" fill="none" stroke="#0284C7" stroke-dasharray="10 14" stroke-linecap="round" stroke-width="6"></path>
+<!-- Stroke 1 Dot Order Marker (Start Point) -->
+<g class="pulse-start-marker cursor-pointer" transform="translate(230, 75)">
+<circle fill="#F35A36" filter="drop-shadow(0px 3px 6px rgba(0,0,0,0.15))" r="18" stroke="#FFFFFF" stroke-width="4"></circle>
+<text dy="5" fill="#FFFFFF" font-family="Quicksand" font-size="14" font-weight="700" text-anchor="middle">1</text>
+</g>
+<!-- Current Active Drawing Point Cursor (Finger/Stylus Simulation) -->
+<g transform="translate(90, 95)">
+<!-- Soft glow halo -->
+<circle fill="#F35A36" fill-opacity="0.3" r="16"></circle>
+<circle fill="#F35A36" r="9" stroke="#FFFFFF" stroke-width="2.5"></circle>
+</g>
+<!-- Stroke Direction Arrow Tip at End -->
+<g transform="translate(230, 225)">
+<circle fill="#E2E8F0" r="12" stroke="#94A3B8" stroke-width="2"></circle>
+<text dy="4" fill="#64748B" font-family="Quicksand" font-size="10" font-weight="700" text-anchor="middle">END</text>
+</g>
+</svg>
+<!-- Floating Tactile Encouragement Tag (Style Token Anchored) -->
+<div class="absolute -top-3 right-6 bg-inverse-surface text-inverse-on-surface px-4 py-2 rounded-full font-label-md text-label-md tactile-pill-shadow flex items-center gap-1.5 border border-white/20 select-none">
+<span>Start at 1 &amp; curve around!</span>
+<span>🐾</span>
+</div>
+<!-- Interactive Floating Finger/Cursor Cue -->
+<div class="absolute bottom-6 left-6 bg-white/95 text-on-surface px-3 py-1.5 rounded-full font-label-sm text-label-sm tactile-pill-shadow flex items-center gap-1.5 border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-base" data-icon="touch_app">touch_app</span>
+<span class="font-bold">Tracing with mouse or finger</span>
+</div>
+</div>
+</div>
+<!-- Bottom Status Pill inside Canvas (Directly matching reference screenshot) -->
+<div class="relative z-10 w-full bg-surface-container-lowest/95 backdrop-blur-md rounded-2xl p-3 sm:px-5 sm:py-3 shadow-md border border-white flex flex-col sm:flex-row items-center justify-between gap-3">
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-xs shrink-0">
+<span class="material-symbols-outlined text-base" data-icon="edit">edit</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Tracing C... Great job!</span>
+<div class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1">
+<span>Keep going along the curve</span>
+</div>
+</div>
+</div>
+<!-- Progress Bar + Metric -->
+<div class="flex items-center gap-3 w-full sm:w-64">
+<div class="flex-grow bg-surface-container-high rounded-full h-3.5 overflow-hidden p-0.5">
+<div class="bg-secondary h-full rounded-full transition-all duration-300" style="width: 35%;"></div>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-0.5 rounded-lg font-label-md text-label-md font-bold shrink-0 border border-tertiary-container/30">
+                35%
+              </span>
+</div>
+</div>
+</div>
+<!-- Stage Bottom Control Strip -->
+<div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+<div class="flex items-center gap-2">
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface px-4 py-2.5 rounded-full font-label-md text-label-md font-bold border border-outline-variant/30 flex items-center gap-2 transition-all active:scale-95">
+<span class="material-symbols-outlined text-base" data-icon="refresh">refresh</span>
+<span>Clear &amp; Try Again</span>
+</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface px-4 py-2.5 rounded-full font-label-md text-label-md font-bold border border-outline-variant/30 flex items-center gap-2 transition-all active:scale-95">
+<span class="material-symbols-outlined text-base" data-icon="volume_up">volume_up</span>
+<span>Letter Sound</span>
+</button>
+</div>
+<!-- Primary Flow Action -->
+<div class="flex items-center gap-3">
+<span class="text-body-sm font-body-sm text-on-surface-variant hidden sm:inline">Letter 1 of 3</span>
+<button class="bg-primary-container text-on-primary hover:bg-primary-container/90 px-6 py-2.5 rounded-full font-label-lg text-label-lg font-bold flex items-center gap-2 shadow-sm transition-transform active:scale-95">
+<span>Next: Letter A</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- ==================== RIGHT / COMPANION PANEL (4 COLS) ==================== -->
+<aside class="lg:col-span-4 flex flex-col gap-6">
+<!-- Word Completion Bento Card -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 warm-island-shadow flex flex-col gap-5">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Word Progress</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm px-3 py-1 rounded-full font-bold">1 / 3 complete</span>
+</div>
+<!-- The Big Word Letter Tiles: C - A - T -->
+<div class="grid grid-cols-3 gap-3">
+<!-- Letter C Tile (Active) -->
+<div class="flex flex-col items-center bg-primary-fixed/40 border-2 border-primary-container rounded-2xl p-3 text-center transition-transform hover:-translate-y-0.5">
+<span class="w-6 h-6 rounded-full bg-primary-container text-on-primary font-bold text-xs flex items-center justify-center mb-1">1</span>
+<span class="font-display-hero text-headline-lg font-bold text-primary">C</span>
+<span class="text-[11px] font-bold text-primary uppercase mt-1">Tracing</span>
+</div>
+<!-- Letter A Tile (Up Next) -->
+<div class="flex flex-col items-center bg-surface-container rounded-2xl p-3 text-center border border-outline-variant/30 opacity-80">
+<span class="w-6 h-6 rounded-full bg-surface-variant text-on-surface-variant font-bold text-xs flex items-center justify-center mb-1">2</span>
+<span class="font-display-hero text-headline-lg font-bold text-on-surface-variant">A</span>
+<span class="text-[11px] font-bold text-on-surface-variant uppercase mt-1">Up Next</span>
+</div>
+<!-- Letter T Tile (Locked) -->
+<div class="flex flex-col items-center bg-surface-container rounded-2xl p-3 text-center border border-outline-variant/30 opacity-60">
+<span class="w-6 h-6 rounded-full bg-surface-variant text-on-surface-variant font-bold text-xs flex items-center justify-center mb-1">3</span>
+<span class="font-display-hero text-headline-lg font-bold text-outline">T</span>
+<span class="text-[11px] font-bold text-outline uppercase mt-1">Final</span>
+</div>
+</div>
+<!-- Phonics Breakdown Pill -->
+<div class="bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="hearing">hearing</span>
+<span class="text-body-sm font-label-md font-bold text-on-surface">Phonics blend:</span>
+</div>
+<div class="font-display-hero text-headline-sm font-bold text-secondary tracking-wider">
+              /k/ • /æ/ • /t/
+            </div>
+</div>
+<!-- Cheerful Cat Character Motivation Card -->
+<div class="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/30 relative flex items-center gap-4">
+<div class="w-16 h-16 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center text-3xl shadow-xs shrink-0 select-none">
+              🐱
+            </div>
+<div class="flex flex-col">
+<div class="text-label-md font-label-md font-bold text-on-surface flex items-center gap-1">
+<span>Whiskers the Cat</span>
+<span class="text-tertiary-fixed-dim">🐾</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5 leading-snug">
+                "Meow! Finish tracing the letter <strong>C</strong> to feed me a delicious fish snack!"
+              </p>
+</div>
+</div>
+<!-- Little Star Reward Checklist -->
+<div class="flex flex-col gap-2 pt-1 border-t border-outline-variant/30">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-bold">Word Mastery Checklist</span>
+<div class="flex items-center justify-between text-body-sm">
+<span class="flex items-center gap-2 text-on-surface font-medium">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="check_circle">check_circle</span>
+                Listen to word pronunciation
+              </span>
+<span class="text-secondary font-bold text-xs">Done</span>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="flex items-center gap-2 text-primary font-medium">
+<span class="material-symbols-outlined text-primary text-base" data-icon="radio_button_checked">radio_button_checked</span>
+                Trace letter C without lifting finger
+              </span>
+<span class="text-primary font-bold text-xs">35%</span>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="flex items-center gap-2 text-on-surface-variant opacity-70">
+<span class="material-symbols-outlined text-outline-variant text-base" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+                Spell complete word CAT
+              </span>
+<span class="text-outline text-xs">Pending</span>
+</div>
+</div>
+</div>
+<!-- Quick Tips Mini Card -->
+<div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/40 warm-island-shadow flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-xl" data-icon="lightbulb">lightbulb</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface">Parent &amp; Educator Tip</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1 leading-relaxed">
+              Encourage your child to make the sound aloud: <em>"Cuh... Cuh... Cat!"</em> Gentle curving motions help build hand-wrist flexibility.
+            </p>
+</div>
+</div>
+</aside>
+</div>
+<!-- ==================== 3-COLUMN FEATURE BENEFIT TILES ==================== -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+<!-- Feature Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/30 warm-island-shadow flex items-start gap-4">
+<div class="w-10 h-10 rounded-2xl bg-[#BAE6FD] text-[#0369A1] flex items-center justify-center shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-xl" data-icon="front_hand">front_hand</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Trace with finger or mouse</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Big soft lines and tactile curve guides made specifically for little hands.</p>
+</div>
+</div>
+<!-- Feature Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/30 warm-island-shadow flex items-start gap-4">
+<div class="w-10 h-10 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-xl" data-icon="star">star</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Earn stars</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Finish a letter to collect up to 3 stars with cheerful sound effects.</p>
+</div>
+</div>
+<!-- Feature Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/30 warm-island-shadow flex items-start gap-4">
+<div class="w-10 h-10 rounded-2xl bg-[#D1FAE5] text-[#047857] flex items-center justify-center shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-xl" data-icon="save">save</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Auto-saved</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Progress stays in this browser without accounts, ads, or tracking.</p>
+</div>
+</div>
+</section>
+<!-- ==================== PARENT NOTE ANNOUNCEMENT BANNER ==================== -->
+<section class="bg-inverse-surface text-inverse-on-surface rounded-3xl p-6 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-tertiary-fixed-dim text-on-tertiary-fixed flex items-center justify-center shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-2xl" data-icon="favorite" data-weight="fill">favorite</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-inverse-on-surface">A note for parents</h3>
+<p class="font-body-md text-body-md text-inverse-on-surface/80 mt-1 max-w-2xl leading-relaxed">
+            100% free, no account, no ads. Progress saves safely in your browser's localStorage. Works on desktop, tablet, and mobile — perfect for 5-minute daily practice.
+          </p>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<div class="bg-surface-container-lowest text-on-surface px-4 py-2 rounded-full font-label-md text-label-md font-bold flex items-center gap-1.5 shadow-xs">
+<span class="material-symbols-outlined text-base" data-icon="wifi_off">wifi_off</span>
+<span>Works offline</span>
+</div>
+<div class="bg-secondary text-on-secondary px-4 py-2 rounded-full font-label-md text-label-md font-bold flex items-center gap-1.5 shadow-xs">
+<span class="material-symbols-outlined text-base" data-icon="check">check</span>
+<span>GitHub Pages ready</span>
+</div>
+</div>
+</section>
+<!-- ==================== ALPHABET PRACTICE PICKER ==================== -->
+<section class="flex flex-col gap-4 py-2">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg text-headline-md text-on-surface font-bold">More 3-letter words to practice</h2>
+<a class="font-label-md text-label-md font-bold text-primary hover:underline flex items-center gap-1" href="#">
+<span>Open full word library</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-3">
+<!-- Word 1 (Active) -->
+<a class="bg-primary-container text-on-primary rounded-2xl p-3 text-center border-2 border-primary-container shadow-sm flex flex-col items-center" href="#">
+<span class="font-display-hero text-headline-sm font-bold">CAT</span>
+<span class="text-[11px] font-bold mt-0.5">Current 🐾</span>
+</a>
+<!-- Word 2: DOG -->
+<a class="bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded-2xl p-3 text-center border border-outline-variant/30 transition-transform hover:-translate-y-0.5 flex flex-col items-center" href="#">
+<span class="font-display-hero text-headline-sm font-bold">DOG</span>
+<span class="text-[11px] text-on-surface-variant font-bold mt-0.5">🐶 3 letters</span>
+</a>
+<!-- Word 3: SUN -->
+<a class="bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded-2xl p-3 text-center border border-outline-variant/30 transition-transform hover:-translate-y-0.5 flex flex-col items-center" href="#">
+<span class="font-display-hero text-headline-sm font-bold">SUN</span>
+<span class="text-[11px] text-on-surface-variant font-bold mt-0.5">☀️ 3 letters</span>
+</a>
+<!-- Word 4: BUS -->
+<a class="bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded-2xl p-3 text-center border border-outline-variant/30 transition-transform hover:-translate-y-0.5 flex flex-col items-center" href="#">
+<span class="font-display-hero text-headline-sm font-bold">BUS</span>
+<span class="text-[11px] text-on-surface-variant font-bold mt-0.5">🚌 3 letters</span>
+</a>
+<!-- Word 5: FOX -->
+<a class="bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded-2xl p-3 text-center border border-outline-variant/30 transition-transform hover:-translate-y-0.5 flex flex-col items-center" href="#">
+<span class="font-display-hero text-headline-sm font-bold">FOX</span>
+<span class="text-[11px] text-on-surface-variant font-bold mt-0.5">🦊 3 letters</span>
+</a>
+<!-- Word 6: PIG -->
+<a class="bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded-2xl p-3 text-center border border-outline-variant/30 transition-transform hover:-translate-y-0.5 flex flex-col items-center" href="#">
+<span class="font-display-hero text-headline-sm font-bold">PIG</span>
+<span class="text-[11px] text-on-surface-variant font-bold mt-0.5">🐷 3 letters</span>
+</a>
+<!-- Word 7: BED -->
+<a class="bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded-2xl p-3 text-center border border-outline-variant/30 transition-transform hover:-translate-y-0.5 flex flex-col items-center" href="#">
+<span class="font-display-hero text-headline-sm font-bold">BED</span>
+<span class="text-[11px] text-on-surface-variant font-bold mt-0.5">🛏️ 3 letters</span>
+</a>
+<!-- Overflow Count -->
+<a class="bg-inverse-surface hover:bg-inverse-surface/90 text-inverse-on-surface rounded-2xl p-3 text-center flex flex-col items-center justify-center transition-transform hover:-translate-y-0.5" href="#">
+<span class="font-display-hero text-headline-sm font-bold">+48</span>
+<span class="text-[11px] font-bold opacity-80">more words</span>
+</a>
+</div>
+</section>
+</main>
+<!-- ==================== 2. SHARED FOOTER ==================== -->
+<footer class="mt-10 bg-inverse-surface dark:bg-inverse-surface rounded-t-3xl full-width">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-6 max-w-7xl mx-auto gap-4">
+<!-- Brand & Copyright from JSON -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-display-hero text-sm font-bold">
+          Aa
+        </div>
+<p class="text-headline-sm font-headline-sm text-inverse-on-surface text-body-sm font-body-sm">
+          © 2026 Kids Tracing Practice — Made for little learners.
+        </p>
+</div>
+<!-- Links & Parent Portal from JSON -->
+<div class="flex flex-wrap items-center gap-6">
+<span class="text-surface-variant dark:text-surface-variant text-body-sm font-body-sm">
+          No login • No ads • Works offline
+        </span>
+<a class="bg-surface-container-lowest text-on-surface hover:bg-surface-container px-4 py-1.5 rounded-full font-label-md text-label-md font-bold transition-all active:scale-95 shadow-xs" href="#">
+          For Parents
+        </a>
+</div>
+</div>
+</footer>
+</body></html>

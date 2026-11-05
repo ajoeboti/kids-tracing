@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Word Practice — Kids Tracing</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&amp;family=Quicksand:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-fixed": "#3d0700",
+            "inverse-surface": "#372f2a",
+            "surface-container-high": "#f5e5de",
+            "tertiary-container": "#956e00",
+            "secondary-fixed": "#89f5e7",
+            "background": "#fff8f6",
+            "surface-tint": "#b22c0a",
+            "inverse-on-surface": "#feeee7",
+            "on-secondary-fixed-variant": "#005049",
+            "on-tertiary-container": "#fffbff",
+            "on-primary-container": "#fffbff",
+            "primary-container": "#d14220",
+            "secondary-container": "#86f2e4",
+            "on-primary": "#ffffff",
+            "on-tertiary-fixed-variant": "#5c4300",
+            "outline-variant": "#e2bfb6",
+            "on-secondary-fixed": "#00201d",
+            "tertiary-fixed": "#ffdf9f",
+            "error": "#ba1a1a",
+            "secondary": "#006a61",
+            "outline": "#8e7069",
+            "secondary-fixed-dim": "#6bd8cb",
+            "tertiary-fixed-dim": "#f9bd22",
+            "surface-container-highest": "#efdfd9",
+            "surface-container-lowest": "#ffffff",
+            "inverse-primary": "#ffb4a3",
+            "on-error": "#ffffff",
+            "on-background": "#221a16",
+            "surface-variant": "#efdfd9",
+            "surface-dim": "#e6d7d0",
+            "tertiary": "#765700",
+            "surface-bright": "#fff8f6",
+            "on-error-container": "#93000a",
+            "primary": "#ae2907",
+            "primary-fixed": "#ffdad2",
+            "on-primary-fixed-variant": "#8b1b00",
+            "surface-container": "#fbebe4",
+            "on-surface": "#221a16",
+            "on-secondary-container": "#006f66",
+            "on-secondary": "#ffffff",
+            "primary-fixed-dim": "#ffb4a3",
+            "surface-container-low": "#fff1eb",
+            "on-tertiary": "#ffffff",
+            "on-surface-variant": "#5a413b",
+            "surface": "#fff8f6",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#261a00"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "1rem",
+            "margin": "2.5rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2.5rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Quicksand"],
+            "display-hero": ["Quicksand"],
+            "label-sm": ["Quicksand"],
+            "label-md": ["Quicksand"],
+            "label-lg": ["Quicksand"],
+            "headline-md": ["Quicksand"],
+            "headline-sm": ["Quicksand"],
+            "body-lg": ["Nunito Sans"],
+            "body-md": ["Nunito Sans"],
+            "headline-lg-mobile": ["Quicksand"],
+            "body-sm": ["Nunito Sans"],
+            "display-hero-mobile": ["Quicksand"]
+          },
+          "fontSize": {
+            "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+            "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "label-lg": ["16px", { "lineHeight": "22px", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "500" }],
+            "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "700" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    body {
+      background-color: #FAF6EE;
+      color: #261E1A;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md text-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar (Shared Component) -->
+<header class="w-full bg-background dark:bg-background transition-colors">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+<!-- Brand Logo / Anchor -->
+<a class="flex items-center gap-3 group" href="#">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-sm text-headline-sm shadow-sm transition-transform group-hover:scale-105">
+          Aa
+        </div>
+<div class="flex flex-col">
+<span class="text-headline-sm font-headline-sm text-on-surface dark:text-on-surface leading-tight">Kids Tracing</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Practice fun A-Z 0-9</span>
+</div>
+</a>
+<!-- Center Navigation Links -->
+<nav class="hidden md:flex items-center gap-1.5 bg-surface-container-low p-1.5 rounded-full border border-outline-variant/30">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface px-3 py-1.5 font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-150 rounded-full" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface px-3 py-1.5 font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-150 rounded-full flex items-center gap-1.5" href="#">
+          Practice
+          <span class="bg-tertiary-fixed text-on-tertiary-fixed text-[11px] font-bold px-1.5 py-0.5 rounded-md border border-on-tertiary-fixed/30 leading-none">12</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface px-3 py-1.5 font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-150 rounded-full" href="#">Write My Name</a>
+<!-- ACTIVE TAB: Word Practice (Style injected from JSON: style_active_navigation) -->
+<a class="bg-inverse-surface text-inverse-on-surface rounded-full px-4 py-1.5 font-label-md text-label-md shadow-sm" href="#">Word Practice</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface px-3 py-1.5 font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-150 rounded-full" href="#">For Parents</a>
+</nav>
+<!-- Trailing Cluster -->
+<div class="flex items-center gap-3">
+<!-- User Initials Avatar Group (JSON trailing_secondary_action: M, Z, +2) -->
+<div class="hidden sm:flex items-center -space-x-2 bg-surface-container-low px-2 py-1 rounded-full border border-outline-variant/30">
+<div class="w-7 h-7 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md flex items-center justify-center ring-2 ring-surface-container-low">M</div>
+<div class="w-7 h-7 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md flex items-center justify-center ring-2 ring-surface-container-low">Z</div>
+<div class="w-7 h-7 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm flex items-center justify-center ring-2 ring-surface-container-low font-bold">+2</div>
+</div>
+<!-- Primary Action (JSON trailing_primary_action: Save progress) -->
+<button class="bg-secondary text-on-secondary font-label-lg text-label-lg px-4 py-2 rounded-full hover:bg-secondary/90 active:scale-95 transition-all duration-150 shadow-sm flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          Save progress
+        </button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-6 py-8 md:py-10 flex flex-col gap-10">
+<!-- Hero Title & Category Filter Block -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="flex flex-col items-start gap-2.5 max-w-2xl">
+<!-- Micro Badge -->
+<div class="inline-flex items-center gap-2 bg-[#D1FAE5] text-inverse-surface px-3 py-1 rounded-full text-label-sm font-label-sm tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+          FREE • NO LOGIN • AGES 3–7
+        </div>
+<!-- Display Heading -->
+<h1 class="text-display-hero-mobile md:text-display-hero font-display-hero text-inverse-surface tracking-tight">
+          Let’s trace a word!
+        </h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant">
+          Pick a word, then trace it one letter at a time. Big soft outlines designed for little hands.
+        </p>
+</div>
+<!-- Category Filter Pills -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 self-start md:self-end">
+<button class="bg-inverse-surface text-inverse-on-surface px-4 py-2 rounded-full font-label-md text-label-md shadow-sm transition-transform active:scale-95 whitespace-nowrap" type="button">
+          All Words (6)
+        </button>
+<button class="bg-surface-container-lowest text-on-surface-variant hover:text-on-surface border border-outline-variant/40 px-4 py-2 rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-colors whitespace-nowrap" type="button">
+          Animals (3)
+        </button>
+<button class="bg-surface-container-lowest text-on-surface-variant hover:text-on-surface border border-outline-variant/40 px-4 py-2 rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-colors whitespace-nowrap" type="button">
+          Everyday things (3)
+        </button>
+</div>
+</section>
+<!-- SECTION 1: Animals -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-8 h-8 rounded-full bg-[#FCE7F3] flex items-center justify-center text-inverse-surface font-headline-sm text-headline-sm">🐾</span>
+<h2 class="text-headline-md font-headline-md text-inverse-surface">Animals</h2>
+</div>
+<span class="text-label-md font-label-md text-on-surface-variant">3 friendly critters</span>
+</div>
+<!-- Animals Bento 3-Column Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1: CAT -->
+<article class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 shadow-[0_4px_20px_-2px_rgba(38,30,26,0.04)] hover:shadow-[0_8px_28px_-4px_rgba(38,30,26,0.08)] transition-all duration-200 flex flex-col justify-between group">
+<!-- Top Pastel Stage -->
+<div class="relative w-full h-48 rounded-2xl bg-[#FFE4E6] flex flex-col items-center justify-center overflow-hidden border border-[#FECDD3]/50">
+<!-- Badge Tags inside Stage -->
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-label-sm font-label-sm text-inverse-surface flex items-center gap-1 shadow-sm">
+<span class="text-tertiary-fixed-dim">★★★</span>
+<span>Ready</span>
+</div>
+<div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/80 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</div>
+<!-- Stylized Kid Vector Icon: Cat -->
+<div class="w-24 h-24 rounded-full bg-white/70 flex items-center justify-center text-5xl shadow-sm transition-transform duration-300 group-hover:scale-110">
+              🐱
+            </div>
+<!-- Encouragement Micro-pill -->
+<div class="absolute bottom-3 bg-inverse-surface/85 text-inverse-on-surface px-2.5 py-0.5 rounded-full text-[11px] font-label-sm tracking-wide">
+              Phonics: /k/ /æ/ /t/
+            </div>
+</div>
+<!-- Bottom Info & CTA -->
+<div class="pt-5 flex flex-col gap-4">
+<div class="flex items-baseline justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-inverse-surface tracking-wide">CAT</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">3 letters • C - A - T</p>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-lg">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+</div>
+</div>
+<button class="w-full bg-[#F35A36] text-on-primary font-label-lg text-label-lg py-3.5 px-6 rounded-full flex items-center justify-center gap-2 hover:bg-[#e04824] active:scale-[0.98] transition-all duration-150 shadow-sm" type="button">
+              Trace CAT
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Card 2: DOG -->
+<article class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 shadow-[0_4px_20px_-2px_rgba(38,30,26,0.04)] hover:shadow-[0_8px_28px_-4px_rgba(38,30,26,0.08)] transition-all duration-200 flex flex-col justify-between group">
+<!-- Top Pastel Stage: Sky Blue -->
+<div class="relative w-full h-48 rounded-2xl bg-[#BAE6FD] flex flex-col items-center justify-center overflow-hidden border border-[#93C5FD]/50">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-label-sm font-label-sm text-inverse-surface flex items-center gap-1 shadow-sm">
+<span class="text-tertiary-fixed-dim">★★☆</span>
+<span>1 trace left</span>
+</div>
+<div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/80 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</div>
+<!-- Stylized Kid Vector Icon: Dog -->
+<div class="w-24 h-24 rounded-full bg-white/70 flex items-center justify-center text-5xl shadow-sm transition-transform duration-300 group-hover:scale-110">
+              🐶
+            </div>
+<div class="absolute bottom-3 bg-inverse-surface/85 text-inverse-on-surface px-2.5 py-0.5 rounded-full text-[11px] font-label-sm tracking-wide">
+              Phonics: /d/ /ɒ/ /ɡ/
+            </div>
+</div>
+<!-- Bottom Info & CTA -->
+<div class="pt-5 flex flex-col gap-4">
+<div class="flex items-baseline justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-inverse-surface tracking-wide">DOG</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">3 letters • D - O - G</p>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-lg">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+</div>
+</div>
+<button class="w-full bg-[#F35A36] text-on-primary font-label-lg text-label-lg py-3.5 px-6 rounded-full flex items-center justify-center gap-2 hover:bg-[#e04824] active:scale-[0.98] transition-all duration-150 shadow-sm" type="button">
+              Trace DOG
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Card 3: PIG -->
+<article class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 shadow-[0_4px_20px_-2px_rgba(38,30,26,0.04)] hover:shadow-[0_8px_28px_-4px_rgba(38,30,26,0.08)] transition-all duration-200 flex flex-col justify-between group">
+<!-- Top Pastel Stage: Soft Melon / Mint -->
+<div class="relative w-full h-48 rounded-2xl bg-[#D1FAE5] flex flex-col items-center justify-center overflow-hidden border border-[#A7F3D0]/50">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-label-sm font-label-sm text-inverse-surface flex items-center gap-1 shadow-sm">
+<span class="text-secondary font-bold">New word</span>
+</div>
+<div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/80 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</div>
+<!-- Stylized Kid Vector Icon: Pig -->
+<div class="w-24 h-24 rounded-full bg-white/70 flex items-center justify-center text-5xl shadow-sm transition-transform duration-300 group-hover:scale-110">
+              🐷
+            </div>
+<div class="absolute bottom-3 bg-inverse-surface/85 text-inverse-on-surface px-2.5 py-0.5 rounded-full text-[11px] font-label-sm tracking-wide">
+              Phonics: /p/ /ɪ/ /ɡ/
+            </div>
+</div>
+<!-- Bottom Info & CTA -->
+<div class="pt-5 flex flex-col gap-4">
+<div class="flex items-baseline justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-inverse-surface tracking-wide">PIG</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">3 letters • P - I - G</p>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-lg">
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+</div>
+</div>
+<button class="w-full bg-[#F35A36] text-on-primary font-label-lg text-label-lg py-3.5 px-6 rounded-full flex items-center justify-center gap-2 hover:bg-[#e04824] active:scale-[0.98] transition-all duration-150 shadow-sm" type="button">
+              Trace PIG
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</article>
+</div>
+</section>
+<!-- SECTION 2: Everyday Things -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-8 h-8 rounded-full bg-[#FEF08A] flex items-center justify-center text-inverse-surface font-headline-sm text-headline-sm">🎒</span>
+<h2 class="text-headline-md font-headline-md text-inverse-surface">Everyday things</h2>
+</div>
+<span class="text-label-md font-label-md text-on-surface-variant">3 common objects</span>
+</div>
+<!-- Everyday Things 3-Column Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 4: BUS -->
+<article class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 shadow-[0_4px_20px_-2px_rgba(38,30,26,0.04)] hover:shadow-[0_8px_28px_-4px_rgba(38,30,26,0.08)] transition-all duration-200 flex flex-col justify-between group">
+<!-- Top Pastel Stage: Buttercup Yellow -->
+<div class="relative w-full h-48 rounded-2xl bg-[#FEF08A] flex flex-col items-center justify-center overflow-hidden border border-[#FDE047]/50">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-label-sm font-label-sm text-inverse-surface flex items-center gap-1 shadow-sm">
+<span class="text-tertiary-fixed-dim">★★★</span>
+<span>Mastered</span>
+</div>
+<div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/80 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</div>
+<!-- Stylized Kid Vector Icon: Bus -->
+<div class="w-24 h-24 rounded-full bg-white/70 flex items-center justify-center text-5xl shadow-sm transition-transform duration-300 group-hover:scale-110">
+              🚌
+            </div>
+<div class="absolute bottom-3 bg-inverse-surface/85 text-inverse-on-surface px-2.5 py-0.5 rounded-full text-[11px] font-label-sm tracking-wide">
+              Phonics: /b/ /ʌ/ /s/
+            </div>
+</div>
+<!-- Bottom Info & CTA -->
+<div class="pt-5 flex flex-col gap-4">
+<div class="flex items-baseline justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-inverse-surface tracking-wide">BUS</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">3 letters • B - U - S</p>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-lg">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+</div>
+</div>
+<button class="w-full bg-[#F35A36] text-on-primary font-label-lg text-label-lg py-3.5 px-6 rounded-full flex items-center justify-center gap-2 hover:bg-[#e04824] active:scale-[0.98] transition-all duration-150 shadow-sm" type="button">
+              Trace BUS
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Card 5: CAR -->
+<article class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 shadow-[0_4px_20px_-2px_rgba(38,30,26,0.04)] hover:shadow-[0_8px_28px_-4px_rgba(38,30,26,0.08)] transition-all duration-200 flex flex-col justify-between group">
+<!-- Top Pastel Stage: Soft Mint / Sage -->
+<div class="relative w-full h-48 rounded-2xl bg-[#CCFBF1] flex flex-col items-center justify-center overflow-hidden border border-[#99F6E4]/50">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-label-sm font-label-sm text-inverse-surface flex items-center gap-1 shadow-sm">
+<span class="text-secondary font-bold">Recommended</span>
+</div>
+<div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/80 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</div>
+<!-- Stylized Kid Vector Icon: Car -->
+<div class="w-24 h-24 rounded-full bg-white/70 flex items-center justify-center text-5xl shadow-sm transition-transform duration-300 group-hover:scale-110">
+              🚗
+            </div>
+<div class="absolute bottom-3 bg-inverse-surface/85 text-inverse-on-surface px-2.5 py-0.5 rounded-full text-[11px] font-label-sm tracking-wide">
+              Phonics: /k/ /ɑːr/
+            </div>
+</div>
+<!-- Bottom Info & CTA -->
+<div class="pt-5 flex flex-col gap-4">
+<div class="flex items-baseline justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-inverse-surface tracking-wide">CAR</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">3 letters • C - A - R</p>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-lg">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+</div>
+</div>
+<button class="w-full bg-[#F35A36] text-on-primary font-label-lg text-label-lg py-3.5 px-6 rounded-full flex items-center justify-center gap-2 hover:bg-[#e04824] active:scale-[0.98] transition-all duration-150 shadow-sm" type="button">
+              Trace CAR
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Card 6: HAT -->
+<article class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 shadow-[0_4px_20px_-2px_rgba(38,30,26,0.04)] hover:shadow-[0_8px_28px_-4px_rgba(38,30,26,0.08)] transition-all duration-200 flex flex-col justify-between group">
+<!-- Top Pastel Stage: Soft Lavender / Lilac -->
+<div class="relative w-full h-48 rounded-2xl bg-[#EDE9FE] flex flex-col items-center justify-center overflow-hidden border border-[#DDD6FE]/50">
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-label-sm font-label-sm text-inverse-surface flex items-center gap-1 shadow-sm">
+<span class="text-secondary font-bold">New word</span>
+</div>
+<div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/80 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</div>
+<!-- Stylized Kid Vector Icon: Hat -->
+<div class="w-24 h-24 rounded-full bg-white/70 flex items-center justify-center text-5xl shadow-sm transition-transform duration-300 group-hover:scale-110">
+              🧢
+            </div>
+<div class="absolute bottom-3 bg-inverse-surface/85 text-inverse-on-surface px-2.5 py-0.5 rounded-full text-[11px] font-label-sm tracking-wide">
+              Phonics: /h/ /æt/
+            </div>
+</div>
+<!-- Bottom Info & CTA -->
+<div class="pt-5 flex flex-col gap-4">
+<div class="flex items-baseline justify-between">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-inverse-surface tracking-wide">HAT</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">3 letters • H - A - T</p>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-lg">
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant/60"></span>
+</div>
+</div>
+<button class="w-full bg-[#F35A36] text-on-primary font-label-lg text-label-lg py-3.5 px-6 rounded-full flex items-center justify-center gap-2 hover:bg-[#e04824] active:scale-[0.98] transition-all duration-150 shadow-sm" type="button">
+              Trace HAT
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</article>
+</div>
+</section>
+<!-- Parent Note Announcement Banner (Matching reference image) -->
+<section class="bg-inverse-surface text-inverse-on-surface rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+<div class="flex items-center gap-5 max-w-3xl">
+<div class="w-14 h-14 rounded-2xl bg-[#FBBF24] flex items-center justify-center text-on-tertiary-fixed shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-[30px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-headline-sm font-headline-sm text-inverse-on-surface">A note for parents</h3>
+<p class="text-body-md font-body-md text-surface-variant/90 leading-relaxed">
+            100% free, no account, no ads. Progress saves safely in your browser's localStorage. Works on desktop, tablet and mobile — perfect for 5-minute daily practice.
+          </p>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0 self-stretch md:self-auto justify-end">
+<div class="bg-surface-container-lowest text-inverse-surface px-4 py-2 rounded-full font-label-md text-label-md flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">wifi_off</span>
+          Works offline
+        </div>
+<div class="bg-secondary text-on-secondary px-4 py-2 rounded-full font-label-md text-label-md flex items-center gap-1.5 shadow-sm">
+          GitHub Pages ready
+        </div>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-inverse-surface dark:bg-inverse-surface mt-12 rounded-t-3xl full-width transition-colors">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-6 max-w-7xl mx-auto gap-4">
+<!-- Brand & Copyright -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-sm text-sm">
+          Aa
+        </div>
+<span class="text-body-sm font-body-sm text-surface-variant dark:text-surface-variant">
+          © 2026 Kids Tracing Practice — Made for little learners.
+        </span>
+</div>
+<!-- Links Cluster -->
+<div class="flex items-center gap-6">
+<span class="text-body-sm font-body-sm text-surface-variant dark:text-surface-variant">
+          No login • No ads • Works offline
+        </span>
+<a class="bg-surface-container-lowest text-inverse-surface px-4 py-1.5 rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-colors duration-150" href="#">
+          For Parents
+        </a>
+</div>
+</div>
+</footer>
+</body></html>
