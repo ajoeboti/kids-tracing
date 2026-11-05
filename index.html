@@ -9,6 +9,7 @@
   <title>Kids Tracing Practice</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23FF5A39'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='26' font-family='Arial,sans-serif' font-weight='700' fill='white'%3EAa%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="word-practice-preview.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -29,6 +30,7 @@
           Practice
           <span class="nav-badge"><span id="nav-count">0</span><span aria-hidden="true">★</span></span>
         </a>
+        <a class="nav-link" href="#words" data-nav="words">Word Practice</a>
         <a class="nav-link" href="#name" data-nav="name">Write My Name</a>
         <a class="nav-link" href="#parents">For Parents</a>
       </nav>
@@ -204,6 +206,49 @@
         </section>
       </section>
 
+      <section class="view name-view wp-select" id="view-word-selection" hidden aria-labelledby="word-selection-heading">
+        <div class="wp-select-card">
+          <p class="free-badge"><i></i> WORDS, ONE LETTER AT A TIME</p>
+          <h1 id="word-selection-heading">Let’s trace a word!</h1>
+          <p class="name-subtitle">Pick a word, then trace it one letter at a time.</p>
+
+          <section class="wp-group" aria-labelledby="word-animals-heading">
+            <h2 id="word-animals-heading">Animals</h2>
+            <ul class="wp-cards" id="word-animals">
+              <li><button type="button" class="wp-card" data-word="CAT"><span class="wp-card-emoji" aria-hidden="true">🐱</span><span class="wp-card-word">CAT</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace CAT</span></button></li>
+              <li><button type="button" class="wp-card" data-word="DOG"><span class="wp-card-emoji" aria-hidden="true">🐶</span><span class="wp-card-word">DOG</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace DOG</span></button></li>
+              <li><button type="button" class="wp-card" data-word="PIG"><span class="wp-card-emoji" aria-hidden="true">🐷</span><span class="wp-card-word">PIG</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace PIG</span></button></li>
+            </ul>
+          </section>
+
+          <section class="wp-group" aria-labelledby="word-things-heading">
+            <h2 id="word-things-heading">Everyday things</h2>
+            <ul class="wp-cards" id="word-things">
+              <li><button type="button" class="wp-card" data-word="BUS"><span class="wp-card-emoji" aria-hidden="true">🚌</span><span class="wp-card-word">BUS</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace BUS</span></button></li>
+              <li><button type="button" class="wp-card" data-word="CAR"><span class="wp-card-emoji" aria-hidden="true">🚗</span><span class="wp-card-word">CAR</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace CAR</span></button></li>
+              <li><button type="button" class="wp-card" data-word="HAT"><span class="wp-card-emoji" aria-hidden="true">🎩</span><span class="wp-card-word">HAT</span><span class="wp-card-meta">3 letters</span><span class="wp-card-action">Trace HAT</span></button></li>
+            </ul>
+          </section>
+          <a class="btn btn-soft" href="#home">Back to home</a>
+        </div>
+      </section>
+
+      <section class="view name-view name-completed" id="view-word-completed" hidden aria-labelledby="word-completed-heading">
+        <div class="completed-card">
+          <div class="celebration-stars" aria-hidden="true"><span>✦</span><span>✦</span><span>✧</span><span>✦</span><span>✧</span></div>
+          <span class="wp-completed-emoji" id="word-completed-emoji" aria-hidden="true">🐱</span>
+          <h1 id="word-completed-heading">Well done!</h1>
+          <p class="completed-message">You traced <span id="word-completed-name">CAT</span>!</p>
+          <p class="completed-full-name" id="word-completed-full-name">CAT</p>
+          <div class="name-tiles completed-tiles" id="word-completed-tiles" aria-label="Completed letters"></div>
+          <div class="completed-actions">
+            <button type="button" class="btn btn-coral" id="word-again">Trace this word again</button>
+            <a class="btn btn-white" href="#word-selection">Choose another word</a>
+            <a class="btn btn-soft" href="#practice">Back to letter practice</a>
+          </div>
+        </div>
+      </section>
+
       <section class="view" id="view-practice" hidden>
         <div class="name-tracing-head" id="name-tracing-head" hidden>
           <div>
@@ -310,7 +355,7 @@
             </div>
             <section class="name-progress-card" id="name-progress-card" aria-label="Name progress" hidden>
               <div class="name-progress-heading">
-                <h2>Your name</h2>
+                <h2 id="progress-title">Your name</h2>
                 <p class="done-pill" id="name-done-count">0 of 0 letters completed</p>
               </div>
               <div class="picker-meter" aria-hidden="true"><span id="name-panel-meter"></span></div>
