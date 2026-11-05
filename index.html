@@ -184,6 +184,12 @@
               <div class="name-tiles name-preview-tiles" id="name-preview" aria-label="Name preview"></div>
             </div>
 
+
+            <div class="accuracy-setting">
+              <label for="name-accuracy">Accuracy needed to continue: <strong class="accuracy-value">50%</strong></label>
+              <input type="range" class="accuracy-slider" id="name-accuracy" min="0" max="100" step="5" value="50">
+            </div>
+
             <button type="button" class="btn btn-coral name-start" id="name-start" disabled>Start tracing <span aria-hidden="true">→</span></button>
             <p class="name-privacy">No account needed. Your name stays in this browser.</p>
           </div>
@@ -211,6 +217,12 @@
           <p class="free-badge"><i></i> WORDS, ONE LETTER AT A TIME</p>
           <h1 id="word-selection-heading">Let’s trace a word!</h1>
           <p class="name-subtitle">Pick a word, then trace it one letter at a time.</p>
+
+
+          <div class="accuracy-setting">
+              <label for="word-accuracy">Accuracy needed to continue: <strong class="accuracy-value">50%</strong></label>
+              <input type="range" class="accuracy-slider" id="word-accuracy" min="0" max="100" step="5" value="50">
+            </div>
 
           <section class="wp-group" aria-labelledby="word-animals-heading">
             <h2 id="word-animals-heading">Animals</h2>

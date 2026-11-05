@@ -1964,3 +1964,7 @@ main {
     animation: none;
   }
 }
+
+.accuracy-setting { margin: 16px 0; text-align: left; }
+.accuracy-setting label { display: block; font-weight: 700; margin-bottom: 8px; }
+.accuracy-slider { width: 100%; }

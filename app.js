@@ -12,6 +12,7 @@ var WORDS = {
   CAR: { emoji: "🚗" },
   HAT: { emoji: "🎩" }
 };
+var ACCURACY_KEY = "kids-tracing-min-accuracy-v1";
 var PASTELS = ["pink", "sky", "mint"];
 var PHONEMES = {
   A: "ay", B: "buh", C: "kuh", D: "duh", E: "eh", F: "fff", G: "guh",
@@ -159,6 +160,43 @@ function clearNameSession() {
     document.getElementById("live").textContent =
       "The saved name session could not be removed from this browser.";
   }
+}
+
+function loadMinAccuracy() {
+  try {
+    var n = Number(localStorage.getItem(ACCURACY_KEY));
+    if (localStorage.getItem(ACCURACY_KEY) !== null && n >= 0 && n <= 100) return Math.round(n);
+  } catch (err) {}
+  return 50;
+}
+
+var minAccuracy = loadMinAccuracy();
+
+function setMinAccuracy(value) {
+  minAccuracy = Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
+  try { localStorage.setItem(ACCURACY_KEY, String(minAccuracy)); } catch (err) {}
+  document.querySelectorAll(".accuracy-slider").forEach(function (el) { el.value = String(minAccuracy); });
+  document.querySelectorAll(".accuracy-value").forEach(function (el) { el.textContent = minAccuracy + "%"; });
+}
+
+// Returns true if the current letter passes (or is already done); otherwise warns.
+function checkLetterAccuracy(session) {
+  var live = document.getElementById("live");
+  if (session.completed[session.currentIndex]) return true;
+  if (!hasDrawingAttempt()) {
+    live.textContent = "Trace the grey letter first, then tap Next.";
+    return false;
+  }
+  var score = tracingScore();
+  var percent = score ? Math.round(Math.min(score.accuracy, score.coverage) * 100) : 0;
+  if (percent < minAccuracy) {
+    live.textContent = "Accuracy " + percent + "% is below " + minAccuracy +
+      "%. Clear and trace the letter more carefully, then tap Next.";
+    window.alert("Accuracy " + percent + "% — you need at least " + minAccuracy + "%. Try again!");
+    return false;
+  }
+  session.completed[session.currentIndex] = true;
+  return true;
 }
 
 function nameCompletionCount() {
@@ -811,6 +849,9 @@ function onWordDone() {
 
 function onNameNext() {
   if (!nameSession) return;
+  if (!checkLetterAccuracy(nameSession)) return;
+  persistNameSession();
+  renderNameProgress();
   var lastIndex = nameSession.name.length - 1;
   if (nameSession.currentIndex < lastIndex) {
     navigateNameTo(nameSession.currentIndex + 1);
@@ -828,6 +869,9 @@ function onNameNext() {
 
 function onWordNext() {
   if (!wordSession) return;
+  if (!checkLetterAccuracy(wordSession)) return;
+  persistWordSession();
+  renderWordProgress();
   var lastIndex = wordSession.word.length - 1;
   if (wordSession.currentIndex < lastIndex) {
     navigateWordTo(wordSession.currentIndex + 1);
@@ -1134,6 +1178,7 @@ function showView(name) {
   document.getElementById("view-home").hidden =
     inPractice || nameEntry || nameCompleted || wordSelection || wordCompleted;
   document.getElementById("view-practice").hidden = !inPractice;
+  document.getElementById("done-button").hidden = guidedTracing;
   document.getElementById("view-name").hidden = !nameEntry && !nameCompleted;
   document.getElementById("name-entry-view").hidden = !nameEntry;
   document.getElementById("name-completed-view").hidden = !nameCompleted;
@@ -1312,6 +1357,10 @@ document.getElementById("back-home").addEventListener("click", function () {
 });
 document.getElementById("save-button").addEventListener("click", onSave);
 document.getElementById("name-input").addEventListener("input", updateNameEntryPreview);
+document.querySelectorAll(".accuracy-slider").forEach(function (el) {
+  el.addEventListener("input", function () { setMinAccuracy(el.value); });
+});
+setMinAccuracy(minAccuracy);
 document.getElementById("name-clear").addEventListener("click", function () {
   setNameEntry("");
   document.getElementById("name-input").focus();
