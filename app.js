@@ -1381,6 +1381,10 @@ document.querySelectorAll("[data-group]").forEach(function (tab) {
 });
 
 window.addEventListener("hashchange", applyRoute);
+document.querySelector(".pill-nav").addEventListener("click", function (event) {
+  var link = event.target.closest("a[href^='#']");
+  if (link && link.getAttribute("href") === location.hash) applyRoute();
+});
 window.addEventListener("resize", function () {
   if (!document.getElementById("view-practice").hidden) resizeCanvas();
 });
