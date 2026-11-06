@@ -218,6 +218,12 @@
           <h1 id="word-selection-heading">Let’s trace a word!</h1>
           <p class="name-subtitle">Pick a word, then trace it one letter at a time.</p>
 
+          <section class="wp-rewards" aria-label="Daily goal and sticker collection">
+            <p class="wp-daily-goal" id="word-daily-goal"></p>
+            <p class="wp-storage-warning" id="word-storage-warning" hidden></p>
+            <h2>Sticker collection</h2>
+            <ol class="wp-sticker-shelf" id="word-sticker-shelf" aria-label="Word stickers"></ol>
+          </section>
 
           <div class="accuracy-setting">
               <label for="word-accuracy">Accuracy needed to continue: <strong class="accuracy-value">50%</strong></label>
@@ -243,6 +249,9 @@
           <span class="wp-completed-emoji" id="word-completed-emoji" aria-hidden="true">🐱</span>
           <h1 id="word-completed-heading">Well done!</h1>
           <p class="completed-message">You traced <span id="word-completed-name">CAT</span>!</p>
+          <p class="wp-completion-reward" id="word-completion-reward" hidden></p>
+          <p class="wp-daily-goal" id="word-daily-goal-completed"></p>
+          <p class="wp-storage-warning" id="word-storage-warning-completed" hidden></p>
           <p class="completed-full-name" id="word-completed-full-name">CAT</p>
           <div class="name-tiles completed-tiles" id="word-completed-tiles" aria-label="Completed letters"></div>
           <div class="completed-actions">
@@ -258,6 +267,8 @@
           <div>
             <p class="name-position" id="name-position">Letter 1 of 1</p>
             <h1 id="name-tracing-title">Write your name!</h1>
+            <p class="wp-daily-goal" id="word-daily-goal-tracing" hidden></p>
+            <p class="wp-storage-warning" id="word-storage-warning-tracing" hidden></p>
           </div>
           <div class="name-overall-progress">
             <span id="name-overall-count">0 of 0 letters completed</span>

@@ -316,6 +316,14 @@ starting a different word after making progress asks for confirmation before
 replacing that session. Word completion uses the existing Write My Name
 completion layout.
 
+Word Practice rewards use two additional local-only keys:
+`kids-tracing-word-stickers-v1` stores the earned CAT, DOG, PIG, BUS, CAR, and
+HAT stickers, and `kids-tracing-daily-goal-v1` stores the most recently
+completed local calendar date and consecutive-day streak. Completing a word
+earns its sticker once; completing any word completes that date's one-word
+goal. Invalid saved reward data is ignored, and unavailable storage falls back
+to in-memory progress with a visible save warning.
+
 ## 11. Visual Design
 
 ### General Style
@@ -574,7 +582,7 @@ These features are not part of V1, but may be added later:
 - Stroke-order animation
 - Letter adventure map
 - Daily challenge
-- Stickers or pet collection
+- Pet collection
 - Badges
 - Parent progress report
 - Multiple child profiles
