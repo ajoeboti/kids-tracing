@@ -3,6 +3,8 @@
 var STORAGE_KEY = "kids-tracing-progress";
 var NAME_STORAGE_KEY = "kids-tracing-name-session-v1";
 var WORD_STORAGE_KEY = "kids-tracing-word-session-v1";
+var WORD_STICKERS_KEY = "kids-tracing-word-stickers-v1";
+var DAILY_GOAL_KEY = "kids-tracing-daily-goal-v1";
 var CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split("");
 var WORDS = {
   CAT: { emoji: "🐱", category: "animals", phonics: "/k/ /æ/ /t/" },
@@ -35,6 +37,10 @@ var brushButton = document.getElementById("tool-brush");
 var state = loadProgress();
 var nameSession = loadNameSession();
 var wordSession = loadWordSession();
+var rewardsStorageAvailable = true;
+var stickerState = loadStickerState();
+var dailyGoalState = loadDailyGoal();
+var completionReward = null;
 var strokes = [];
 var practiceInk = [];
 var nameInk = [];
@@ -122,6 +128,175 @@ function loadWordSession() {
   } catch (err) {
     return null;
   }
+}
+
+function loadStickerState() {
+  var raw;
+  try {
+    raw = localStorage.getItem(WORD_STICKERS_KEY);
+  } catch (err) {
+    rewardsStorageAvailable = false;
+    return { version: 1, stickers: [] };
+  }
+  if (!raw) return { version: 1, stickers: [] };
+  try {
+    var data = JSON.parse(raw);
+    if (!data || data.version !== 1 || !Array.isArray(data.stickers)) {
+      return { version: 1, stickers: [] };
+    }
+    return {
+      version: 1,
+      stickers: data.stickers.filter(function (word, index, stickers) {
+        return Object.prototype.hasOwnProperty.call(WORDS, word) &&
+          stickers.indexOf(word) === index;
+      })
+    };
+  } catch (err) {
+    return { version: 1, stickers: [] };
+  }
+}
+
+function isValidCalendarDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  var timestamp = Date.parse(value + "T00:00:00Z");
+  return Number.isFinite(timestamp) && new Date(timestamp).toISOString().slice(0, 10) === value;
+}
+
+function loadDailyGoal() {
+  var raw;
+  try {
+    raw = localStorage.getItem(DAILY_GOAL_KEY);
+  } catch (err) {
+    rewardsStorageAvailable = false;
+    return { version: 1, lastCompletedDate: null, streak: 0 };
+  }
+  if (!raw) return { version: 1, lastCompletedDate: null, streak: 0 };
+  try {
+    var data = JSON.parse(raw);
+    if (!data || data.version !== 1 ||
+        !isValidCalendarDate(data.lastCompletedDate) ||
+        !Number.isSafeInteger(data.streak) || data.streak < 1) {
+      return { version: 1, lastCompletedDate: null, streak: 0 };
+    }
+    return {
+      version: 1,
+      lastCompletedDate: data.lastCompletedDate,
+      streak: data.streak
+    };
+  } catch (err) {
+    return { version: 1, lastCompletedDate: null, streak: 0 };
+  }
+}
+
+function localCalendarDate(date) {
+  return date.getFullYear() + "-" +
+    String(date.getMonth() + 1).padStart(2, "0") + "-" +
+    String(date.getDate()).padStart(2, "0");
+}
+
+function persistWordRewards() {
+  var saved = true;
+  try {
+    localStorage.setItem(WORD_STICKERS_KEY, JSON.stringify(stickerState));
+  } catch (err) {
+    saved = false;
+  }
+  try {
+    localStorage.setItem(DAILY_GOAL_KEY, JSON.stringify(dailyGoalState));
+  } catch (err) {
+    saved = false;
+  }
+  rewardsStorageAvailable = saved;
+  renderWordRewards();
+  if (!saved) {
+    document.getElementById("live").textContent =
+      "Your sticker and daily goal progress could not be saved in this browser.";
+  }
+  return saved;
+}
+
+function renderWordRewards() {
+  var today = localCalendarDate(new Date());
+  var isCompleteToday = dailyGoalState.lastCompletedDate === today;
+  var dailyText = isCompleteToday
+    ? "Daily goal complete: 1 word today" +
+      " · " + dailyGoalState.streak + "-day streak"
+    : "Daily goal: 1 word remaining today";
+  ["word-daily-goal", "word-daily-goal-tracing", "word-daily-goal-completed"]
+    .forEach(function (id) {
+      var indicator = document.getElementById(id);
+      if (indicator) indicator.textContent = dailyText;
+    });
+
+  ["word-storage-warning", "word-storage-warning-tracing", "word-storage-warning-completed"]
+    .forEach(function (id) {
+      var warning = document.getElementById(id);
+      if (!warning) return;
+      warning.hidden = rewardsStorageAvailable;
+      warning.textContent =
+        "Progress could not be saved. It will stay available only while this page is open.";
+    });
+
+  var shelf = document.getElementById("word-sticker-shelf");
+  if (shelf) {
+    shelf.replaceChildren();
+    Object.keys(WORDS).forEach(function (word) {
+      var earned = stickerState.stickers.indexOf(word) !== -1;
+      var item = document.createElement("li");
+      item.className = "wp-sticker" + (earned ? " is-earned" : "");
+      item.setAttribute("aria-label", word + " sticker, " + (earned ? "earned" : "not earned"));
+
+      var emoji = document.createElement("span");
+      emoji.className = "wp-sticker-emoji";
+      emoji.setAttribute("aria-hidden", "true");
+      emoji.textContent = WORDS[word].emoji;
+      var label = document.createElement("strong");
+      label.textContent = word;
+      var status = document.createElement("span");
+      status.className = "wp-sticker-status";
+      status.textContent = earned ? "Earned" : "Locked";
+      item.appendChild(emoji);
+      item.appendChild(label);
+      item.appendChild(status);
+      shelf.appendChild(item);
+    });
+  }
+
+  var rewardMessage = document.getElementById("word-completion-reward");
+  if (rewardMessage) {
+    rewardMessage.hidden = !completionReward;
+    if (completionReward) {
+      rewardMessage.textContent = "You earned the " + completionReward + " sticker! " +
+        WORDS[completionReward].emoji;
+    }
+  }
+}
+
+function scheduleRewardDateRefresh() {
+  var now = new Date();
+  var tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  window.setTimeout(function () {
+    renderWordRewards();
+    scheduleRewardDateRefresh();
+  }, Math.max(1000, tomorrow.getTime() - now.getTime()));
+}
+
+function recordWordCompletion(word) {
+  var earnedSticker = stickerState.stickers.indexOf(word) === -1;
+  if (earnedSticker) stickerState.stickers.push(word);
+
+  var today = localCalendarDate(new Date());
+  if (dailyGoalState.lastCompletedDate !== today) {
+    var yesterday = new Date();
+    yesterday.setHours(0, 0, 0, 0);
+    yesterday.setDate(yesterday.getDate() - 1);
+    dailyGoalState.streak = dailyGoalState.lastCompletedDate === localCalendarDate(yesterday)
+      ? dailyGoalState.streak + 1
+      : 1;
+    dailyGoalState.lastCompletedDate = today;
+  }
+  persistWordRewards();
+  return earnedSticker;
 }
 
 function persistWordSession() {
@@ -398,6 +573,8 @@ function createNameTile(index, completedPage) {
 
 function renderNameProgress() {
   if (!nameSession) return;
+  document.getElementById("word-daily-goal-tracing").hidden = true;
+  document.getElementById("word-storage-warning-tracing").hidden = true;
   var total = nameSession.name.length;
   var complete = nameCompletionCount();
   var percentage = (complete / total) * 100;
@@ -464,6 +641,7 @@ function wordTileStatus(index) {
 }
 
 function renderWordSelection() {
+  renderWordRewards();
   var groups = {
     animals: document.getElementById("word-animals"),
     things: document.getElementById("word-things")
@@ -534,6 +712,9 @@ function renderWordSelection() {
 
 function renderWordProgress() {
   if (!wordSession) return;
+  renderWordRewards();
+  document.getElementById("word-daily-goal-tracing").hidden = false;
+  document.getElementById("word-storage-warning-tracing").hidden = rewardsStorageAvailable;
   var total = wordSession.word.length;
   var complete = wordCompletionCount();
   var percentage = (complete / total) * 100;
@@ -602,6 +783,7 @@ function renderWordProgress() {
 
 function renderWordCompleted() {
   if (!wordSession) return;
+  renderWordRewards();
   document.getElementById("word-completed-name").textContent = wordSession.word;
   document.getElementById("word-completed-full-name").textContent = wordSession.word;
   document.getElementById("word-completed-emoji").textContent = WORDS[wordSession.word].emoji;
@@ -845,6 +1027,7 @@ function startWordSession(word) {
       completed: Array.from(word).map(function () { return false; })
     };
   }
+  completionReward = null;
   persistWordSession();
   wordInk = [];
   clearInk();
@@ -956,8 +1139,13 @@ function onWordNext() {
     return;
   }
   if (wordIsComplete()) {
+    completionReward = recordWordCompletion(wordSession.word) ? wordSession.word : null;
     if (location.hash === "#words") applyRoute();
     else location.hash = "words";
+    document.getElementById("live").textContent =
+      (completionReward ? "You earned the " + completionReward + " sticker! " : "Word complete. ") +
+      "Today's daily goal is complete." +
+      (rewardsStorageAvailable ? "" : " Your sticker and daily goal progress could not be saved.");
     return;
   }
   var incomplete = wordSession.completed.indexOf(false);
@@ -972,6 +1160,7 @@ function chooseAnotherWord() {
 
 function traceWordAgain() {
   if (!wordSession) return;
+  completionReward = null;
   wordSession.currentIndex = 0;
   wordSession.completed = Array.from(wordSession.word).map(function () { return false; });
   wordInk = [];
@@ -1527,3 +1716,4 @@ if (window.ResizeObserver) {
 
 renderAll();
 applyRoute();
+scheduleRewardDateRefresh();

@@ -32,6 +32,14 @@ session is stored at a time; choosing another word after progress requires
 confirmation and replaces the previous session. Handwriting strokes and
 canvas images are never saved.
 
+Word Practice also has a local sticker collection and a one-word daily goal.
+Completing each word for the first time earns its sticker; completing any word
+marks the local calendar day complete and updates a consecutive-day streak.
+The collection and goal use separate `kids-tracing-word-stickers-v1` and
+`kids-tracing-daily-goal-v1` keys. If browser storage is unavailable, the
+rewards work in memory for the open page and the site indicates they could not
+be saved.
+
 ## Write My Name
 
 Choose **Write My Name** in the navigation. The site uses the existing
@@ -76,3 +84,17 @@ styles, local fonts, and shared tracing canvas.
   canvas. Try **Write my name again** and **Try another name**.
 - Repeat at a narrow viewport (320px) and with a 20-letter name; confirm the
   tiles wrap and the page has no horizontal overflow.
+- In Word Practice, finish CAT for the first time; confirm one CAT sticker is
+  earned, the daily goal is complete, and the completion screen names the
+  sticker.
+- Trace CAT again; confirm its sticker is not duplicated and the daily goal is
+  still one completed word. Finish DOG on the same day and confirm the goal
+  remains one per day.
+- Complete a word on consecutive local calendar days and confirm the streak
+  increments; skip a day and confirm the next completion starts a streak of 1.
+  The date can be changed in the browser's saved daily-goal record for testing.
+- Try malformed or invalid reward records and unavailable localStorage; confirm
+  Word Practice still works and reports when rewards could not be saved.
+- Compare `kids-tracing-word-history-v1`, `kids-tracing-progress`, and
+  `kids-tracing-name-session-v1` before and after reward testing; they should
+  remain unchanged.
