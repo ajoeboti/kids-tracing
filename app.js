@@ -29,11 +29,42 @@ var PHONEMES = {
   0: "zero", 1: "one", 2: "two", 3: "three", 4: "four",
   5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"
 };
+var UPPERCASE_STROKE_ORDER = {
+  A: [
+    [[0.50, 0], [0, 1]],
+    [[0.50, 0], [1, 1]],
+    [[0.21, 0.64], [0.79, 0.64]]
+  ],
+  B: [
+    [[0.15, 0], [0.15, 1]],
+    [[0.15, 0.02], [0.53, 0.02], [0.81, 0.10], [0.97, 0.25], [0.97, 0.39], [0.81, 0.47], [0.53, 0.50], [0.15, 0.50]],
+    [[0.15, 0.50], [0.55, 0.50], [0.83, 0.58], [1, 0.72], [1, 0.86], [0.83, 0.96], [0.55, 1], [0.15, 1]]
+  ],
+  C: [
+    [[1, 0.16], [0.80, 0.04], [0.59, 0], [0.39, 0.06], [0.20, 0.21], [0.06, 0.42], [0, 0.63], [0.08, 0.82], [0.28, 0.96], [0.53, 1], [0.78, 0.94], [0.98, 0.84]]
+  ],
+  D: [
+    [[0.16, 0], [0.16, 1]],
+    [[0.16, 0.02], [0.53, 0.02], [0.76, 0.10], [0.91, 0.25], [1, 0.43], [1, 0.60], [0.91, 0.78], [0.76, 0.93], [0.53, 1], [0.16, 1]]
+  ],
+  E: [
+    [[0.18, 0], [0.18, 1]],
+    [[0.18, 0.02], [0.91, 0.02]],
+    [[0.18, 0.50], [0.72, 0.50]],
+    [[0.18, 0.98], [0.91, 0.98]]
+  ]
+};
 
 var canvas = document.getElementById("trace-canvas");
 var undoButton = document.getElementById("tool-undo");
 var pencilButton = document.getElementById("tool-pencil");
 var brushButton = document.getElementById("tool-brush");
+var strokeDemoCanvas = document.getElementById("stroke-demo-canvas");
+var strokeDemoContext = strokeDemoCanvas.getContext("2d");
+var strokeDemoControls = document.getElementById("stroke-demo-controls");
+var strokeDemoButton = document.getElementById("stroke-demo-button");
+var strokeDemoStatus = document.getElementById("stroke-demo-status");
+var strokeStepButton = document.getElementById("stroke-step-button");
 
 var state = loadProgress();
 var nameSession = loadNameSession();
@@ -61,6 +92,16 @@ var strokeWidth = 16;
 var pickerGroup = "upper";
 var saveTimer = 0;
 var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var strokeDemoFrame = 0;
+var strokeDemoTimer = 0;
+var strokeDemoActive = false;
+var strokeDemoManual = false;
+var strokeDemoCurrentStroke = 0;
+var strokeDemoVisibleStrokes = 0;
+var strokeDemoProgress = 0;
+var strokeDemoCharacter = null;
+var strokeDemoStartedAt = 0;
+var strokeDemoDuration = 900;
 
 function loadProgress() {
   var fresh = { currentIndex: 0, stars: {}, completed: [], lastPlayed: null };
@@ -580,6 +621,8 @@ function renderLetter() {
   document.getElementById("trace-subtitle").textContent = (isDigit ? "Number " : "Letter ") + ch + " of 62 • Stars save automatically";
   canvas.setAttribute("aria-label", "Tracing canvas for " + (isDigit ? "number " : "letter ") + ch);
   hideSuccess();
+  resetStrokeDemo();
+  strokeDemoControls.hidden = !Object.prototype.hasOwnProperty.call(UPPERCASE_STROKE_ORDER, ch);
 }
 
 function renderProgress() {
@@ -1053,6 +1096,236 @@ function resizeCanvas() {
     canvas.height = height;
   }
   paint();
+  resizeStrokeDemoCanvas();
+}
+
+function resizeStrokeDemoCanvas() {
+  var rect = strokeDemoCanvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+  var width = Math.max(1, Math.round(rect.width * dpr));
+  var height = Math.max(1, Math.round(rect.height * dpr));
+  if (strokeDemoCanvas.width !== width || strokeDemoCanvas.height !== height) {
+    strokeDemoCanvas.width = width;
+    strokeDemoCanvas.height = height;
+    var completedCount = strokeDemoActive && !strokeDemoManual
+      ? strokeDemoCurrentStroke
+      : strokeDemoVisibleStrokes;
+    var activeIndex = strokeDemoActive && !strokeDemoManual
+      ? strokeDemoCurrentStroke
+      : -1;
+    drawStrokeDemoFrame(completedCount, activeIndex, strokeDemoProgress);
+  }
+}
+
+function drawStrokeDemoFrame(completedCount, activeIndex, progress) {
+  var paths = UPPERCASE_STROKE_ORDER[strokeDemoCharacter];
+  var rect = strokeDemoCanvas.getBoundingClientRect();
+  if (!strokeDemoContext || !paths || !rect.width || !rect.height) return;
+  var dpr = strokeDemoCanvas.width / rect.width;
+  var ctx = strokeDemoContext;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, rect.width, rect.height);
+  paths.forEach(function (points, index) {
+    if (index < completedCount) drawDemoStroke(ctx, points, 1, rect.width, rect.height);
+    else if (index === activeIndex) drawDemoStroke(ctx, points, progress, rect.width, rect.height);
+  });
+  paths.forEach(function (points, index) {
+    drawDemoStart(ctx, points[0], index + 1, rect.width, rect.height, index, paths);
+  });
+}
+
+function drawDemoStroke(ctx, points, progress, width, height) {
+  if (!points || points.length < 2 || progress <= 0) return;
+  var lengths = [];
+  var totalLength = 0;
+  var i;
+  for (i = 1; i < points.length; i += 1) {
+    var from = strokeDemoPoint(points[i - 1], width, height);
+    var to = strokeDemoPoint(points[i], width, height);
+    var dx = to.x - from.x;
+    var dy = to.y - from.y;
+    var length = Math.sqrt(dx * dx + dy * dy);
+    lengths.push(length);
+    totalLength += length;
+  }
+  var remaining = totalLength * Math.min(progress, 1);
+  var start = strokeDemoPoint(points[0], width, height);
+  ctx.beginPath();
+  ctx.moveTo(start.x, start.y);
+  for (i = 0; i < lengths.length && remaining > 0; i += 1) {
+    var segmentLength = lengths[i];
+    var fraction = segmentLength ? Math.min(1, remaining / segmentLength) : 1;
+    var segmentStart = strokeDemoPoint(points[i], width, height);
+    var segmentEnd = strokeDemoPoint(points[i + 1], width, height);
+    ctx.lineTo(
+      segmentStart.x + (segmentEnd.x - segmentStart.x) * fraction,
+      segmentStart.y + (segmentEnd.y - segmentStart.y) * fraction
+    );
+    remaining -= segmentLength * fraction;
+    if (fraction < 1) break;
+  }
+  ctx.lineWidth = 6;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "#16877f";
+  ctx.stroke();
+}
+
+function strokeDemoPoint(point, width, height) {
+  return {
+    x: (0.33 + point[0] * 0.34) * width,
+    y: (0.25 + point[1] * 0.46) * height
+  };
+}
+
+function drawDemoStart(ctx, point, number, width, height, index, paths) {
+  var position = strokeDemoPoint(point, width, height);
+  var x = position.x;
+  var y = position.y;
+  var markerX = x;
+  var markerY = y;
+  var overlapsPrevious = paths.slice(0, index).some(function (stroke) {
+    var earlier = strokeDemoPoint(stroke[0], width, height);
+    return Math.sqrt(Math.pow(earlier.x - x, 2) + Math.pow(earlier.y - y, 2)) < 26;
+  });
+  if (overlapsPrevious) markerX += 26;
+  if (overlapsPrevious) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(markerX, markerY);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#245b58";
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = "#245b58";
+    ctx.fill();
+  }
+  ctx.beginPath();
+  ctx.arc(markerX, markerY, 12, 0, Math.PI * 2);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "#245b58";
+  ctx.stroke();
+  ctx.fillStyle = "#173f3d";
+  ctx.font = "700 13px Quicksand, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(String(number), markerX, markerY + 0.5);
+}
+
+function resetStrokeDemo() {
+  if (strokeDemoFrame) window.cancelAnimationFrame(strokeDemoFrame);
+  window.clearTimeout(strokeDemoTimer);
+  strokeDemoFrame = 0;
+  strokeDemoTimer = 0;
+  strokeDemoActive = false;
+  strokeDemoManual = false;
+  strokeDemoCurrentStroke = 0;
+  strokeDemoVisibleStrokes = 0;
+  strokeDemoProgress = 0;
+  strokeDemoCharacter = null;
+  strokeDemoCanvas.classList.remove("is-fading");
+  strokeDemoContext.clearRect(0, 0, strokeDemoCanvas.width, strokeDemoCanvas.height);
+  strokeDemoStatus.hidden = true;
+  strokeDemoStatus.textContent = "";
+  var live = document.getElementById("live");
+  if (live.textContent.indexOf("Stroke ") === 0 ||
+      live.textContent === "Demonstration complete. You can trace the letter now.") {
+    live.textContent = "";
+  }
+  strokeStepButton.hidden = true;
+  strokeDemoButton.textContent = "Watch how to write " + currentChar();
+  document.getElementById("done-button").disabled = document.body.dataset.view !== "practice";
+}
+
+function startStrokeDemo() {
+  var character = currentChar();
+  var paths = UPPERCASE_STROKE_ORDER[character];
+  if (!paths) return;
+  resetStrokeDemo();
+  strokeDemoCharacter = character;
+  strokeDemoActive = true;
+  strokeDemoButton.textContent = "Replay demonstration";
+  strokeDemoStatus.hidden = false;
+  document.getElementById("done-button").disabled = true;
+  if (prefersReduced) {
+    strokeDemoManual = true;
+    strokeDemoVisibleStrokes = 1;
+    drawStrokeDemoFrame(1, -1, 0);
+    updateStrokeDemoStatus(1, paths.length);
+    strokeStepButton.textContent = paths.length > 1 ? "Show next stroke" : "Finish demonstration";
+    strokeStepButton.hidden = false;
+    return;
+  }
+  strokeDemoCurrentStroke = 0;
+  strokeDemoStartedAt = performance.now();
+  updateStrokeDemoStatus(1, paths.length);
+  strokeDemoFrame = window.requestAnimationFrame(animateStrokeDemo);
+}
+
+function updateStrokeDemoStatus(number, total) {
+  var text = "Stroke " + number + " of " + total;
+  strokeDemoStatus.textContent = text;
+  document.getElementById("live").textContent = text + " for letter " + strokeDemoCharacter + ".";
+}
+
+function animateStrokeDemo(now) {
+  var paths = UPPERCASE_STROKE_ORDER[strokeDemoCharacter];
+  if (!strokeDemoActive || !paths) return;
+  var elapsed = now - strokeDemoStartedAt;
+  strokeDemoProgress = Math.min(1, elapsed / strokeDemoDuration);
+  drawStrokeDemoFrame(strokeDemoCurrentStroke, strokeDemoCurrentStroke, strokeDemoProgress);
+  if (strokeDemoProgress >= 1) {
+    strokeDemoCurrentStroke += 1;
+    if (strokeDemoCurrentStroke >= paths.length) {
+      drawStrokeDemoFrame(paths.length, -1, 0);
+      finishStrokeDemo();
+      return;
+    }
+    strokeDemoStartedAt = now;
+    updateStrokeDemoStatus(strokeDemoCurrentStroke + 1, paths.length);
+  }
+  strokeDemoFrame = window.requestAnimationFrame(animateStrokeDemo);
+}
+
+function advanceStrokeDemo() {
+  if (!strokeDemoManual || !strokeDemoActive) return;
+  var paths = UPPERCASE_STROKE_ORDER[strokeDemoCharacter];
+  if (strokeDemoVisibleStrokes < paths.length) {
+    strokeDemoVisibleStrokes += 1;
+    drawStrokeDemoFrame(strokeDemoVisibleStrokes, -1, 0);
+    updateStrokeDemoStatus(strokeDemoVisibleStrokes, paths.length);
+    strokeStepButton.textContent = strokeDemoVisibleStrokes < paths.length
+      ? "Show next stroke"
+      : "Finish demonstration";
+    return;
+  }
+  finishStrokeDemo();
+}
+
+function finishStrokeDemo() {
+  var paths = UPPERCASE_STROKE_ORDER[strokeDemoCharacter];
+  strokeDemoActive = false;
+  strokeDemoManual = false;
+  strokeDemoFrame = 0;
+  strokeDemoVisibleStrokes = paths.length;
+  strokeDemoCurrentStroke = -1;
+  strokeDemoProgress = 0;
+  strokeStepButton.hidden = true;
+  strokeDemoStatus.textContent = "Demonstration complete. You can trace the letter now.";
+  document.getElementById("live").textContent = strokeDemoStatus.textContent;
+  document.getElementById("done-button").disabled = false;
+  strokeDemoTimer = window.setTimeout(function () {
+    strokeDemoCanvas.classList.add("is-fading");
+    strokeDemoTimer = window.setTimeout(function () {
+      strokeDemoContext.clearRect(0, 0, strokeDemoCanvas.width, strokeDemoCanvas.height);
+      strokeDemoCanvas.classList.remove("is-fading");
+      strokeDemoTimer = 0;
+    }, 1000);
+  }, 1000);
 }
 
 function paint() {
@@ -1559,6 +1832,7 @@ function showSuccess(score, ch) {
 }
 
 function onDone() {
+  if (strokeDemoActive) return;
   var ch = currentChar();
   var score = tracingScore();
   if (!score) {
@@ -1710,6 +1984,10 @@ function showView(name) {
   document.body.dataset.view = name;
   document.body.classList.toggle("name-tracing", guidedTracing);
   document.body.classList.toggle("word-tracing", wordTracing);
+  strokeDemoControls.hidden = !practice ||
+    !Object.prototype.hasOwnProperty.call(UPPERCASE_STROKE_ORDER, currentChar());
+  if (strokeDemoControls.hidden) resetStrokeDemo();
+  document.getElementById("done-button").disabled = guidedTracing || strokeDemoActive;
   document.title = wordSelection || wordTracing || wordCompleted ? "Word Practice • Kids Tracing" :
     (nameTracing ? "Write My Name • Kids Tracing" :
     (nameEntry || nameCompleted ? "Write My Name • Kids Tracing" :
@@ -1795,6 +2073,7 @@ function onSave() {
 }
 
 canvas.addEventListener("pointerdown", function (event) {
+  if (strokeDemoActive) return;
   if (event.pointerType === "mouse" && event.button !== 0) return;
   canvas.setPointerCapture(event.pointerId);
   drawing = true;
@@ -1866,10 +2145,13 @@ document.getElementById("accuracy-dialog-close").addEventListener("click", funct
   document.getElementById("accuracy-dialog").close();
 });
 document.getElementById("done-button").addEventListener("click", function () {
+  if (strokeDemoActive) return;
   if (document.body.dataset.view === "name-tracing") onNameDone();
   else if (document.body.dataset.view === "word-tracing") onWordDone();
   else onDone();
 });
+strokeDemoButton.addEventListener("click", startStrokeDemo);
+strokeStepButton.addEventListener("click", advanceStrokeDemo);
 document.getElementById("keep-going").addEventListener("click", function () {
   goTo(state.currentIndex + 1);
 });

@@ -201,17 +201,22 @@ large character.
 ### V1 Tracing Method
 
 V1 uses **grey-character tracing only**. Children trace directly over one
-large light-grey reference character on the writing guide lines.
+large light-grey reference character on the writing guide lines. Standalone
+uppercase A–E practice also offers an optional stroke-order demonstration
+before tracing; the demonstration uses its own overlay and does not change the
+grey guide or validate the child's stroke order.
 
 The following are **out of scope for V1**:
 
 - Dotted tracing guides
-- Stroke numbering
-- Start and end markers
-- Direction arrows
 - Stroke-order validation
+- Direction arrows
+- Start/end markers outside the optional A–E demonstration
 
-The practice instruction is: "Trace over the grey letter or number."
+The A–E demonstration shows numbered starting points and animated strokes for
+instruction only. It can be replayed, and reduced-motion users can reveal one
+complete stroke at a time. The practice instruction remains: "Trace over the
+grey letter or number."
 
 ## 9. Scoring Rules
 
