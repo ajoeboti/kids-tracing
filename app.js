@@ -29,7 +29,7 @@ var PHONEMES = {
   0: "zero", 1: "one", 2: "two", 3: "three", 4: "four",
   5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"
 };
-var UPPERCASE_STROKE_ORDER = {
+var STROKE_ORDER = {
   A: [
     [[0.50, 0], [0, 1]],
     [[0.50, 0], [1, 1]],
@@ -52,6 +52,217 @@ var UPPERCASE_STROKE_ORDER = {
     [[0.18, 0.02], [0.91, 0.02]],
     [[0.18, 0.50], [0.72, 0.50]],
     [[0.18, 0.98], [0.91, 0.98]]
+  ],
+  F: [
+    [[0.18, 0], [0.18, 1]],
+    [[0.18, 0.02], [0.91, 0.02]],
+    [[0.18, 0.5], [0.72, 0.5]]
+  ],
+  G: [
+    [[0.96, 0.2], [0.82, 0.08], [0.62, 0.01], [0.4, 0.02], [0.2, 0.12], [0.06, 0.3], [0.01, 0.52], [0.06, 0.75], [0.2, 0.91], [0.4, 0.99], [0.62, 0.98], [0.82, 0.87], [0.98, 0.72], [0.98, 0.55], [0.64, 0.55]]
+  ],
+  H: [
+    [[0.16, 0], [0.16, 1]],
+    [[0.84, 0], [0.84, 1]],
+    [[0.16, 0.5], [0.84, 0.5]]
+  ],
+  I: [
+    [[0.25, 0.02], [0.75, 0.02]],
+    [[0.5, 0.02], [0.5, 0.98]],
+    [[0.25, 0.98], [0.75, 0.98]]
+  ],
+  J: [
+    [[0.18, 0.02], [0.86, 0.02]],
+    [[0.78, 0.02], [0.78, 0.7], [0.73, 0.87], [0.6, 0.97], [0.42, 1], [0.24, 0.94], [0.15, 0.82]]
+  ],
+  K: [
+    [[0.18, 0], [0.18, 1]],
+    [[0.82, 0], [0.18, 0.51]],
+    [[0.4, 0.34], [0.88, 1]]
+  ],
+  L: [
+    [[0.2, 0], [0.2, 0.98], [0.88, 0.98]]
+  ],
+  M: [
+    [[0.1, 1], [0.1, 0], [0.5, 0.56], [0.9, 0], [0.9, 1]]
+  ],
+  N: [
+    [[0.14, 1], [0.14, 0]],
+    [[0.14, 0], [0.86, 1]],
+    [[0.86, 1], [0.86, 0]]
+  ],
+  O: [
+    [[0.5, 0], [0.72, 0.03], [0.88, 0.15], [0.98, 0.34], [1, 0.55], [0.94, 0.75], [0.8, 0.91], [0.62, 0.99], [0.4, 0.99], [0.2, 0.9], [0.06, 0.74], [0, 0.54], [0.04, 0.33], [0.16, 0.15], [0.34, 0.03], [0.5, 0]]
+  ],
+  P: [
+    [[0.18, 1], [0.18, 0]],
+    [[0.18, 0.02], [0.58, 0.02], [0.82, 0.1], [0.96, 0.27], [0.96, 0.43], [0.82, 0.58], [0.58, 0.62], [0.18, 0.62]]
+  ],
+  Q: [
+    [[0.5, 0], [0.72, 0.03], [0.88, 0.15], [0.98, 0.34], [1, 0.55], [0.94, 0.75], [0.8, 0.91], [0.62, 0.99], [0.4, 0.99], [0.2, 0.9], [0.06, 0.74], [0, 0.54], [0.04, 0.33], [0.16, 0.15], [0.34, 0.03], [0.5, 0]],
+    [[0.63, 0.68], [0.98, 1]]
+  ],
+  R: [
+    [[0.18, 1], [0.18, 0]],
+    [[0.18, 0.02], [0.57, 0.02], [0.82, 0.1], [0.96, 0.27], [0.96, 0.43], [0.82, 0.58], [0.57, 0.62], [0.18, 0.62]],
+    [[0.55, 0.62], [0.9, 1]]
+  ],
+  S: [
+    [[0.92, 0.15], [0.78, 0.04], [0.56, 0], [0.34, 0.05], [0.14, 0.18], [0.06, 0.34], [0.14, 0.46], [0.37, 0.51], [0.66, 0.54], [0.88, 0.63], [0.96, 0.77], [0.84, 0.92], [0.63, 0.99], [0.39, 0.97], [0.17, 0.88], [0.06, 0.78]]
+  ],
+  T: [
+    [[0.08, 0.02], [0.92, 0.02]],
+    [[0.5, 0.02], [0.5, 1]]
+  ],
+  U: [
+    [[0.14, 0], [0.14, 0.62], [0.17, 0.81], [0.28, 0.94], [0.5, 1], [0.72, 0.94], [0.83, 0.81], [0.86, 0.62], [0.86, 0]]
+  ],
+  V: [
+    [[0.12, 0], [0.5, 1], [0.88, 0]]
+  ],
+  W: [
+    [[0.06, 0], [0.26, 1], [0.5, 0.43], [0.74, 1], [0.94, 0]]
+  ],
+  X: [
+    [[0.16, 0], [0.84, 1]],
+    [[0.84, 0], [0.16, 1]]
+  ],
+  Y: [
+    [[0.12, 0], [0.5, 0.5], [0.88, 0]],
+    [[0.5, 0.5], [0.5, 1]]
+  ],
+  Z: [
+    [[0.12, 0.02], [0.88, 0.02]],
+    [[0.88, 0.02], [0.12, 0.98]],
+    [[0.12, 0.98], [0.88, 0.98]]
+  ],
+  a: [
+    [[0.5, 0], [0.72, 0.03], [0.89, 0.16], [0.98, 0.36], [0.97, 0.59], [0.86, 0.81], [0.67, 0.96], [0.43, 1], [0.21, 0.92], [0.07, 0.74], [0.03, 0.52], [0.1, 0.28], [0.28, 0.09], [0.5, 0], [0.72, 0.03], [0.89, 0.16]],
+    [[0.88, 0.15], [0.88, 1]]
+  ],
+  b: [
+    [[0.2, 1], [0.2, 0]],
+    [[0.2, 0.56], [0.39, 0.39], [0.61, 0.35], [0.82, 0.44], [0.96, 0.62], [0.94, 0.81], [0.79, 0.95], [0.57, 1], [0.36, 0.94], [0.2, 0.8]]
+  ],
+  c: [
+    [[0.94, 0.2], [0.79, 0.08], [0.57, 0], [0.35, 0.05], [0.15, 0.2], [0.04, 0.42], [0.04, 0.63], [0.15, 0.84], [0.35, 0.97], [0.57, 1], [0.79, 0.91], [0.94, 0.8]]
+  ],
+  d: [
+    [[0.5, 0], [0.72, 0.03], [0.89, 0.16], [0.98, 0.36], [0.97, 0.59], [0.86, 0.81], [0.67, 0.96], [0.43, 1], [0.21, 0.92], [0.07, 0.74], [0.03, 0.52], [0.1, 0.28], [0.28, 0.09], [0.5, 0], [0.72, 0.03], [0.89, 0.16]],
+    [[0.88, 1], [0.88, 0]]
+  ],
+  e: [
+    [[0.06, 0.56], [0.28, 0.52], [0.55, 0.52], [0.79, 0.48], [0.91, 0.39], [0.86, 0.24], [0.69, 0.09], [0.47, 0.02], [0.25, 0.1], [0.09, 0.28], [0.03, 0.51], [0.1, 0.74], [0.28, 0.92], [0.52, 1], [0.75, 0.96], [0.93, 0.84]]
+  ],
+  f: [
+    [[0.7, 0], [0.7, 0.68], [0.75, 0.84], [0.88, 1], [0.99, 0.92]],
+    [[0.28, 0.42], [0.9, 0.42]]
+  ],
+  g: [
+    [[0.5, 0], [0.72, 0.02], [0.89, 0.12], [0.98, 0.25], [0.97, 0.41], [0.86, 0.55], [0.67, 0.66], [0.43, 0.68], [0.21, 0.63], [0.07, 0.51], [0.03, 0.35], [0.1, 0.19], [0.28, 0.06], [0.5, 0]],
+    [[0.88, 0.14], [0.88, 0.68], [0.82, 0.87], [0.67, 1], [0.47, 0.98], [0.29, 0.9]]
+  ],
+  h: [
+    [[0.2, 1], [0.2, 0]],
+    [[0.2, 0.58], [0.39, 0.39], [0.61, 0.35], [0.82, 0.44], [0.94, 0.61], [0.94, 1]]
+  ],
+  i: [
+    [[0.5, 0.38], [0.5, 1]],
+    [[0.5, 0], [0.52, 0.03]]
+  ],
+  j: [
+    [[0.6, 0.12], [0.6, 0.68], [0.55, 0.86], [0.4, 1], [0.25, 0.96]],
+    [[0.6, 0], [0.62, 0.03]]
+  ],
+  k: [
+    [[0.2, 1], [0.2, 0]],
+    [[0.82, 0.36], [0.2, 0.7]],
+    [[0.42, 0.58], [0.88, 1]]
+  ],
+  l: [
+    [[0.5, 0], [0.5, 1]]
+  ],
+  m: [
+    [[0.12, 1], [0.12, 0.36], [0.31, 0.48], [0.48, 0.37], [0.52, 1], [0.52, 0.38], [0.71, 0.48], [0.88, 0.37], [0.92, 1]]
+  ],
+  n: [
+    [[0.15, 1], [0.15, 0.36], [0.36, 0.48], [0.57, 0.36], [0.85, 0.42], [0.94, 0.59], [0.94, 1]]
+  ],
+  o: [
+    [[0.5, 0], [0.72, 0.03], [0.89, 0.16], [0.98, 0.36], [0.97, 0.59], [0.86, 0.81], [0.67, 0.96], [0.43, 1], [0.21, 0.92], [0.07, 0.74], [0.03, 0.52], [0.1, 0.28], [0.28, 0.09], [0.5, 0]]
+  ],
+  p: [
+    [[0.2, 0], [0.2, 1]],
+    [[0.2, 0], [0.4, 0.02], [0.62, 0.12], [0.83, 0.28], [0.96, 0.45], [0.91, 0.56], [0.74, 0.65], [0.52, 0.68], [0.31, 0.63], [0.2, 0.55]]
+  ],
+  q: [
+    [[0.5, 0], [0.72, 0.02], [0.89, 0.12], [0.98, 0.25], [0.97, 0.41], [0.86, 0.55], [0.67, 0.66], [0.43, 0.68], [0.21, 0.63], [0.07, 0.51], [0.03, 0.35], [0.1, 0.19], [0.28, 0.06], [0.5, 0]],
+    [[0.88, 0.14], [0.88, 0.68], [0.82, 0.87], [0.67, 1], [0.47, 0.98], [0.29, 0.9]]
+  ],
+  r: [
+    [[0.2, 1], [0.2, 0.36], [0.39, 0.48], [0.58, 0.38], [0.79, 0.38]]
+  ],
+  s: [
+    [[0.9, 0.16], [0.76, 0.05], [0.55, 0], [0.34, 0.06], [0.14, 0.2], [0.08, 0.38], [0.2, 0.5], [0.5, 0.54], [0.8, 0.62], [0.93, 0.76], [0.85, 0.9], [0.64, 0.99], [0.41, 0.97], [0.19, 0.88], [0.08, 0.78]]
+  ],
+  t: [
+    [[0.5, 0], [0.5, 1]],
+    [[0.22, 0.4], [0.82, 0.4]]
+  ],
+  u: [
+    [[0.14, 0.36], [0.14, 0.73], [0.23, 0.9], [0.43, 0.99], [0.64, 0.94], [0.84, 0.78], [0.86, 0.36], [0.86, 1]]
+  ],
+  v: [
+    [[0.12, 0.36], [0.5, 1], [0.88, 0.36]]
+  ],
+  w: [
+    [[0.06, 0.36], [0.25, 1], [0.5, 0.56], [0.75, 1], [0.94, 0.36]]
+  ],
+  x: [
+    [[0.16, 0.36], [0.84, 1]],
+    [[0.84, 0.36], [0.16, 1]]
+  ],
+  y: [
+    [[0.12, 0], [0.5, 0.68], [0.88, 0], [0.76, 0.66], [0.61, 0.87], [0.43, 1], [0.25, 0.96]]
+  ],
+  z: [
+    [[0.14, 0.38], [0.86, 0.38]],
+    [[0.86, 0.38], [0.14, 1]],
+    [[0.14, 1], [0.86, 1]]
+  ],
+  0: [
+    [[0.5, 0], [0.72, 0.03], [0.88, 0.15], [0.98, 0.34], [1, 0.55], [0.94, 0.75], [0.8, 0.91], [0.62, 0.99], [0.4, 0.99], [0.2, 0.9], [0.06, 0.74], [0, 0.54], [0.04, 0.33], [0.16, 0.15], [0.34, 0.03], [0.5, 0]]
+  ],
+  1: [
+    [[0.3, 0.24], [0.5, 0.02], [0.5, 0.98]]
+  ],
+  2: [
+    [[0.1, 0.2], [0.23, 0.07], [0.44, 0], [0.66, 0.04], [0.85, 0.17], [0.91, 0.33], [0.84, 0.5], [0.65, 0.68], [0.42, 0.85], [0.12, 0.98], [0.9, 0.98]]
+  ],
+  3: [
+    [[0.12, 0.12], [0.33, 0.02], [0.57, 0], [0.79, 0.09], [0.9, 0.26], [0.83, 0.43], [0.62, 0.5], [0.42, 0.5], [0.66, 0.51], [0.87, 0.62], [0.94, 0.79], [0.82, 0.93], [0.6, 1], [0.36, 0.98], [0.13, 0.87]]
+  ],
+  4: [
+    [[0.68, 0], [0.12, 0.66]],
+    [[0.68, 0], [0.68, 1]],
+    [[0.12, 0.66], [0.9, 0.66]]
+  ],
+  5: [
+    [[0.87, 0.02], [0.2, 0.02], [0.16, 0.48], [0.42, 0.41], [0.67, 0.42], [0.86, 0.55], [0.95, 0.74], [0.87, 0.9], [0.68, 0.99], [0.43, 0.99], [0.2, 0.88]]
+  ],
+  6: [
+    [[0.84, 0.08], [0.62, 0], [0.4, 0.08], [0.2, 0.26], [0.08, 0.49], [0.07, 0.72], [0.19, 0.9], [0.4, 0.99], [0.63, 0.98], [0.83, 0.87], [0.94, 0.69], [0.89, 0.52], [0.72, 0.43], [0.49, 0.44], [0.28, 0.56], [0.12, 0.72]]
+  ],
+  7: [
+    [[0.1, 0.02], [0.9, 0.02]],
+    [[0.9, 0.02], [0.38, 1]]
+  ],
+  8: [
+    [[0.5, 0.48], [0.7, 0.44], [0.86, 0.33], [0.91, 0.19], [0.82, 0.06], [0.65, 0], [0.44, 0.02], [0.25, 0.12], [0.17, 0.27], [0.25, 0.4], [0.5, 0.48]],
+    [[0.5, 0.48], [0.73, 0.55], [0.89, 0.69], [0.9, 0.84], [0.77, 0.96], [0.55, 1], [0.32, 0.96], [0.15, 0.84], [0.12, 0.69], [0.27, 0.55], [0.5, 0.48]]
+  ],
+  9: [
+    [[0.85, 0.48], [0.68, 0.57], [0.45, 0.56], [0.24, 0.46], [0.12, 0.29], [0.19, 0.12], [0.39, 0.02], [0.62, 0.04], [0.82, 0.17], [0.92, 0.4], [0.9, 0.65], [0.78, 0.84], [0.58, 0.97], [0.37, 1], [0.18, 0.93]]
   ]
 };
 
@@ -101,7 +312,7 @@ var strokeDemoVisibleStrokes = 0;
 var strokeDemoProgress = 0;
 var strokeDemoCharacter = null;
 var strokeDemoStartedAt = 0;
-var strokeDemoDuration = 900;
+var strokeDemoDuration = 1200;
 
 function loadProgress() {
   var fresh = { currentIndex: 0, stars: {}, completed: [], lastPlayed: null };
@@ -622,7 +833,7 @@ function renderLetter() {
   canvas.setAttribute("aria-label", "Tracing canvas for " + (isDigit ? "number " : "letter ") + ch);
   hideSuccess();
   resetStrokeDemo();
-  strokeDemoControls.hidden = !Object.prototype.hasOwnProperty.call(UPPERCASE_STROKE_ORDER, ch);
+  strokeDemoControls.hidden = !Object.prototype.hasOwnProperty.call(STROKE_ORDER, ch);
 }
 
 function renderProgress() {
@@ -1119,7 +1330,7 @@ function resizeStrokeDemoCanvas() {
 }
 
 function drawStrokeDemoFrame(completedCount, activeIndex, progress) {
-  var paths = UPPERCASE_STROKE_ORDER[strokeDemoCharacter];
+  var paths = STROKE_ORDER[strokeDemoCharacter];
   var rect = strokeDemoCanvas.getBoundingClientRect();
   if (!strokeDemoContext || !paths || !rect.width || !rect.height) return;
   var dpr = strokeDemoCanvas.width / rect.width;
@@ -1173,9 +1384,19 @@ function drawDemoStroke(ctx, points, progress, width, height) {
 }
 
 function strokeDemoPoint(point, width, height) {
+  var character = strokeDemoCharacter || currentChar();
+  var lower = groupFor(character) === "lower";
+  var ascenders = "bdfhklt";
+  var descenders = "fgjpqy";
+  var top = lower && ascenders.indexOf(character) === -1 ? 0.37 : 0.25;
+  var y = lower && descenders.indexOf(character) !== -1
+    ? (point[1] <= 0.68
+      ? top + point[1] / 0.68 * (0.71 - top)
+      : 0.71 + (point[1] - 0.68) / 0.32 * 0.05)
+    : top + point[1] * (0.71 - top);
   return {
     x: (0.33 + point[0] * 0.34) * width,
-    y: (0.25 + point[1] * 0.46) * height
+    y: y * height
   };
 }
 
@@ -1233,7 +1454,7 @@ function resetStrokeDemo() {
   strokeDemoStatus.textContent = "";
   var live = document.getElementById("live");
   if (live.textContent.indexOf("Stroke ") === 0 ||
-      live.textContent === "Demonstration complete. You can trace the letter now.") {
+      live.textContent === "Demonstration complete. You can trace the character now.") {
     live.textContent = "";
   }
   strokeStepButton.hidden = true;
@@ -1243,7 +1464,7 @@ function resetStrokeDemo() {
 
 function startStrokeDemo() {
   var character = currentChar();
-  var paths = UPPERCASE_STROKE_ORDER[character];
+  var paths = STROKE_ORDER[character];
   if (!paths) return;
   resetStrokeDemo();
   strokeDemoCharacter = character;
@@ -1269,11 +1490,12 @@ function startStrokeDemo() {
 function updateStrokeDemoStatus(number, total) {
   var text = "Stroke " + number + " of " + total;
   strokeDemoStatus.textContent = text;
-  document.getElementById("live").textContent = text + " for letter " + strokeDemoCharacter + ".";
+  var type = groupFor(strokeDemoCharacter) === "digit" ? "number " : "letter ";
+  document.getElementById("live").textContent = text + " for " + type + strokeDemoCharacter + ".";
 }
 
 function animateStrokeDemo(now) {
-  var paths = UPPERCASE_STROKE_ORDER[strokeDemoCharacter];
+  var paths = STROKE_ORDER[strokeDemoCharacter];
   if (!strokeDemoActive || !paths) return;
   var elapsed = now - strokeDemoStartedAt;
   strokeDemoProgress = Math.min(1, elapsed / strokeDemoDuration);
@@ -1293,7 +1515,7 @@ function animateStrokeDemo(now) {
 
 function advanceStrokeDemo() {
   if (!strokeDemoManual || !strokeDemoActive) return;
-  var paths = UPPERCASE_STROKE_ORDER[strokeDemoCharacter];
+  var paths = STROKE_ORDER[strokeDemoCharacter];
   if (strokeDemoVisibleStrokes < paths.length) {
     strokeDemoVisibleStrokes += 1;
     drawStrokeDemoFrame(strokeDemoVisibleStrokes, -1, 0);
@@ -1307,7 +1529,7 @@ function advanceStrokeDemo() {
 }
 
 function finishStrokeDemo() {
-  var paths = UPPERCASE_STROKE_ORDER[strokeDemoCharacter];
+  var paths = STROKE_ORDER[strokeDemoCharacter];
   strokeDemoActive = false;
   strokeDemoManual = false;
   strokeDemoFrame = 0;
@@ -1315,7 +1537,7 @@ function finishStrokeDemo() {
   strokeDemoCurrentStroke = -1;
   strokeDemoProgress = 0;
   strokeStepButton.hidden = true;
-  strokeDemoStatus.textContent = "Demonstration complete. You can trace the letter now.";
+  strokeDemoStatus.textContent = "Demonstration complete. You can trace the character now.";
   document.getElementById("live").textContent = strokeDemoStatus.textContent;
   document.getElementById("done-button").disabled = false;
   strokeDemoTimer = window.setTimeout(function () {
@@ -1985,7 +2207,7 @@ function showView(name) {
   document.body.classList.toggle("name-tracing", guidedTracing);
   document.body.classList.toggle("word-tracing", wordTracing);
   strokeDemoControls.hidden = !practice ||
-    !Object.prototype.hasOwnProperty.call(UPPERCASE_STROKE_ORDER, currentChar());
+    !Object.prototype.hasOwnProperty.call(STROKE_ORDER, currentChar());
   if (strokeDemoControls.hidden) resetStrokeDemo();
   document.getElementById("done-button").disabled = guidedTracing || strokeDemoActive;
   document.title = wordSelection || wordTracing || wordCompleted ? "Word Practice • Kids Tracing" :

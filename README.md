@@ -13,8 +13,9 @@ dependencies and can be published from the repository root with GitHub Pages.
 - Trace short words one letter at a time, with saved progress for the selected
   word session.
 - Keep saved practice progress in the browser.
-- Watch and replay animated stroke-order demonstrations for uppercase A–E
-  before tracing; reduced-motion users can reveal each stroke manually.
+- Watch and replay animated stroke-order demonstrations for all uppercase
+  letters, lowercase letters, and digits before tracing; reduced-motion users
+  can reveal each stroke manually.
 
 ## Word Practice
 
@@ -78,11 +79,12 @@ progress uses its existing storage and is not modified by name tracing.
 
 ## Letter stroke demonstrations
 
-Standalone letter practice offers an optional animated stroke-order
-demonstration for uppercase A, B, C, D, and E. The data uses normalized points
-and a separate canvas layer, so it scales with the tracing area and does not
-change the child's ink or scoring. Each stroke has a numbered start point, and
-the demonstration can be replayed. With reduced motion enabled, use **Show next
+Standalone practice offers an optional stroke-order demonstration for all 62
+characters (A–Z, a–z, and 0–9). The data uses normalized points and a separate
+canvas layer, so it scales with the tracing area and does not change the child's
+ink or scoring. Each stroke has a numbered starting point and a visible stroke
+count. Use **Watch how to write [character]** to start and **Replay
+demonstration** to play it again. With reduced motion enabled, use **Show next
 stroke** to reveal the order without animation. Name and Word Practice remain
 unchanged.
 
@@ -144,15 +146,19 @@ styles, local fonts, and shared tracing canvas.
   `kids-tracing-name-session-v1` before and after challenge testing; existing
   word history, stickers, daily goal, letter progress, and Write My Name data
   should remain unchanged.
-- In standalone practice, check A (3 strokes), B (3), C (1), D (2), and E (4);
-  confirm the numbered starts and paths follow the intended order, then replay.
-- Confirm animation pauses tracing input and does not erase, add to, or cover
-  the child's ink; after the demo, tracing validation, stars, and progression
-  should work as before.
-- Enable reduced motion and confirm the demo stays still and each stroke can
-  be revealed manually before tracing.
-- Use only the keyboard to reach and activate the watch/replay controls; check
-  that focus is visible.
-- At 320px width, confirm the watch/replay controls fit without horizontal
-  overflow.
-- Confirm Word Practice, Write My Name, and saved progress are unchanged.
+- In standalone practice, confirm every uppercase letter, lowercase letter,
+  and digit has a demonstration. Check A (3 strokes), G (1), Q (2), a (2),
+  g (2), q (2), 4 (3), 5 (1), 7 (2), and 8 (2) for stroke count, direction,
+  and proportions.
+- Replay each representative demonstration and confirm the animation does not
+  erase, add to, or cover the child's tracing ink.
+- After watching a demonstration, trace the character and confirm validation,
+  stars, and progression still work.
+- Enable reduced motion and confirm each stroke can be revealed manually
+  without animation.
+- Use only the keyboard to reach and activate watch/replay controls; confirm
+  they work and focus remains visible.
+- At 320px width, confirm the layout and watch/replay controls have no
+  horizontal overflow.
+- Confirm Word Practice, Write My Name, daily challenge, sticker collection,
+  daily goal, navigation, and saved progress remain unchanged.
