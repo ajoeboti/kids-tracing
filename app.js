@@ -3,6 +3,7 @@
 var STORAGE_KEY = "kids-tracing-progress";
 var NAME_STORAGE_KEY = "kids-tracing-name-session-v1";
 var WORD_STORAGE_KEY = "kids-tracing-word-session-v1";
+var WORD_HISTORY_STORAGE_KEY = "kids-tracing-word-history-v1";
 var CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split("");
 var WORDS = {
   CAT: { emoji: "🐱", category: "animals", phonics: "/k/ /æ/ /t/" },
@@ -35,6 +36,8 @@ var brushButton = document.getElementById("tool-brush");
 var state = loadProgress();
 var nameSession = loadNameSession();
 var wordSession = loadWordSession();
+var wordHistorySaved = true;
+var wordHistory = loadWordHistory();
 var strokes = [];
 var practiceInk = [];
 var nameInk = [];
@@ -47,6 +50,8 @@ var strokeWidth = 16;
 var pickerGroup = "upper";
 var saveTimer = 0;
 var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+migrateCompletedWordSession();
 
 function loadProgress() {
   var fresh = { currentIndex: 0, stars: {}, completed: [], lastPlayed: null };
@@ -121,6 +126,54 @@ function loadWordSession() {
     };
   } catch (err) {
     return null;
+  }
+}
+
+function loadWordHistory() {
+  try {
+    var raw = localStorage.getItem(WORD_HISTORY_STORAGE_KEY);
+    if (!raw) return [];
+    var data = JSON.parse(raw);
+    if (!data || typeof data !== "object" || data.version !== 1 ||
+        !Array.isArray(data.completedWords)) {
+      return [];
+    }
+    return data.completedWords.filter(function (word, index, words) {
+      return Object.prototype.hasOwnProperty.call(WORDS, word) &&
+        words.indexOf(word) === index;
+    });
+  } catch (err) {
+    wordHistorySaved = false;
+    return [];
+  }
+}
+
+function persistWordHistory() {
+  try {
+    localStorage.setItem(WORD_HISTORY_STORAGE_KEY, JSON.stringify({
+      version: 1,
+      completedWords: wordHistory
+    }));
+    wordHistorySaved = true;
+    return true;
+  } catch (err) {
+    wordHistorySaved = false;
+    document.getElementById("live").textContent =
+      "Your completed word history could not be saved in this browser.";
+    return false;
+  }
+}
+
+function recordCompletedWord(word) {
+  if (!Object.prototype.hasOwnProperty.call(WORDS, word)) return false;
+  if (wordHistory.indexOf(word) === -1) wordHistory.push(word);
+  else if (wordHistorySaved) return true;
+  return persistWordHistory();
+}
+
+function migrateCompletedWordSession() {
+  if (wordSession && wordIsComplete()) {
+    recordCompletedWord(wordSession.word);
   }
 }
 
@@ -475,12 +528,15 @@ function renderWordSelection() {
   Object.keys(WORDS).forEach(function (word) {
     var data = WORDS[word];
     var activeSession = wordSession && wordSession.word === word ? wordSession : null;
+    var historicallyCompleted = wordHistory.indexOf(word) !== -1;
     var completed = activeSession
       ? activeSession.completed.filter(function (done) { return done; }).length
       : 0;
-    var status = !activeSession ? "New word" :
-      (completed === word.length ? "Completed" :
-        "In progress · " + completed + " of " + word.length);
+    var status = activeSession
+      ? (completed === word.length ? "Completed" :
+        (historicallyCompleted ? "Completed · " : "") +
+          "In progress · " + completed + " of " + word.length)
+      : (historicallyCompleted ? "Completed" : "New word");
     var item = document.createElement("li");
     var button = document.createElement("button");
     var stage = document.createElement("span");
@@ -499,7 +555,8 @@ function renderWordSelection() {
     emoji.setAttribute("aria-hidden", "true");
     emoji.textContent = data.emoji;
     badge.className = "wp-card-status" +
-      (activeSession && completed === word.length ? " is-complete" : "");
+      (historicallyCompleted || (activeSession && completed === word.length)
+        ? " is-complete" : "");
     badge.textContent = status;
     stage.appendChild(emoji);
     stage.appendChild(badge);
@@ -920,9 +977,11 @@ function onWordDone() {
   var letter = wordSession.word.charAt(wordSession.currentIndex);
   wordSession.completed[wordSession.currentIndex] = true;
   persistWordSession();
+  var historySaved = !wordIsComplete() || recordCompletedWord(wordSession.word);
   renderWordProgress();
-  document.getElementById("live").textContent =
-    "Well done! You completed letter " + letter + " in " + wordSession.word + ".";
+  document.getElementById("live").textContent = "Well done! You completed letter " +
+    letter + " in " + wordSession.word + "." +
+    (historySaved ? "" : " Your completed word history could not be saved in this browser.");
 }
 
 function onNameNext() {
@@ -956,6 +1015,7 @@ function onWordNext() {
     return;
   }
   if (wordIsComplete()) {
+    recordCompletedWord(wordSession.word);
     if (location.hash === "#words") applyRoute();
     else location.hash = "words";
     return;

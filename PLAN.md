@@ -313,8 +313,14 @@ versioned key `kids-tracing-word-session-v1` stores only the selected word,
 current character position, and completion flags for each position. It never
 saves canvas pixels or stroke data. Only one word session is stored at a time;
 starting a different word after making progress asks for confirmation before
-replacing that session. Word completion uses the existing Write My Name
-completion layout.
+replacing that session. Completed words are recorded separately under
+`kids-tracing-word-history-v1` as `{"version":1,"completedWords":["CAT"]}`.
+History accepts only the configured word IDs, is deduplicated, and is migrated
+from a valid fully completed saved session. Partial sessions are not migrated.
+When browser storage is unavailable, the current page can still track history
+in memory, but it does not claim the history was saved. Selection cards show
+historical completion separately from the active session's per-letter progress.
+Word completion uses the existing Write My Name completion layout.
 
 ## 11. Visual Design
 
