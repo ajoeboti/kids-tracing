@@ -345,9 +345,16 @@
               </div>
             </div>
 
+            <div class="stroke-demo-controls" id="stroke-demo-controls" hidden>
+              <button type="button" class="stroke-demo-button" id="stroke-demo-button">Watch how to write A</button>
+              <p class="stroke-demo-status" id="stroke-demo-status" aria-live="polite" aria-atomic="true" hidden></p>
+              <button type="button" class="stroke-demo-button stroke-step-button" id="stroke-step-button" hidden>Show next stroke</button>
+            </div>
+
             <div class="stage" id="stage">
               <div class="paper" aria-hidden="true"><span></span><span class="dashed"></span><span></span></div>
               <p class="guide" id="guide" aria-hidden="true">A</p>
+              <canvas class="stroke-demo-canvas" id="stroke-demo-canvas" width="640" height="400" aria-hidden="true"></canvas>
               <canvas class="trace-canvas" id="trace-canvas" width="640" height="400" aria-label="Tracing canvas" aria-describedby="canvas-help"></canvas>
               <p class="follow-tip" id="canvas-help">
                 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8.2 10.2V6.4a1.5 1.5 0 0 1 3 0V11h.5V5.6a1.5 1.5 0 0 1 3 0V11h.4V7.2a1.5 1.5 0 1 1 3 0V14c0 3.2-2.4 5.6-5.8 5.6h-1.2C8 19.6 5.8 17.2 5.8 14.2v-3.4a1.4 1.4 0 0 1 2.4-.6z"/></svg>

@@ -13,6 +13,8 @@ dependencies and can be published from the repository root with GitHub Pages.
 - Trace short words one letter at a time, with saved progress for the selected
   word session.
 - Keep saved practice progress in the browser.
+- Watch and replay animated stroke-order demonstrations for uppercase A–E
+  before tracing; reduced-motion users can reveal each stroke manually.
 
 ## Word Practice
 
@@ -74,6 +76,16 @@ If browser storage is unavailable or the saved record is invalid, the feature
 continues to work without restoring that session. Existing letter/number
 progress uses its existing storage and is not modified by name tracing.
 
+## Letter stroke demonstrations
+
+Standalone letter practice offers an optional animated stroke-order
+demonstration for uppercase A, B, C, D, and E. The data uses normalized points
+and a separate canvas layer, so it scales with the tracing area and does not
+change the child's ink or scoring. Each stroke has a numbered start point, and
+the demonstration can be replayed. With reduced motion enabled, use **Show next
+stroke** to reveal the order without animation. Name and Word Practice remain
+unchanged.
+
 ## Development and deployment
 
 No build step or package installation is required. Serve the repository root
@@ -132,3 +144,15 @@ styles, local fonts, and shared tracing canvas.
   `kids-tracing-name-session-v1` before and after challenge testing; existing
   word history, stickers, daily goal, letter progress, and Write My Name data
   should remain unchanged.
+- In standalone practice, check A (3 strokes), B (3), C (1), D (2), and E (4);
+  confirm the numbered starts and paths follow the intended order, then replay.
+- Confirm animation pauses tracing input and does not erase, add to, or cover
+  the child's ink; after the demo, tracing validation, stars, and progression
+  should work as before.
+- Enable reduced motion and confirm the demo stays still and each stroke can
+  be revealed manually before tracing.
+- Use only the keyboard to reach and activate the watch/replay controls; check
+  that focus is visible.
+- At 320px width, confirm the watch/replay controls fit without horizontal
+  overflow.
+- Confirm Word Practice, Write My Name, and saved progress are unchanged.
