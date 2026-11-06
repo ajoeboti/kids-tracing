@@ -63,6 +63,117 @@
   letter-spacing: -0.035em;
 }
 
+.daily-challenge {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid #d5ece7;
+  border-radius: 20px;
+  background: #f3fbf9;
+}
+
+.daily-challenge-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.daily-challenge-kicker {
+  margin: 0 0 4px;
+  color: var(--teal-deep);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.daily-challenge-heading h2 {
+  margin: 0;
+  font-size: clamp(19px, 4vw, 24px);
+  line-height: 1.15;
+}
+
+.daily-challenge-emoji {
+  flex: none;
+  font-size: 38px;
+}
+
+.daily-challenge-word {
+  margin: 12px 0 4px;
+  font-size: 18px;
+}
+
+.daily-challenge-word strong {
+  letter-spacing: 0.06em;
+}
+
+.daily-challenge-status,
+.daily-challenge-feedback {
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.daily-challenge-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.daily-challenge-details p {
+  margin: 0;
+}
+
+.daily-challenge-listen {
+  min-height: 44px;
+  margin-top: 12px;
+}
+
+.daily-challenge-choices:not([hidden]) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.daily-challenge-choice {
+  display: grid;
+  min-width: 0;
+  min-height: 84px;
+  justify-items: center;
+  align-content: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border: 2px solid #e7d4c0;
+  border-radius: 14px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.daily-challenge-choice:hover,
+.daily-challenge-choice:focus-visible {
+  border-color: var(--teal);
+}
+
+.daily-challenge-choice-emoji {
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.daily-challenge-choice-word {
+  font-size: 17px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.daily-challenge-feedback:empty {
+  display: none;
+}
+
 .wp-group {
   margin: 26px 0 0;
 }

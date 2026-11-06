@@ -218,6 +218,28 @@
           <h1 id="word-selection-heading">Let’s trace a word!</h1>
           <p class="name-subtitle">Pick a word, then trace it one letter at a time.</p>
 
+          <section class="daily-challenge" aria-labelledby="daily-challenge-heading">
+            <div class="daily-challenge-heading">
+              <div>
+                <p class="daily-challenge-kicker">Today's Challenge</p>
+                <h2 id="daily-challenge-heading">Listen, choose, then trace</h2>
+              </div>
+              <span class="daily-challenge-emoji" id="daily-challenge-emoji" aria-hidden="true">🎧</span>
+            </div>
+            <p class="daily-challenge-word">Today's word: <strong id="daily-challenge-word">Listen to find out</strong></p>
+            <p class="daily-challenge-status" id="daily-challenge-status" aria-live="polite"></p>
+            <div class="daily-challenge-details">
+              <p id="daily-challenge-streak"></p>
+              <p id="daily-challenge-badges"></p>
+            </div>
+            <button type="button" class="btn btn-teal daily-challenge-listen" id="daily-challenge-listen">
+              Listen to today's word
+            </button>
+            <div class="daily-challenge-choices" id="daily-challenge-choices" role="group" aria-label="Choose the word you heard" hidden></div>
+            <p class="daily-challenge-feedback" id="daily-challenge-feedback" aria-live="polite"></p>
+            <p class="wp-storage-warning" id="daily-challenge-storage-warning" role="status" hidden></p>
+          </section>
+
           <section class="wp-rewards" aria-label="Daily goal and sticker collection">
             <p class="wp-daily-goal" id="word-daily-goal"></p>
             <p class="wp-storage-warning" id="word-storage-warning" hidden></p>
@@ -250,6 +272,8 @@
           <h1 id="word-completed-heading">Well done!</h1>
           <p class="completed-message">You traced <span id="word-completed-name">CAT</span>!</p>
           <p class="wp-completion-reward" id="word-completion-reward" hidden></p>
+          <p class="wp-completion-reward" id="daily-challenge-completion" hidden></p>
+          <p class="wp-storage-warning" id="daily-challenge-storage-warning-completed" role="status" hidden></p>
           <p class="wp-daily-goal" id="word-daily-goal-completed"></p>
           <p class="wp-storage-warning" id="word-storage-warning-completed" hidden></p>
           <p class="completed-full-name" id="word-completed-full-name">CAT</p>
@@ -269,6 +293,7 @@
             <h1 id="name-tracing-title">Write your name!</h1>
             <p class="wp-daily-goal" id="word-daily-goal-tracing" hidden></p>
             <p class="wp-storage-warning" id="word-storage-warning-tracing" hidden></p>
+            <p class="wp-storage-warning" id="daily-challenge-storage-warning-tracing" role="status" hidden></p>
           </div>
           <div class="name-overall-progress">
             <span id="name-overall-count">0 of 0 letters completed</span>

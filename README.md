@@ -40,6 +40,19 @@ The collection and goal use separate `kids-tracing-word-stickers-v1` and
 rewards work in memory for the open page and the site indicates they could not
 be saved.
 
+The **Today's Challenge** card selects one of the six words deterministically
+from the local calendar date. Listen to the spoken word, choose its picture,
+then complete the existing word tracing to earn that day's challenge badge.
+The card keeps the answer hidden until the challenge is complete so the
+listening choice remains meaningful.
+Challenge completion and its streak are stored separately under
+`kids-tracing-daily-challenge-v1`; its `completedWords` list contains distinct
+word badges. The challenge uses the shared tracing view without changing the
+existing saved word session, sticker collection, or daily goal; only its
+dedicated key records challenge rewards. Invalid saved data is ignored, and
+unavailable browser storage keeps challenge progress in memory with a visible
+save warning.
+
 ## Write My Name
 
 Choose **Write My Name** in the navigation. The site uses the existing
@@ -98,3 +111,24 @@ styles, local fonts, and shared tracing canvas.
 - Compare `kids-tracing-word-history-v1`, `kids-tracing-progress`, and
   `kids-tracing-name-session-v1` before and after reward testing; they should
   remain unchanged.
+- In Word Practice, refresh or reopen the page on the same local date; confirm
+  the daily challenge word remains the same.
+- Listen, choose the correct picture, complete the word tracing, and confirm the
+  daily badge appears once. Choose a wrong picture first and confirm no tracing
+  starts and no challenge completion is recorded.
+- Revisit or retrace the challenge on the same date; confirm the badge is not
+  duplicated and the streak does not increase again.
+- Complete challenges on consecutive local dates and confirm the streak grows;
+  skip a date and confirm the next completed challenge starts at 1. The
+  challenge key can be edited in browser storage for these checks.
+- Try malformed JSON, an invalid version/date, wrong field types, duplicate or
+  unknown completed words, and unavailable localStorage for the challenge key;
+  confirm the page remains usable, badges are sanitized, and failed saves are
+  clearly reported.
+- At 320px width and with reduced motion enabled, confirm there is no horizontal
+  overflow and the completion confirmation remains brief and non-blocking.
+- Compare `kids-tracing-word-session-v1`, `kids-tracing-word-stickers-v1`,
+  `kids-tracing-daily-goal-v1`, `kids-tracing-progress`, and
+  `kids-tracing-name-session-v1` before and after challenge testing; existing
+  word history, stickers, daily goal, letter progress, and Write My Name data
+  should remain unchanged.

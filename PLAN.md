@@ -324,6 +324,22 @@ earns its sticker once; completing any word completes that date's one-word
 goal. Invalid saved reward data is ignored, and unavailable storage falls back
 to in-memory progress with a visible save warning.
 
+The Today's Challenge card deterministically selects one of the six words from
+the user's local calendar date. The child listens to the spoken word, chooses
+its picture, and completes that word in the shared tracing flow. A separate
+`kids-tracing-daily-challenge-v1` record stores the last completed date, streak,
+and distinct completed word badges. The challenge can be completed only once
+per date, and only after the correct choice and tracing are completed that day.
+The answer stays hidden on the challenge card until completion.
+Invalid data is sanitized or ignored; unavailable storage keeps progress in
+memory and reports that it could not be saved. Existing word sessions and
+rewards remain independent: the challenge uses the shared tracing view but
+writes only its dedicated storage key.
+
+The README's manual smoke checks include same-day selection, correct and wrong
+choices, once-per-day completion, streak continuity and reset, storage failures,
+responsive layout, reduced motion, and regression checks for existing progress.
+
 ## 11. Visual Design
 
 ### General Style
@@ -581,9 +597,7 @@ These features are not part of V1, but may be added later:
 - Chinese character tracing
 - Stroke-order animation
 - Letter adventure map
-- Daily challenge
 - Pet collection
-- Badges
 - Parent progress report
 - Multiple child profiles
 - Cantonese or English audio instructions

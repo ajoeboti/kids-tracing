@@ -5,6 +5,7 @@ var NAME_STORAGE_KEY = "kids-tracing-name-session-v1";
 var WORD_STORAGE_KEY = "kids-tracing-word-session-v1";
 var WORD_STICKERS_KEY = "kids-tracing-word-stickers-v1";
 var DAILY_GOAL_KEY = "kids-tracing-daily-goal-v1";
+var DAILY_CHALLENGE_KEY = "kids-tracing-daily-challenge-v1";
 var CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split("");
 var WORDS = {
   CAT: { emoji: "🐱", category: "animals", phonics: "/k/ /æ/ /t/" },
@@ -37,10 +38,17 @@ var brushButton = document.getElementById("tool-brush");
 var state = loadProgress();
 var nameSession = loadNameSession();
 var wordSession = loadWordSession();
+var wordSessionIsDailyChallenge = false;
 var rewardsStorageAvailable = true;
 var stickerState = loadStickerState();
 var dailyGoalState = loadDailyGoal();
+var dailyChallengeStorageAvailable = true;
+var dailyChallengeState = loadDailyChallenge();
 var completionReward = null;
+var dailyChallengeCompletionWord = null;
+var dailyChallengeAttempt = null;
+var dailyChallengeHeard = false;
+var dailyChallengeHeardDate = null;
 var strokes = [];
 var practiceInk = [];
 var nameInk = [];
@@ -188,10 +196,109 @@ function loadDailyGoal() {
   }
 }
 
+function loadDailyChallenge() {
+  var fresh = { version: 1, lastCompletedDate: null, streak: 0, completedWords: [] };
+  var raw;
+  try {
+    raw = localStorage.getItem(DAILY_CHALLENGE_KEY);
+  } catch (err) {
+    dailyChallengeStorageAvailable = false;
+    return fresh;
+  }
+  if (!raw) return fresh;
+  try {
+    var data = JSON.parse(raw);
+    if (!data || data.version !== 1 ||
+        !isValidCalendarDate(data.lastCompletedDate) ||
+        !Number.isSafeInteger(data.streak) || data.streak < 1 ||
+        !Array.isArray(data.completedWords)) {
+      return fresh;
+    }
+    return {
+      version: 1,
+      lastCompletedDate: data.lastCompletedDate,
+      streak: data.streak,
+      completedWords: data.completedWords.filter(function (word, index, words) {
+        return Object.prototype.hasOwnProperty.call(WORDS, word) &&
+          words.indexOf(word) === index;
+      })
+    };
+  } catch (err) {
+    return fresh;
+  }
+}
+
 function localCalendarDate(date) {
   return date.getFullYear() + "-" +
     String(date.getMonth() + 1).padStart(2, "0") + "-" +
     String(date.getDate()).padStart(2, "0");
+}
+
+function dailyChallengeWordForDate(date) {
+  var parts = date.split("-").map(Number);
+  var dayIndex = Math.floor(Date.UTC(parts[0], parts[1] - 1, parts[2]) / 86400000);
+  var words = Object.keys(WORDS);
+  return words[((dayIndex % words.length) + words.length) % words.length];
+}
+
+function dailyChallengeChoicesFor(word, date) {
+  var parts = date.split("-").map(Number);
+  var seed = Math.floor(Date.UTC(parts[0], parts[1] - 1, parts[2]) / 86400000);
+  var distractors = Object.keys(WORDS).filter(function (candidate) {
+    return candidate !== word;
+  });
+  var choices = [
+    word,
+    distractors[seed % distractors.length],
+    distractors[(seed + 1) % distractors.length]
+  ];
+  var rotation = seed % choices.length;
+  return choices.slice(rotation).concat(choices.slice(0, rotation));
+}
+
+function dailyChallengeStreakForDate(date) {
+  if (dailyChallengeState.lastCompletedDate === date) return dailyChallengeState.streak;
+  var yesterday = new Date();
+  yesterday.setHours(0, 0, 0, 0);
+  yesterday.setDate(yesterday.getDate() - 1);
+  return dailyChallengeState.lastCompletedDate === localCalendarDate(yesterday)
+    ? dailyChallengeState.streak
+    : 0;
+}
+
+function persistDailyChallenge() {
+  try {
+    localStorage.setItem(DAILY_CHALLENGE_KEY, JSON.stringify(dailyChallengeState));
+    dailyChallengeStorageAvailable = true;
+  } catch (err) {
+    dailyChallengeStorageAvailable = false;
+  }
+  renderDailyChallenge();
+  return dailyChallengeStorageAvailable;
+}
+
+function recordDailyChallengeCompletion(word) {
+  var date = localCalendarDate(new Date());
+  if (!dailyChallengeAttempt || dailyChallengeAttempt.date !== date ||
+      dailyChallengeAttempt.word !== word ||
+      dailyChallengeState.lastCompletedDate === date) {
+    dailyChallengeAttempt = null;
+    return false;
+  }
+  var yesterday = new Date();
+  yesterday.setHours(0, 0, 0, 0);
+  yesterday.setDate(yesterday.getDate() - 1);
+  dailyChallengeState.streak = dailyChallengeState.lastCompletedDate === localCalendarDate(yesterday)
+    ? dailyChallengeState.streak + 1
+    : 1;
+  dailyChallengeState.lastCompletedDate = date;
+  if (dailyChallengeState.completedWords.indexOf(word) === -1) {
+    dailyChallengeState.completedWords.push(word);
+  }
+  dailyChallengeAttempt = null;
+  dailyChallengeCompletionWord = word;
+  persistDailyChallenge();
+  return true;
 }
 
 function persistWordRewards() {
@@ -277,6 +384,7 @@ function scheduleRewardDateRefresh() {
   var tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
   window.setTimeout(function () {
     renderWordRewards();
+    renderDailyChallenge();
     scheduleRewardDateRefresh();
   }, Math.max(1000, tomorrow.getTime() - now.getTime()));
 }
@@ -300,7 +408,7 @@ function recordWordCompletion(word) {
 }
 
 function persistWordSession() {
-  if (!wordSession) return;
+  if (!wordSession || wordSessionIsDailyChallenge) return;
   try {
     localStorage.setItem(WORD_STORAGE_KEY, JSON.stringify({
       word: wordSession.word,
@@ -640,8 +748,60 @@ function wordTileStatus(index) {
   return "upcoming";
 }
 
+function renderDailyChallenge() {
+  var date = localCalendarDate(new Date());
+  if (dailyChallengeHeardDate !== date) {
+    dailyChallengeHeard = false;
+    dailyChallengeHeardDate = date;
+    dailyChallengeAttempt = null;
+  }
+  var word = dailyChallengeWordForDate(date);
+  var complete = dailyChallengeState.lastCompletedDate === date;
+  var streak = dailyChallengeStreakForDate(date);
+  document.getElementById("daily-challenge-word").textContent =
+    complete ? word : "Listen to find out";
+  document.getElementById("daily-challenge-emoji").textContent =
+    complete ? WORDS[word].emoji : "🎧";
+  document.getElementById("daily-challenge-status").textContent = complete
+    ? "Complete today! Your daily badge is earned."
+    : "Listen to the word, choose its picture, then trace it.";
+  document.getElementById("daily-challenge-streak").textContent =
+    "Streak: " + streak + " " + (streak === 1 ? "day" : "days");
+  document.getElementById("daily-challenge-badges").textContent =
+    "Word badges: " + dailyChallengeState.completedWords.length + " of " +
+    Object.keys(WORDS).length;
+  document.getElementById("daily-challenge-listen").hidden = complete;
+
+  var choices = document.getElementById("daily-challenge-choices");
+  choices.replaceChildren();
+  dailyChallengeChoicesFor(word, date).forEach(function (choice) {
+    var button = document.createElement("button");
+    var emoji = document.createElement("span");
+    var label = document.createElement("span");
+    button.type = "button";
+    button.className = "daily-challenge-choice";
+    button.setAttribute("data-daily-challenge-word", choice);
+    button.setAttribute("aria-label", choice + " picture");
+    emoji.className = "daily-challenge-choice-emoji";
+    emoji.setAttribute("aria-hidden", "true");
+    emoji.textContent = WORDS[choice].emoji;
+    label.className = "daily-challenge-choice-word";
+    label.textContent = choice;
+    button.appendChild(emoji);
+    button.appendChild(label);
+    choices.appendChild(button);
+  });
+  choices.hidden = complete || !dailyChallengeHeard;
+  document.getElementById("daily-challenge-feedback").textContent = "";
+  var warning = document.getElementById("daily-challenge-storage-warning");
+  warning.hidden = dailyChallengeStorageAvailable;
+  warning.textContent =
+    "Daily challenge progress could not be saved. It will stay available only while this page is open.";
+}
+
 function renderWordSelection() {
   renderWordRewards();
+  renderDailyChallenge();
   var groups = {
     animals: document.getElementById("word-animals"),
     things: document.getElementById("word-things")
@@ -713,6 +873,10 @@ function renderWordSelection() {
 function renderWordProgress() {
   if (!wordSession) return;
   renderWordRewards();
+  var challengeWarning = document.getElementById("daily-challenge-storage-warning-tracing");
+  challengeWarning.hidden = dailyChallengeStorageAvailable;
+  challengeWarning.textContent =
+    "Daily challenge progress could not be saved. It will stay available only while this page is open.";
   document.getElementById("word-daily-goal-tracing").hidden = false;
   document.getElementById("word-storage-warning-tracing").hidden = rewardsStorageAvailable;
   var total = wordSession.word.length;
@@ -784,6 +948,17 @@ function renderWordProgress() {
 function renderWordCompleted() {
   if (!wordSession) return;
   renderWordRewards();
+  document.getElementById("daily-challenge-completion").hidden =
+    dailyChallengeCompletionWord === null;
+  if (dailyChallengeCompletionWord) {
+    document.getElementById("daily-challenge-completion").textContent =
+      "You completed " + dailyChallengeCompletionWord +
+      " and earned today's daily challenge badge!";
+  }
+  var challengeWarning = document.getElementById("daily-challenge-storage-warning-completed");
+  challengeWarning.hidden = dailyChallengeStorageAvailable;
+  challengeWarning.textContent =
+    "Daily challenge progress could not be saved. It will stay available only while this page is open.";
   document.getElementById("word-completed-name").textContent = wordSession.word;
   document.getElementById("word-completed-full-name").textContent = wordSession.word;
   document.getElementById("word-completed-emoji").textContent = WORDS[wordSession.word].emoji;
@@ -1013,12 +1188,12 @@ function startNameSession() {
   else location.hash = "name";
 }
 
-function startWordSession(word) {
-  if (!Object.prototype.hasOwnProperty.call(WORDS, word)) return;
+function startWordSession(word, options) {
+  if (!Object.prototype.hasOwnProperty.call(WORDS, word)) return false;
   if (wordSession && wordSession.word !== word &&
       (wordSession.currentIndex > 0 || wordCompletionCount() > 0) &&
       !window.confirm("Start a new word and leave this word session? Your completed letters will be cleared.")) {
-    return;
+    return false;
   }
   if (!wordSession || wordSession.word !== word) {
     wordSession = {
@@ -1026,13 +1201,20 @@ function startWordSession(word) {
       currentIndex: 0,
       completed: Array.from(word).map(function () { return false; })
     };
+  } else if (options && options.dailyChallenge && wordIsComplete()) {
+    wordSession.currentIndex = 0;
+    wordSession.completed = Array.from(word).map(function () { return false; });
   }
+  if (!options || !options.dailyChallenge) dailyChallengeAttempt = null;
+  wordSessionIsDailyChallenge = !!(options && options.dailyChallenge);
   completionReward = null;
+  dailyChallengeCompletionWord = null;
   persistWordSession();
   wordInk = [];
   clearInk();
   if (location.hash === "#words") applyRoute();
   else location.hash = "words";
+  return true;
 }
 
 function navigateWordTo(index) {
@@ -1139,13 +1321,27 @@ function onWordNext() {
     return;
   }
   if (wordIsComplete()) {
-    completionReward = recordWordCompletion(wordSession.word) ? wordSession.word : null;
+    completionReward = wordSessionIsDailyChallenge
+      ? null
+      : (recordWordCompletion(wordSession.word) ? wordSession.word : null);
+    var challengeCompleted = recordDailyChallengeCompletion(wordSession.word);
     if (location.hash === "#words") applyRoute();
     else location.hash = "words";
-    document.getElementById("live").textContent =
-      (completionReward ? "You earned the " + completionReward + " sticker! " : "Word complete. ") +
-      "Today's daily goal is complete." +
-      (rewardsStorageAvailable ? "" : " Your sticker and daily goal progress could not be saved.");
+    var completionMessage = completionReward
+      ? "You earned the " + completionReward + " sticker! "
+      : "Word complete. ";
+    if (!wordSessionIsDailyChallenge) completionMessage += "Today's daily goal is complete.";
+    if (challengeCompleted) {
+      completionMessage +=
+        " You completed " + wordSession.word + " and earned today's daily challenge badge.";
+      if (!dailyChallengeStorageAvailable) {
+        completionMessage += " Your daily challenge progress could not be saved.";
+      }
+    }
+    if (!rewardsStorageAvailable) {
+      completionMessage += " Your sticker and daily goal progress could not be saved.";
+    }
+    document.getElementById("live").textContent = completionMessage;
     return;
   }
   var incomplete = wordSession.completed.indexOf(false);
@@ -1161,6 +1357,8 @@ function chooseAnotherWord() {
 function traceWordAgain() {
   if (!wordSession) return;
   completionReward = null;
+  dailyChallengeCompletionWord = null;
+  dailyChallengeAttempt = null;
   wordSession.currentIndex = 0;
   wordSession.completed = Array.from(wordSession.word).map(function () { return false; });
   wordInk = [];
@@ -1415,6 +1613,58 @@ function speakPhoneme() {
   window.speechSynthesis.speak(utterance);
 }
 
+function listenToDailyChallengeWord() {
+  var date = localCalendarDate(new Date());
+  if (dailyChallengeState.lastCompletedDate === date) return;
+  var word = dailyChallengeWordForDate(date);
+  dailyChallengeHeard = true;
+  dailyChallengeHeardDate = date;
+  renderDailyChallenge();
+  var live = document.getElementById("live");
+  if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
+    live.textContent =
+      "Audio is not available in this browser. You can still choose the matching picture.";
+    return;
+  }
+  try {
+    var utterance = new window.SpeechSynthesisUtterance(word.toLowerCase());
+    utterance.rate = 0.82;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+    live.textContent = "Listen to the word, then choose the matching picture.";
+  } catch (err) {
+    live.textContent =
+      "Audio could not play in this browser. You can still choose the matching picture.";
+  }
+}
+
+function chooseDailyChallengeWord(word) {
+  var date = localCalendarDate(new Date());
+  var correctWord = dailyChallengeWordForDate(date);
+  if (dailyChallengeState.lastCompletedDate === date) {
+    document.getElementById("live").textContent = "Today's challenge is already complete.";
+    return;
+  }
+  if (!dailyChallengeHeard || dailyChallengeHeardDate !== date) {
+    document.getElementById("live").textContent = "Listen to today's word before choosing a picture.";
+    return;
+  }
+  if (word !== correctWord) {
+    document.getElementById("daily-challenge-feedback").textContent =
+      "Not that picture. Listen again and try another choice.";
+    document.getElementById("live").textContent =
+      "Not that picture. Listen again and try another choice.";
+    return;
+  }
+  document.getElementById("daily-challenge-feedback").textContent =
+    "That's right! Now trace " + correctWord + ".";
+  if (!startWordSession(correctWord, { dailyChallenge: true })) return;
+  dailyChallengeAttempt = { date: date, word: correctWord };
+  dailyChallengeHeard = false;
+  document.getElementById("live").textContent =
+    "That's right! Now trace " + correctWord + " one letter at a time.";
+}
+
 function renderAll() {
   renderLetter();
   renderProgress();
@@ -1659,6 +1909,13 @@ document.getElementById("name-progress-tiles").addEventListener("click", functio
 document.getElementById("view-word-selection").addEventListener("click", function (event) {
   var card = event.target.closest("[data-word]");
   if (card && event.currentTarget.contains(card)) startWordSession(card.getAttribute("data-word"));
+});
+document.getElementById("daily-challenge-listen").addEventListener("click", listenToDailyChallengeWord);
+document.getElementById("daily-challenge-choices").addEventListener("click", function (event) {
+  var choice = event.target.closest("[data-daily-challenge-word]");
+  if (choice && event.currentTarget.contains(choice)) {
+    chooseDailyChallengeWord(choice.getAttribute("data-daily-challenge-word"));
+  }
 });
 document.getElementById("how-button").addEventListener("click", function () {
   if ((location.hash || "#home") !== "#home" && location.hash !== "") {
