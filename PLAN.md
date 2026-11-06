@@ -330,6 +330,7 @@ its picture, and completes that word in the shared tracing flow. A separate
 `kids-tracing-daily-challenge-v1` record stores the last completed date, streak,
 and distinct completed word badges. The challenge can be completed only once
 per date, and only after the correct choice and tracing are completed that day.
+The answer stays hidden on the challenge card until completion.
 Invalid data is sanitized or ignored; unavailable storage keeps progress in
 memory and reports that it could not be saved. Existing word sessions and
 rewards remain independent: the challenge uses the shared tracing view but

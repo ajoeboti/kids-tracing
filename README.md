@@ -43,6 +43,8 @@ be saved.
 The **Today's Challenge** card selects one of the six words deterministically
 from the local calendar date. Listen to the spoken word, choose its picture,
 then complete the existing word tracing to earn that day's challenge badge.
+The card keeps the answer hidden until the challenge is complete so the
+listening choice remains meaningful.
 Challenge completion and its streak are stored separately under
 `kids-tracing-daily-challenge-v1`; its `completedWords` list contains distinct
 word badges. The challenge uses the shared tracing view without changing the

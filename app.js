@@ -758,8 +758,10 @@ function renderDailyChallenge() {
   var word = dailyChallengeWordForDate(date);
   var complete = dailyChallengeState.lastCompletedDate === date;
   var streak = dailyChallengeStreakForDate(date);
-  document.getElementById("daily-challenge-word").textContent = word;
-  document.getElementById("daily-challenge-emoji").textContent = WORDS[word].emoji;
+  document.getElementById("daily-challenge-word").textContent =
+    complete ? word : "Listen to find out";
+  document.getElementById("daily-challenge-emoji").textContent =
+    complete ? WORDS[word].emoji : "🎧";
   document.getElementById("daily-challenge-status").textContent = complete
     ? "Complete today! Your daily badge is earned."
     : "Listen to the word, choose its picture, then trace it.";
