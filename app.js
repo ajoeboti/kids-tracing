@@ -1388,11 +1388,11 @@ function strokeDemoPoint(point, width, height) {
   var lower = groupFor(character) === "lower";
   var ascenders = "bdfhklt";
   var descenders = "fgjpqy";
-  var top = lower && ascenders.indexOf(character) === -1 ? 0.48 : 0.25;
+  var top = lower && ascenders.indexOf(character) === -1 ? 0.37 : 0.25;
   var y = lower && descenders.indexOf(character) !== -1
     ? (point[1] <= 0.68
       ? top + point[1] / 0.68 * (0.71 - top)
-      : 0.71 + (point[1] - 0.68) / 0.32 * 0.11)
+      : 0.71 + (point[1] - 0.68) / 0.32 * 0.05)
     : top + point[1] * (0.71 - top);
   return {
     x: (0.33 + point[0] * 0.34) * width,
