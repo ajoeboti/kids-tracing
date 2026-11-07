@@ -20,14 +20,23 @@ dependencies and can be published from the repository root with GitHub Pages.
 ## Word Practice
 
 Choose **Word Practice** in the navigation or open `#words` to pick a short
-word. The first set includes CAT, DOG, PIG, BUS, CAR, and HAT, grouped into
-animals and everyday things. Word cards and their progress indicators are
-rendered from the word data. Trace each grey letter and press **Done** to mark
-it complete; **Next** moves through the word and returns to any unfinished
-letter before showing the Write My Name completion layout. The shared canvas
-uses grey-character tracing only, without dots, stroke numbers, or markers.
-Progress resumes from browser storage and is independent of letter practice
-and Write My Name.
+word. Animals batch 1 has 12 words: animals CAT, DOG, PIG, BEE, FOX, FROG,
+DUCK, FISH, and LION, plus everyday things BUS, CAR, and HAT. Filters show
+All Words (12), Animals (9), and Everyday things (3). Food, nature, and the
+remaining home words from the 30-word plan are not in this batch. Word cards
+and their progress indicators are rendered from the word data. Each card shows
+the word in text as well as an emoji. Trace each grey letter and press **Next**
+to mark it complete; **Next** moves through the word and returns to any
+unfinished letter before showing the Write My Name completion layout. The
+shared canvas uses grey-character tracing only, without dots, stroke numbers,
+or markers. Progress resumes from browser storage and is independent of letter
+practice and Write My Name.
+
+New animal phonics follow the existing slash style. BEE is `/b/ /iː/` (ee is
+one vowel), FOX is `/f/ /ɒ/ /ks/`, FROG is `/f/ /r/ /ɒ/ /ɡ/`, DUCK is
+`/d/ /ʌ/ /k/` (ck is one sound), and FISH is `/f/ /ɪ/ /ʃ/` (sh is one sound).
+LION uses the whole-word pronunciation `/ˈlaɪən/` because io is not a simple
+letter-by-letter spelling. The original six cues are unchanged.
 
 Word-session data is stored under `kids-tracing-word-session-v1`. It contains
 only the selected word, current letter position, and completion flags. One word
@@ -43,9 +52,13 @@ The collection and goal use separate `kids-tracing-word-stickers-v1` and
 rewards work in memory for the open page and the site indicates they could not
 be saved.
 
-The **Today's Challenge** card selects one of the six words deterministically
-from the local calendar date. Listen to the spoken word, choose its picture,
-then complete the existing word tracing to earn that day's challenge badge.
+The **Today's Challenge** card still selects one of the original six words
+(CAT, DOG, PIG, BUS, CAR, HAT) deterministically from the local calendar date.
+The rotation stays on that fixed list, not on the full word library, so adding
+words does not change today's target or its three picture choices. Listen to
+the spoken word, choose its picture, then complete the existing word tracing
+to earn that day's challenge badge. Badge progress is counted out of those six
+challenge words. Streak and once-per-day rules are unchanged.
 The card keeps the answer hidden until the challenge is complete so the
 listening choice remains meaningful.
 Challenge completion and its streak are stored separately under
@@ -111,9 +124,19 @@ styles, local fonts, and shared tracing canvas.
   canvas. Try **Write my name again** and **Try another name**.
 - Repeat at a narrow viewport (320px) and with a 20-letter name; confirm the
   tiles wrap and the page has no horizontal overflow.
+- Open `#words` and confirm All Words (12), Animals (9), and Everyday things
+  (3). Animals lists CAT, DOG, PIG, BEE, FOX, FROG, DUCK, FISH, and LION. Everyday
+  things stays BUS, CAR, and HAT. Each new card shows its word in text.
+- Filter Animals and Everyday things with the mouse and with the keyboard.
+  Confirm the other group hides, focus stays visible, and the counts do not
+  change.
+- Set the accuracy slider to 0% for this check. Trace BEE (3 letters) and FROG
+  (4 letters) with **Next**. At 320px width, confirm the letters, filters, and
+  sticker shelf stay on screen without horizontal overflow.
 - In Word Practice, finish CAT for the first time; confirm one CAT sticker is
   earned, the daily goal is complete, and the completion screen names the
-  sticker.
+  sticker. Finish BEE once and confirm its sticker and the daily goal update
+  once; tracing BEE again does not add a second sticker or another daily goal.
 - Trace CAT again; confirm its sticker is not duplicated and the daily goal is
   still one completed word. Finish DOG on the same day and confirm the goal
   remains one per day.
@@ -125,8 +148,17 @@ styles, local fonts, and shared tracing canvas.
 - Compare `kids-tracing-word-history-v1`, `kids-tracing-progress`, and
   `kids-tracing-name-session-v1` before and after reward testing; they should
   remain unchanged.
+- Save a partial CAT session (`currentIndex` 1, first letter complete) and a
+  completed DOG session in `kids-tracing-word-session-v1`, then refresh.
+  Partial CAT still shows in progress, and a completed session still opens the
+  completion screen. This app stores that completion on the single word
+  session; it does not yet have a separate `kids-tracing-word-history-v1` list.
+- Put duplicate and unknown sticker ids, malformed JSON, and an unknown word
+  session in localStorage. Confirm known ids load once, unknown ids are
+  ignored, and the page stays usable. New words are not already completed.
 - In Word Practice, refresh or reopen the page on the same local date; confirm
-  the daily challenge word remains the same.
+  the daily challenge word and its three distinct picture choices remain the
+  same. The choices stay within CAT, DOG, PIG, BUS, CAR, and HAT.
 - Listen, choose the correct picture, complete the word tracing, and confirm the
   daily badge appears once. Choose a wrong picture first and confirm no tracing
   starts and no challenge completion is recorded.

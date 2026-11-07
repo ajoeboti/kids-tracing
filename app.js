@@ -11,10 +11,20 @@ var WORDS = {
   CAT: { emoji: "🐱", category: "animals", phonics: "/k/ /æ/ /t/" },
   DOG: { emoji: "🐶", category: "animals", phonics: "/d/ /ɒ/ /ɡ/" },
   PIG: { emoji: "🐷", category: "animals", phonics: "/p/ /ɪ/ /ɡ/" },
+  BEE: { emoji: "🐝", category: "animals", phonics: "/b/ /iː/" },
+  FOX: { emoji: "🦊", category: "animals", phonics: "/f/ /ɒ/ /ks/" },
+  FROG: { emoji: "🐸", category: "animals", phonics: "/f/ /r/ /ɒ/ /ɡ/" },
+  DUCK: { emoji: "🦆", category: "animals", phonics: "/d/ /ʌ/ /k/" },
+  FISH: { emoji: "🐟", category: "animals", phonics: "/f/ /ɪ/ /ʃ/" },
+  LION: { emoji: "🦁", category: "animals", phonics: "/ˈlaɪən/" },
   BUS: { emoji: "🚌", category: "things", phonics: "/b/ /ʌ/ /s/" },
   CAR: { emoji: "🚗", category: "things", phonics: "/k/ /ɑːr/" },
   HAT: { emoji: "🎩", category: "things", phonics: "/h/ /æ/ /t/" }
 };
+// Today's Challenge keeps this original order. Object.keys(WORDS) would change
+// the day-number modulo after new words are added and could replace a challenge
+// already in progress. Same-day refresh stays on this fixed list.
+var DAILY_CHALLENGE_WORDS = ["CAT", "DOG", "PIG", "BUS", "CAR", "HAT"];
 var ACCURACY_KEY = "kids-tracing-min-accuracy-v1";
 var PASTELS = ["pink", "sky", "mint"];
 var PHONEMES = {
@@ -280,6 +290,7 @@ var strokeStepButton = document.getElementById("stroke-step-button");
 var state = loadProgress();
 var nameSession = loadNameSession();
 var wordSession = loadWordSession();
+var wordCategoryFilter = "all";
 var wordSessionIsDailyChallenge = false;
 var rewardsStorageAvailable = true;
 var stickerState = loadStickerState();
@@ -489,14 +500,18 @@ function localCalendarDate(date) {
 function dailyChallengeWordForDate(date) {
   var parts = date.split("-").map(Number);
   var dayIndex = Math.floor(Date.UTC(parts[0], parts[1] - 1, parts[2]) / 86400000);
-  var words = Object.keys(WORDS);
+  var words = DAILY_CHALLENGE_WORDS;
   return words[((dayIndex % words.length) + words.length) % words.length];
 }
 
 function dailyChallengeChoicesFor(word, date) {
   var parts = date.split("-").map(Number);
   var seed = Math.floor(Date.UTC(parts[0], parts[1] - 1, parts[2]) / 86400000);
-  var distractors = Object.keys(WORDS).filter(function (candidate) {
+  var pool = DAILY_CHALLENGE_WORDS.filter(function (candidate) {
+    return Object.prototype.hasOwnProperty.call(WORDS, candidate);
+  });
+  if (pool.indexOf(word) === -1) pool = Object.keys(WORDS);
+  var distractors = pool.filter(function (candidate) {
     return candidate !== word;
   });
   var choices = [
@@ -1023,7 +1038,7 @@ function renderDailyChallenge() {
     "Streak: " + streak + " " + (streak === 1 ? "day" : "days");
   document.getElementById("daily-challenge-badges").textContent =
     "Word badges: " + dailyChallengeState.completedWords.length + " of " +
-    Object.keys(WORDS).length;
+    DAILY_CHALLENGE_WORDS.length;
   document.getElementById("daily-challenge-listen").hidden = complete;
 
   var choices = document.getElementById("daily-challenge-choices");
@@ -1053,9 +1068,55 @@ function renderDailyChallenge() {
     "Daily challenge progress could not be saved. It will stay available only while this page is open.";
 }
 
+function wordCountsByCategory() {
+  var counts = { all: 0, animals: 0, things: 0 };
+  Object.keys(WORDS).forEach(function (word) {
+    counts.all += 1;
+    var category = WORDS[word].category;
+    if (Object.prototype.hasOwnProperty.call(counts, category)) counts[category] += 1;
+  });
+  return counts;
+}
+
+function renderWordFilters() {
+  var counts = wordCountsByCategory();
+  var labels = {
+    all: "All Words (" + counts.all + ")",
+    animals: "Animals (" + counts.animals + ")",
+    things: "Everyday things (" + counts.things + ")"
+  };
+  Object.keys(labels).forEach(function (key) {
+    var button = document.querySelector('[data-word-filter="' + key + '"]');
+    if (!button) return;
+    var selected = wordCategoryFilter === key;
+    button.textContent = labels[key];
+    button.classList.toggle("is-active", selected);
+    button.setAttribute("aria-pressed", selected ? "true" : "false");
+  });
+  var animalsSection = document.getElementById("word-animals-section");
+  var thingsSection = document.getElementById("word-things-section");
+  if (animalsSection) animalsSection.hidden = wordCategoryFilter === "things";
+  if (thingsSection) thingsSection.hidden = wordCategoryFilter === "animals";
+  var animalsCount = document.getElementById("word-animals-count");
+  var thingsCount = document.getElementById("word-things-count");
+  if (animalsCount) animalsCount.textContent = "(" + counts.animals + ")";
+  if (thingsCount) thingsCount.textContent = "(" + counts.things + ")";
+}
+
+function setWordCategoryFilter(next) {
+  if (next !== "all" && next !== "animals" && next !== "things") return;
+  wordCategoryFilter = next;
+  renderWordFilters();
+  var button = document.querySelector('[data-word-filter="' + next + '"]');
+  if (button) {
+    document.getElementById("live").textContent = "Showing " + button.textContent + ".";
+  }
+}
+
 function renderWordSelection() {
   renderWordRewards();
   renderDailyChallenge();
+  renderWordFilters();
   var groups = {
     animals: document.getElementById("word-animals"),
     things: document.getElementById("word-things")
@@ -2411,6 +2472,11 @@ document.getElementById("name-progress-tiles").addEventListener("click", functio
   if (activeTile) activeTile.querySelector("button").focus();
 });
 document.getElementById("view-word-selection").addEventListener("click", function (event) {
+  var filter = event.target.closest("[data-word-filter]");
+  if (filter && event.currentTarget.contains(filter)) {
+    setWordCategoryFilter(filter.getAttribute("data-word-filter"));
+    return;
+  }
   var card = event.target.closest("[data-word]");
   if (card && event.currentTarget.contains(card)) startWordSession(card.getAttribute("data-word"));
 });

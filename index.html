@@ -252,13 +252,19 @@
               <input type="range" class="accuracy-slider" id="word-accuracy" min="0" max="100" step="5" value="50">
             </div>
 
-          <section class="wp-group" aria-labelledby="word-animals-heading">
-            <h2 id="word-animals-heading">Animals</h2>
+          <div class="wp-filters" role="group" aria-label="Filter words by category">
+            <button type="button" class="wp-filter is-active" data-word-filter="all" aria-pressed="true">All Words</button>
+            <button type="button" class="wp-filter" data-word-filter="animals" aria-pressed="false">Animals</button>
+            <button type="button" class="wp-filter" data-word-filter="things" aria-pressed="false">Everyday things</button>
+          </div>
+
+          <section class="wp-group" id="word-animals-section" aria-labelledby="word-animals-heading">
+            <h2 id="word-animals-heading">Animals <span class="wp-group-count" id="word-animals-count"></span></h2>
             <ul class="wp-cards" id="word-animals"></ul>
           </section>
 
-          <section class="wp-group" aria-labelledby="word-things-heading">
-            <h2 id="word-things-heading">Everyday things</h2>
+          <section class="wp-group" id="word-things-section" aria-labelledby="word-things-heading">
+            <h2 id="word-things-heading">Everyday things <span class="wp-group-count" id="word-things-count"></span></h2>
             <ul class="wp-cards" id="word-things"></ul>
           </section>
           <a class="btn btn-soft" href="#home">Back to home</a>

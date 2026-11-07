@@ -174,8 +174,39 @@
   display: none;
 }
 
+.wp-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.wp-filter {
+  max-width: 100%;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 2px solid #e7d4c0;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
+
+.wp-filter.is-active {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #fff;
+}
+
 .wp-group {
   margin: 26px 0 0;
+}
+
+.wp-group-count {
+  color: var(--muted);
+  font-size: 0.85em;
 }
 
 .wp-group h2 {
@@ -441,6 +472,12 @@
   .wp-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+  }
+}
+
+@media (max-width: 560px) {
+  .wp-sticker-shelf {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

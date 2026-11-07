@@ -309,8 +309,11 @@ remain available after refresh.
 ### Word Tracing Session
 
 Word Practice uses `#words` for the selection, tracing, or completion view.
-`#word-selection` opens the selection view directly. The initial word data is
-CAT, DOG, PIG, BUS, CAR, and HAT, grouped into animals and everyday things.
+`#word-selection` opens the selection view directly. Animals batch 1 has 12
+words: animals CAT, DOG, PIG, BEE, FOX, FROG, DUCK, FISH, and LION, plus
+everyday things BUS, CAR, and HAT. Filters report All Words (12), Animals (9),
+and Everyday things (3). The later food, nature, and extra home words are not
+in this batch.
 Children trace each word one letter at a time using the same grey-character
 guide and shared handwriting canvas as Write My Name; tracing dots, stroke
 numbers, and start/end markers are not used.
@@ -324,19 +327,35 @@ replacing that session. Word completion uses the existing Write My Name
 completion layout.
 
 Word Practice rewards use two additional local-only keys:
-`kids-tracing-word-stickers-v1` stores the earned CAT, DOG, PIG, BUS, CAR, and
-HAT stickers, and `kids-tracing-daily-goal-v1` stores the most recently
+`kids-tracing-word-stickers-v1` stores earned stickers for the 12 current
+words, and `kids-tracing-daily-goal-v1` stores the most recently
 completed local calendar date and consecutive-day streak. Completing a word
 earns its sticker once; completing any word completes that date's one-word
-goal. Invalid saved reward data is ignored, and unavailable storage falls back
-to in-memory progress with a visible save warning.
+goal. New words start without a sticker. Invalid saved reward data is ignored,
+and unavailable storage falls back to in-memory progress with a visible save
+warning. The sticker shelf lists all 12 words; a fuller 30-word shelf is left
+for a later batch.
 
-The Today's Challenge card deterministically selects one of the six words from
-the user's local calendar date. The child listens to the spoken word, chooses
-its picture, and completes that word in the shared tracing flow. A separate
-`kids-tracing-daily-challenge-v1` record stores the last completed date, streak,
-and distinct completed word badges. The challenge can be completed only once
-per date, and only after the correct choice and tracing are completed that day.
+Phonics stay in the existing slash style. BEE uses `/b/ /iː/` because ee is one
+vowel. FOX ends in `/ks/`. DUCK uses `/d/ /ʌ/ /k/` because ck is one sound.
+FISH uses `/f/ /ɪ/ /ʃ/` because sh is one sound. LION uses the whole-word
+pronunciation `/ˈlaɪən/` so the io spelling is not presented as four separate
+letter sounds. FROG is `/f/ /r/ /ɒ/ /ɡ/`. Existing CAT, DOG, PIG, BUS, CAR, and
+HAT cues are unchanged.
+
+The Today's Challenge card still selects one of the original six words — CAT,
+DOG, PIG, BUS, CAR, and HAT — from the user's local calendar date. That
+rotation is fixed in `DAILY_CHALLENGE_WORDS` instead of `Object.keys(WORDS)`.
+Adding library words would otherwise change the day-number modulo and could
+replace a challenge already in progress. The same date therefore keeps the
+same target and the same three distinct picture choices across refresh. Streak
+and once-per-day completion rules are unchanged. The child listens to the
+spoken word, chooses its picture, and completes that word in the shared tracing
+flow. A separate `kids-tracing-daily-challenge-v1` record stores the last
+completed date, streak, and distinct completed word badges. The challenge can
+be completed only once per date, and only after the correct choice and tracing
+are completed that day. Badge progress is counted out of those six challenge
+words.
 The answer stays hidden on the challenge card until completion.
 Invalid data is sanitized or ignored; unavailable storage keeps progress in
 memory and reports that it could not be saved. Existing word sessions and
