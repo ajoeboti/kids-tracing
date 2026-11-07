@@ -29,7 +29,15 @@ var WORDS = {
   TREE: { emoji: "🌳", category: "nature", phonics: "/t/ /r/ /iː/" },
   BUS: { emoji: "🚌", category: "things", phonics: "/b/ /ʌ/ /s/" },
   CAR: { emoji: "🚗", category: "things", phonics: "/k/ /ɑːr/" },
-  HAT: { emoji: "🎩", category: "things", phonics: "/h/ /æ/ /t/" }
+  HAT: { emoji: "🎩", category: "things", phonics: "/h/ /æ/ /t/" },
+  BALL: { emoji: "⚽", category: "things", phonics: "/b/ /ɔː/ /l/" },
+  BOOK: { emoji: "📖", category: "things", phonics: "/b/ /ʊ/ /k/" },
+  SHOE: { emoji: "👟", category: "things", phonics: "/ʃuː/" },
+  SOCK: { emoji: "🧦", category: "things", phonics: "/s/ /ɒ/ /k/" },
+  CUP: { emoji: "🥤", category: "things", phonics: "/k/ /ʌ/ /p/" },
+  BED: { emoji: "🛏️", category: "things", phonics: "/b/ /ɛ/ /d/" },
+  CHAIR: { emoji: "🪑", category: "things", phonics: "/tʃɛər/" },
+  CLOCK: { emoji: "🕒", category: "things", phonics: "/k/ /l/ /ɒ/ /k/" }
 };
 // Today's Challenge keeps this original order. Object.keys(WORDS) would change
 // the day-number modulo after new words are added and could replace a challenge
