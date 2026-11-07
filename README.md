@@ -20,11 +20,11 @@ dependencies and can be published from the repository root with GitHub Pages.
 ## Word Practice
 
 Choose **Word Practice** in the navigation or open `#words` to pick a short
-word. The 22 words are animals CAT, DOG, PIG, BEE, FOX, FROG, DUCK, FISH,
+word. The 30 words are animals CAT, DOG, PIG, BEE, FOX, FROG, DUCK, FISH,
 and LION; food EGG, MILK, CAKE, APPLE, BREAD, and JUICE; nature SUN, MOON,
-STAR, and TREE; and everyday things BUS, CAR, and HAT. Filters show All Words
-(22), Animals (9), Food (6), Nature (4), and Everyday things (3). The remaining
-home words from the 30-word plan are not in this batch. Word cards
+STAR, and TREE; and everyday things/home BUS, CAR, HAT, BALL, BOOK, SHOE,
+SOCK, CUP, BED, CHAIR, and CLOCK. Filters show All Words (30), Animals (9),
+Food (6), Nature (4), and Everyday things (11). Word cards
 and their progress indicators are rendered from the word data. Each card shows
 the word in text as well as an emoji. Trace each grey letter and press **Next**
 to mark it complete; **Next** moves through the word and returns to any
@@ -42,6 +42,10 @@ APPLE `/ˈæpəl/`, BREAD `/brɛd/`, and JUICE `/dʒuːs/` use whole-word
 pronunciations rather than suggesting each written letter has a separate sound.
 Nature cues use `/s/ /ʌ/ /n/`, `/m/ /uː/ /n/`, `/s/ /t/ /ɑːr/`, and
 `/t/ /r/ /iː/` for SUN, MOON, STAR, and TREE respectively.
+Home cues use BALL `/b/ /ɔː/ /l/`, BOOK `/b/ /ʊ/ /k/`, SHOE `/ʃuː/`,
+SOCK `/s/ /ɒ/ /k/`, CUP `/k/ /ʌ/ /p/`, BED `/b/ /ɛ/ /d/`,
+CHAIR `/tʃɛər/`, and CLOCK `/k/ /l/ /ɒ/ /k/`. SHOE and CHAIR use
+whole-word pronunciations rather than misleading letter-by-letter sounds.
 
 Word-session data is stored under `kids-tracing-word-session-v1`. It contains
 only the selected word, current letter position, and completion flags. One word
@@ -129,15 +133,19 @@ styles, local fonts, and shared tracing canvas.
   canvas. Try **Write my name again** and **Try another name**.
 - Repeat at a narrow viewport (320px) and with a 20-letter name; confirm the
   tiles wrap and the page has no horizontal overflow.
-- Open `#words` and confirm All Words (22), Animals (9), Food (6), Nature (4),
-  and Everyday things (3). Nature lists SUN, MOON, STAR, and TREE. Each new card
-  shows its word in text.
+- Open `#word-selection`; compare all card IDs/text with the 30-word list above,
+  checking each appears once in its category. Confirm All Words (30), Animals
+  (9), Food (6), Nature (4), and Everyday things (11), including the counts in
+  filter accessible names and section headings.
 - Filter Animals, Food, Nature, and Everyday things with the mouse and keyboard.
   Confirm the other group hides, focus stays visible, and the counts do not
   change.
-- Set the accuracy slider to 0% for this check. Trace SUN and TREE with **Next**,
-  and also APPLE and BREAD (5 letters each). At 320px width, confirm the letters, filters, and
-  sticker shelf stay on screen without horizontal overflow.
+- Set the accuracy slider to 0% for this check. Trace BALL, BOOK, SHOE, SOCK,
+  CUP, BED, CHAIR, and CLOCK one letter at a time with **Next**; check each
+  progress label and completion screen. At 320px width, repeat CHAIR and CLOCK
+  and confirm the letters, filters, and sticker shelf stay on screen without
+  horizontal overflow. Start another word after tracing a letter and confirm
+  cancel keeps the existing session and confirm replaces it.
 - In Word Practice, finish CAT for the first time; confirm one CAT sticker is
   earned, the daily goal is complete, and the completion screen names the
   sticker. Finish EGG once and confirm its sticker and the daily goal update
@@ -158,6 +166,10 @@ styles, local fonts, and shared tracing canvas.
   a time, then refresh. Partial sessions still show in progress, and each completed session still opens the
   completion screen. This app stores that completion on the single word
   session; it does not yet have a separate `kids-tracing-word-history-v1` list.
+- With existing sessions, stickers, daily goal and challenge progress saved,
+  refresh and confirm they are retained; previously completed word status follows
+  the saved single session, not a separate history list. Confirm the new words
+  start uncompleted and locked until traced.
 - Put duplicate and unknown sticker ids, malformed JSON, and an unknown word
   session in localStorage. Confirm known ids load once, unknown ids are
   ignored, and the page stays usable. New words are not already completed.
@@ -178,6 +190,9 @@ styles, local fonts, and shared tracing canvas.
   clearly reported.
 - At 320px width and with reduced motion enabled, confirm there is no horizontal
   overflow and the completion confirmation remains brief and non-blocking.
+- Use Tab and Enter/Space to operate the filters and word cards; check accessible
+  names include word, progress, and counts, and that keyboard focus is visible.
+  Enable reduced motion and confirm sticker completion does not animate.
 - Compare `kids-tracing-word-session-v1`, `kids-tracing-word-stickers-v1`,
   `kids-tracing-daily-goal-v1`, `kids-tracing-progress`, and
   `kids-tracing-name-session-v1` before and after challenge testing; existing
