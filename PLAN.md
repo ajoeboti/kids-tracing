@@ -309,11 +309,11 @@ remain available after refresh.
 ### Word Tracing Session
 
 Word Practice uses `#words` for the selection, tracing, or completion view.
-`#word-selection` opens the selection view directly. Animals batch 1 has 12
-words: animals CAT, DOG, PIG, BEE, FOX, FROG, DUCK, FISH, and LION, plus
-everyday things BUS, CAR, and HAT. Filters report All Words (12), Animals (9),
-and Everyday things (3). The later food, nature, and extra home words are not
-in this batch.
+`#word-selection` opens the selection view directly. Animals and Food batches
+provide 18 words: animals CAT, DOG, PIG, BEE, FOX, FROG, DUCK, FISH, and LION;
+food EGG, MILK, CAKE, APPLE, BREAD, and JUICE; and everyday things BUS, CAR,
+and HAT. Filters report All Words (18), Animals (9), Food (6), and Everyday
+things (3). Nature and extra home words are left for later batches.
 Children trace each word one letter at a time using the same grey-character
 guide and shared handwriting canvas as Write My Name; tracing dots, stroke
 numbers, and start/end markers are not used.
@@ -327,13 +327,13 @@ replacing that session. Word completion uses the existing Write My Name
 completion layout.
 
 Word Practice rewards use two additional local-only keys:
-`kids-tracing-word-stickers-v1` stores earned stickers for the 12 current
+`kids-tracing-word-stickers-v1` stores earned stickers for the 18 current
 words, and `kids-tracing-daily-goal-v1` stores the most recently
 completed local calendar date and consecutive-day streak. Completing a word
 earns its sticker once; completing any word completes that date's one-word
 goal. New words start without a sticker. Invalid saved reward data is ignored,
 and unavailable storage falls back to in-memory progress with a visible save
-warning. The sticker shelf lists all 12 words; a fuller 30-word shelf is left
+warning. The sticker shelf lists all 18 words; a fuller 30-word shelf is left
 for a later batch.
 
 Phonics stay in the existing slash style. BEE uses `/b/ /iː/` because ee is one
@@ -342,6 +342,8 @@ FISH uses `/f/ /ɪ/ /ʃ/` because sh is one sound. LION uses the whole-word
 pronunciation `/ˈlaɪən/` so the io spelling is not presented as four separate
 letter sounds. FROG is `/f/ /r/ /ɒ/ /ɡ/`. Existing CAT, DOG, PIG, BUS, CAR, and
 HAT cues are unchanged.
+Food cues use whole-word pronunciations for APPLE `/ˈæpəl/`, BREAD `/brɛd/`,
+and JUICE `/dʒuːs/`, rather than treating their spellings as separate sounds.
 
 The Today's Challenge card still selects one of the original six words — CAT,
 DOG, PIG, BUS, CAR, and HAT — from the user's local calendar date. That
