@@ -20,10 +20,11 @@ dependencies and can be published from the repository root with GitHub Pages.
 ## Word Practice
 
 Choose **Word Practice** in the navigation or open `#words` to pick a short
-word. Animals batch 1 has 12 words: animals CAT, DOG, PIG, BEE, FOX, FROG,
-DUCK, FISH, and LION, plus everyday things BUS, CAR, and HAT. Filters show
-All Words (12), Animals (9), and Everyday things (3). Food, nature, and the
-remaining home words from the 30-word plan are not in this batch. Word cards
+word. The 18 words are animals CAT, DOG, PIG, BEE, FOX, FROG, DUCK, FISH,
+and LION; food EGG, MILK, CAKE, APPLE, BREAD, and JUICE; and everyday things
+BUS, CAR, and HAT. Filters show All Words (18), Animals (9), Food (6), and
+Everyday things (3). Nature and the remaining home words from the 30-word plan
+are not in this batch. Word cards
 and their progress indicators are rendered from the word data. Each card shows
 the word in text as well as an emoji. Trace each grey letter and press **Next**
 to mark it complete; **Next** moves through the word and returns to any
@@ -37,6 +38,8 @@ one vowel), FOX is `/f/ /ɒ/ /ks/`, FROG is `/f/ /r/ /ɒ/ /ɡ/`, DUCK is
 `/d/ /ʌ/ /k/` (ck is one sound), and FISH is `/f/ /ɪ/ /ʃ/` (sh is one sound).
 LION uses the whole-word pronunciation `/ˈlaɪən/` because io is not a simple
 letter-by-letter spelling. The original six cues are unchanged.
+APPLE `/ˈæpəl/`, BREAD `/brɛd/`, and JUICE `/dʒuːs/` use whole-word
+pronunciations rather than suggesting each written letter has a separate sound.
 
 Word-session data is stored under `kids-tracing-word-session-v1`. It contains
 only the selected word, current letter position, and completion flags. One word
@@ -124,19 +127,19 @@ styles, local fonts, and shared tracing canvas.
   canvas. Try **Write my name again** and **Try another name**.
 - Repeat at a narrow viewport (320px) and with a 20-letter name; confirm the
   tiles wrap and the page has no horizontal overflow.
-- Open `#words` and confirm All Words (12), Animals (9), and Everyday things
-  (3). Animals lists CAT, DOG, PIG, BEE, FOX, FROG, DUCK, FISH, and LION. Everyday
-  things stays BUS, CAR, and HAT. Each new card shows its word in text.
-- Filter Animals and Everyday things with the mouse and with the keyboard.
+- Open `#words` and confirm All Words (18), Animals (9), Food (6), and Everyday
+  things (3). Food lists EGG, MILK, CAKE, APPLE, BREAD, and JUICE. Each new
+  card shows its word in text.
+- Filter Animals, Food, and Everyday things with the mouse and with the keyboard.
   Confirm the other group hides, focus stays visible, and the counts do not
   change.
-- Set the accuracy slider to 0% for this check. Trace BEE (3 letters) and FROG
-  (4 letters) with **Next**. At 320px width, confirm the letters, filters, and
+- Set the accuracy slider to 0% for this check. Trace APPLE and BREAD
+  (5 letters each) with **Next**. At 320px width, confirm the letters, filters, and
   sticker shelf stay on screen without horizontal overflow.
 - In Word Practice, finish CAT for the first time; confirm one CAT sticker is
   earned, the daily goal is complete, and the completion screen names the
-  sticker. Finish BEE once and confirm its sticker and the daily goal update
-  once; tracing BEE again does not add a second sticker or another daily goal.
+  sticker. Finish EGG once and confirm its sticker and the daily goal update
+  once; tracing EGG again does not add a second sticker or another daily goal.
 - Trace CAT again; confirm its sticker is not duplicated and the daily goal is
   still one completed word. Finish DOG on the same day and confirm the goal
   remains one per day.
@@ -148,9 +151,9 @@ styles, local fonts, and shared tracing canvas.
 - Compare `kids-tracing-word-history-v1`, `kids-tracing-progress`, and
   `kids-tracing-name-session-v1` before and after reward testing; they should
   remain unchanged.
-- Save a partial CAT session (`currentIndex` 1, first letter complete) and a
-  completed DOG session in `kids-tracing-word-session-v1`, then refresh.
-  Partial CAT still shows in progress, and a completed session still opens the
+- Save a partial FROG session (`currentIndex` 1, first letter complete) and a
+  completed BEE session in `kids-tracing-word-session-v1`, then refresh.
+  Partial FROG still shows in progress, and a completed session still opens the
   completion screen. This app stores that completion on the single word
   session; it does not yet have a separate `kids-tracing-word-history-v1` list.
 - Put duplicate and unknown sticker ids, malformed JSON, and an unknown word
