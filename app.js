@@ -23,6 +23,10 @@ var WORDS = {
   APPLE: { emoji: "🍎", category: "food", phonics: "/ˈæpəl/" },
   BREAD: { emoji: "🍞", category: "food", phonics: "/brɛd/" },
   JUICE: { emoji: "🧃", category: "food", phonics: "/dʒuːs/" },
+  SUN: { emoji: "☀️", category: "nature", phonics: "/s/ /ʌ/ /n/" },
+  MOON: { emoji: "🌙", category: "nature", phonics: "/m/ /uː/ /n/" },
+  STAR: { emoji: "⭐", category: "nature", phonics: "/s/ /t/ /ɑːr/" },
+  TREE: { emoji: "🌳", category: "nature", phonics: "/t/ /r/ /iː/" },
   BUS: { emoji: "🚌", category: "things", phonics: "/b/ /ʌ/ /s/" },
   CAR: { emoji: "🚗", category: "things", phonics: "/k/ /ɑːr/" },
   HAT: { emoji: "🎩", category: "things", phonics: "/h/ /æ/ /t/" }
@@ -1075,7 +1079,7 @@ function renderDailyChallenge() {
 }
 
 function wordCountsByCategory() {
-  var counts = { all: 0, animals: 0, food: 0, things: 0 };
+  var counts = { all: 0, animals: 0, food: 0, nature: 0, things: 0 };
   Object.keys(WORDS).forEach(function (word) {
     counts.all += 1;
     var category = WORDS[word].category;
@@ -1090,6 +1094,7 @@ function renderWordFilters() {
     all: "All Words (" + counts.all + ")",
     animals: "Animals (" + counts.animals + ")",
     food: "Food (" + counts.food + ")",
+    nature: "Nature (" + counts.nature + ")",
     things: "Everyday things (" + counts.things + ")"
   };
   Object.keys(labels).forEach(function (key) {
@@ -1102,20 +1107,24 @@ function renderWordFilters() {
   });
   var animalsSection = document.getElementById("word-animals-section");
   var foodSection = document.getElementById("word-food-section");
+  var natureSection = document.getElementById("word-nature-section");
   var thingsSection = document.getElementById("word-things-section");
   if (animalsSection) animalsSection.hidden = wordCategoryFilter !== "all" && wordCategoryFilter !== "animals";
   if (foodSection) foodSection.hidden = wordCategoryFilter !== "all" && wordCategoryFilter !== "food";
+  if (natureSection) natureSection.hidden = wordCategoryFilter !== "all" && wordCategoryFilter !== "nature";
   if (thingsSection) thingsSection.hidden = wordCategoryFilter !== "all" && wordCategoryFilter !== "things";
   var animalsCount = document.getElementById("word-animals-count");
   var foodCount = document.getElementById("word-food-count");
+  var natureCount = document.getElementById("word-nature-count");
   var thingsCount = document.getElementById("word-things-count");
   if (animalsCount) animalsCount.textContent = "(" + counts.animals + ")";
   if (foodCount) foodCount.textContent = "(" + counts.food + ")";
+  if (natureCount) natureCount.textContent = "(" + counts.nature + ")";
   if (thingsCount) thingsCount.textContent = "(" + counts.things + ")";
 }
 
 function setWordCategoryFilter(next) {
-  if (next !== "all" && next !== "animals" && next !== "food" && next !== "things") return;
+  if (next !== "all" && next !== "animals" && next !== "food" && next !== "nature" && next !== "things") return;
   wordCategoryFilter = next;
   renderWordFilters();
   var button = document.querySelector('[data-word-filter="' + next + '"]');
@@ -1131,6 +1140,7 @@ function renderWordSelection() {
   var groups = {
     animals: document.getElementById("word-animals"),
     food: document.getElementById("word-food"),
+    nature: document.getElementById("word-nature"),
     things: document.getElementById("word-things")
   };
   Object.keys(groups).forEach(function (category) {
